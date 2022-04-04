@@ -16,21 +16,56 @@
 
 package jp.co.casl0.android.simpleappblocker
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.net.VpnService
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.os.IBinder
+import android.view.InflateException
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val REQUEST_CODE_VPN_SERVICE = 100
+    }
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appBlockerService: AppBlockerService
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as AppBlockerService.AppBlockerBinder
+            appBlockerService = binder.getService()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            Logger.d("service disconnected")
+        }
+    }
+
+    private fun configureVpnService() {
+        val vpnPrepareIntent = VpnService.prepare(this)
+        if (vpnPrepareIntent != null) {
+            startActivityForResult(vpnPrepareIntent, REQUEST_CODE_VPN_SERVICE)
+        } else {
+            // 既にVPN同意済み
+            Logger.d("VpnService already agreed")
+            Intent(this, AppBlockerService::class.java).also {
+                bindService(it, connection, Context.BIND_AUTO_CREATE)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,18 +76,44 @@ class MainActivity : AppCompatActivity() {
         )
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val navView: BottomNavigationView = binding.navView
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        configureVpnService()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        try {
+            menuInflater.inflate(R.menu.options, menu)
+
+            // アクションバーのスイッチのイベントハンドラを設定
+            val actionSwitch = menu?.findItem(R.id.app_bar_switch)?.actionView as? SwitchCompat
+            actionSwitch?.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    appBlockerService.updateFilters(listOf())
+                } else {
+                    appBlockerService.disableFilters()
+                }
+            }
+        } catch (e: InflateException) {
+            val errMsg = e.localizedMessage
+            if (errMsg != null) Logger.d(errMsg)
+        }
+        return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_CODE_VPN_SERVICE) {
+            if (resultCode == RESULT_OK) {
+                Intent(this, AppBlockerService::class.java).also {
+                    bindService(it, connection, Context.BIND_AUTO_CREATE)
+                }
+                return
+            } else {
+                Logger.d("VpnService rejected")
+                finish()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

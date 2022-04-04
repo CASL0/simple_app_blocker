@@ -3,4 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="app_bar_switch_title">ENABLE FILTERS</string>
+    <string name="filters_disabled">Filters are disabled.</string>
+    <string name="filters_enabled">Filters are enabled.</string>
 </resources>
