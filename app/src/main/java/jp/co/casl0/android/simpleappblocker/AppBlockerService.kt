@@ -59,6 +59,7 @@ class AppBlockerService : VpnService() {
 
     /**
      * フィルターを更新する関数
+     * @param allowedAppPackages 通信許可したいアプリパッケージ名のリスト
      */
     fun updateFilters(allowedAppPackages: List<String>) {
         updateForegroundService(getString(R.string.filters_enabled))
@@ -97,14 +98,15 @@ class AppBlockerService : VpnService() {
     }
 
     /**
-     * 遮断用のスレッドを保持する関数
+     * 元の遮断用のスレッドを停止し、新規のスレッドを保持する関数
+     * @param thread 新規の遮断用スレッド
      */
     private fun setConnectingThread(thread: Thread?) {
         connectingThread.getAndSet(thread)?.interrupt()
     }
 
     /**
-     * 遮断用の仮想NICを取得する関数
+     * 遮断用の仮想NICのBuilderを取得する関数
      */
     private fun getLocalTunnelBuilder(): Builder? {
         return try {
@@ -122,7 +124,8 @@ class AppBlockerService : VpnService() {
     }
 
     /**
-     * フォアグラウンドサービスの通知する関数
+     * フォアグラウンドサービスを通知する関数
+     * @param message 通知に表示するメッセージ
      */
     private fun updateForegroundService(message: String) {
         Logger.d("updateForegroundService: $message")
@@ -131,7 +134,7 @@ class AppBlockerService : VpnService() {
     }
 
     /**
-     * 通知チャネルを作成する関数
+     * 通知チャネルを作成する関数(APIレベル26以上)
      */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT > 26) {
@@ -147,7 +150,7 @@ class AppBlockerService : VpnService() {
     }
 
     /**
-     * フォアグラウンドサービスの通知を取得する関数
+     * フォアグラウンドサービスの通知Builderを取得する関数
      */
     private fun getNotificationBuilder(message: String): NotificationCompat.Builder =
         NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
