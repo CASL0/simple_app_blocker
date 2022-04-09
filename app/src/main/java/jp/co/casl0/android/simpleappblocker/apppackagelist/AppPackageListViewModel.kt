@@ -16,9 +16,32 @@
 
 package jp.co.casl0.android.simpleappblocker.apppackagelist
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import jp.co.casl0.android.simpleappblocker.PackageInfo
 
 class AppPackageListViewModel : ViewModel() {
+    private val _packageInfoList = MutableLiveData<MutableList<PackageInfo>>(null)
+    val packageInfoList: LiveData<MutableList<PackageInfo>>
+        get() = _packageInfoList
+
+    fun loadInstalledPackages(context: Context?) {
+        val tmp: MutableList<PackageInfo> = mutableListOf()
+        val pm = context?.packageManager
+        if (pm != null) {
+            pm.getInstalledApplications(0).forEach {
+                tmp.add(
+                    PackageInfo(
+                        it.loadIcon(pm),
+                        it.loadLabel(pm).toString(),
+                        it.packageName
+                    )
+                )
+            }
+            _packageInfoList.postValue(tmp)
+        }
+    }
+
 }

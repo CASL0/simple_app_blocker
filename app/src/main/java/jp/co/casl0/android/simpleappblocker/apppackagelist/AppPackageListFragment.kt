@@ -20,9 +20,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAppPackageListBinding
 
 class AppPackageListFragment : Fragment() {
@@ -40,6 +40,17 @@ class AppPackageListFragment : Fragment() {
 
         _binding = FragmentAppPackageListBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val recyclerView = binding.appPackageRecyclerview
+        val adapter = AppPackageListAdapter(context, listOf())
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        appPackageListViewModel.packageInfoList.observe(viewLifecycleOwner) {
+            if (it != null) {
+                adapter.packageInfoList = it
+                recyclerView.adapter?.notifyDataSetChanged()
+            }
+        }
+        appPackageListViewModel.loadInstalledPackages(context)
         return root
     }
 

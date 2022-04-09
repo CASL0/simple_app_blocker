@@ -4,4 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".apppackagelist.AppPackageListFragment"/>
+    tools:context=".apppackagelist.AppPackageListFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/app_package_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

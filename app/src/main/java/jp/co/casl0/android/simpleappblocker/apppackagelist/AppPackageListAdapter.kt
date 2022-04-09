@@ -1,0 +1,53 @@
+/*
+ * Copyright 2022 CASL0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package jp.co.casl0.android.simpleappblocker.apppackagelist
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import jp.co.casl0.android.simpleappblocker.PackageInfo
+import jp.co.casl0.android.simpleappblocker.R
+
+class AppPackageListAdapter(context: Context?, var packageInfoList: List<PackageInfo>) :
+    RecyclerView.Adapter<AppPackageListAdapter.AppPackageListViewHolder>() {
+    inner class AppPackageListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val packageIconImageView: ImageView = itemView.findViewById(R.id.package_icon_imageview)
+        val appNameTextView: TextView = itemView.findViewById(R.id.app_name_textview)
+        val packageTextView: TextView = itemView.findViewById(R.id.package_textview)
+    }
+
+    private val inflater = LayoutInflater.from(context)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppPackageListViewHolder {
+        val itemView = inflater.inflate(R.layout.app_package_view, parent, false)
+        return AppPackageListViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: AppPackageListViewHolder, position: Int) {
+        holder.packageIconImageView.setImageDrawable(packageInfoList[position].icon)
+        holder.appNameTextView.text = packageInfoList[position].appName
+        holder.packageTextView.text = packageInfoList[position].packageName
+    }
+
+    override fun getItemCount(): Int {
+        return packageInfoList.size
+    }
+}
