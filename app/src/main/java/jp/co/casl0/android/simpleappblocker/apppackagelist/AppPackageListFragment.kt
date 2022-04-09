@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.dashboard
+package jp.co.casl0.android.simpleappblocker.apppackagelist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,14 +23,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import jp.co.casl0.android.simpleappblocker.databinding.FragmentDashboardBinding
+import jp.co.casl0.android.simpleappblocker.databinding.FragmentAppPackageListBinding
 
-class DashboardFragment : Fragment() {
+class AppPackageListFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentAppPackageListBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -38,16 +35,11 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        val appPackageListViewModel =
+            ViewModelProvider(this).get(AppPackageListViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentAppPackageListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

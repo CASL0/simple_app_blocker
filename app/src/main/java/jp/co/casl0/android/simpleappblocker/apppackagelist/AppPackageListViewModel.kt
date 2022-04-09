@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.dashboard
+package jp.co.casl0.android.simpleappblocker.apppackagelist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
-    }
-    val text: LiveData<String> = _text
+class AppPackageListViewModel : ViewModel() {
 }

@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_app_package_list"
+        android:icon="@drawable/ic_app_package_list_black_24dp"
+        android:title="@string/title_app_package_list" />
+    
+    <item
         android:id="@+id/navigation_blocklog"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_blocklog" />
-
-    <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
 
     <item
         android:id="@+id/navigation_notifications"

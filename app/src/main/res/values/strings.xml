@@ -6,4 +6,5 @@
     <string name="filters_disabled">フィルターが無効です!</string>
     <string name="filters_enabled">フィルターが有効です!</string>
     <string name="title_blocklog">ブロックログ</string>
+    <string name="title_app_package_list">アプリ一覧</string>
 </resources>
