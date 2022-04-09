@@ -21,10 +21,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.net.VpnService
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.InflateException
 import android.view.Menu
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProvider
@@ -95,9 +100,17 @@ class MainActivity : AppCompatActivity() {
             actionSwitch?.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     mainActivityViewModel.filtersEnabled = true
+                    setActionBarTextColor(
+                        supportActionBar,
+                        getColorInt(R.color.title_filters_enabled)
+                    )
                     appBlockerService.updateFilters(listOf())
                 } else {
                     mainActivityViewModel.filtersEnabled = false
+                    setActionBarTextColor(
+                        supportActionBar,
+                        getColorInt(R.color.title_filters_disabled)
+                    )
                     appBlockerService.disableFilters()
                 }
             }
@@ -126,5 +139,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+    }
+
+    private fun setActionBarTextColor(actionBar: ActionBar?, color: Int) {
+        val title = SpannableString(actionBar?.title ?: "")
+        title.setSpan(
+            ForegroundColorSpan(color),
+            0,
+            title.length,
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        actionBar?.title = title
+    }
+
+    private fun getColorInt(resourceId: Int): Int {
+        return if (Build.VERSION.SDK_INT >= 23) {
+            resources.getColor(resourceId, theme)
+        } else {
+            resources.getColor(resourceId)
+        }
     }
 }
