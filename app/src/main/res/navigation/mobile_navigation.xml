@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_blocklog">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="jp.co.casl0.android.simpleappblocker.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_blocklog"
+        android:name="jp.co.casl0.android.simpleappblocker.blocklog.BlockLogFragment"
+        android:label="@string/title_blocklog"
+        tools:layout="@layout/fragment_blocklog" />
 
     <fragment
         android:id="@+id/navigation_dashboard"

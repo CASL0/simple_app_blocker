@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.home
+package jp.co.casl0.android.simpleappblocker
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-
-class HomeViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
-}
+data class PacketInfo(
+    val srcAddress: String,
+    val srcPort: Int,
+    val dstAddress: String,
+    val dstPort: Int,
+    val blockTime: String
+)

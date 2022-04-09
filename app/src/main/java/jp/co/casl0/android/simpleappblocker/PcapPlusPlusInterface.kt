@@ -11,7 +11,7 @@ object PcapPlusPlusInterface {
      * @param length パケットのバイト長
      * @return 送信元IPアドレスの文字列
      */
-    external fun getSrcIpAddressNative(packet: ByteArray?, length: Int): String?
+    external fun getSrcIpAddressNative(packet: ByteArray?, length: Int): String
 
     /**
      * パケットの送信先IPアドレスを取得する関数
@@ -19,7 +19,7 @@ object PcapPlusPlusInterface {
      * @param length パケットのバイト長
      * @return 送信先IPアドレスの文字列
      */
-    external fun getDstIpAddressNative(packet: ByteArray?, length: Int): String?
+    external fun getDstIpAddressNative(packet: ByteArray?, length: Int): String
 
     /**
      * パケットの送信元ポートを取得する関数
@@ -43,5 +43,5 @@ object PcapPlusPlusInterface {
      * @param length パケットのバイト長
      * @return サーバー名の文字列
      */
-    external fun getServerNameNative(packet: ByteArray?, length: Int): String?
+    external fun getServerNameNative(packet: ByteArray?, length: Int): String
 }

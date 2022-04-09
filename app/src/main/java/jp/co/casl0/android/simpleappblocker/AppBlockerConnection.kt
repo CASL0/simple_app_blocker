@@ -19,10 +19,13 @@ package jp.co.casl0.android.simpleappblocker
 import android.os.ParcelFileDescriptor
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Runnable
+import org.greenrobot.eventbus.EventBus
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ReadOnlyBufferException
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : Runnable {
     companion object {
@@ -48,6 +51,17 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
                 if (errMsg != null) Logger.d(errMsg)
                 0
             }
+            if (length > 0) {
+                EventBus.getDefault().post(
+                    PacketInfo(
+                        PcapPlusPlusInterface.getSrcIpAddressNative(packet.array(), length),
+                        PcapPlusPlusInterface.getSrcPortNative(packet.array(), length),
+                        PcapPlusPlusInterface.getDstIpAddressNative(packet.array(), length),
+                        PcapPlusPlusInterface.getDstPortNative(packet.array(), length),
+                        Calendar.getInstance().toFormatString("yyyy-MM-dd HH:mm:ss")
+                    )
+                )
+            }
             packet.clear()
             try {
                 Thread.sleep(10)
@@ -57,5 +71,11 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
                 return
             }
         }
+    }
+}
+
+fun Calendar.toFormatString(format: String): String {
+    SimpleDateFormat(format).run {
+        return format(time)
     }
 }

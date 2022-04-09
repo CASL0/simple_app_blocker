@@ -58,4 +58,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
     implementation 'com.orhanobut:logger:2.2.0'
+    implementation 'org.greenrobot:eventbus:3.3.1'
 }
