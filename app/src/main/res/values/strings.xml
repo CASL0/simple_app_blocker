@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">SimpleAppBlocker</string>
-    <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="app_bar_switch_title">ENABLE FILTERS</string>
-    <string name="filters_disabled">Filters are disabled.</string>
-    <string name="filters_enabled">Filters are enabled.</string>
+    <string name="filters_disabled">フィルターが無効です!</string>
+    <string name="filters_enabled">フィルターが有効です!</string>
     <string name="title_blocklog">ブロックログ</string>
 </resources>
