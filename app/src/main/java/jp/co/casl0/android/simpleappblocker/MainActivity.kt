@@ -27,6 +27,7 @@ import android.view.InflateException
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var appBlockerService: AppBlockerService
 
     private val connection = object : ServiceConnection {
@@ -80,6 +82,8 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
         configureVpnService()
+        mainActivityViewModel =
+            ViewModelProvider(this).get(MainActivityViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -88,13 +92,16 @@ class MainActivity : AppCompatActivity() {
 
             // アクションバーのスイッチのイベントハンドラを設定
             val actionSwitch = menu?.findItem(R.id.app_bar_switch)?.actionView as? SwitchCompat
-            actionSwitch?.setOnCheckedChangeListener { buttonView, isChecked ->
+            actionSwitch?.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
+                    mainActivityViewModel.filtersEnabled = true
                     appBlockerService.updateFilters(listOf())
                 } else {
+                    mainActivityViewModel.filtersEnabled = false
                     appBlockerService.disableFilters()
                 }
             }
+            actionSwitch?.isChecked = mainActivityViewModel.filtersEnabled
         } catch (e: InflateException) {
             val errMsg = e.localizedMessage
             if (errMsg != null) Logger.d(errMsg)
@@ -115,5 +122,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
     }
 }
