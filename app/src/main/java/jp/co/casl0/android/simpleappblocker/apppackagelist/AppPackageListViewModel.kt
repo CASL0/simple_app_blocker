@@ -22,7 +22,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.orhanobut.logger.Logger
+import jp.co.casl0.android.simpleappblocker.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.PackageInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AppPackageListViewModel : ViewModel() {
@@ -35,8 +40,8 @@ class AppPackageListViewModel : ViewModel() {
     /**
      * インストール済みパッケージリスト
      */
-    private val _packageInfoList = MutableLiveData<MutableList<PackageInfo>>(null)
-    val packageInfoList: LiveData<MutableList<PackageInfo>>
+    private val _packageInfoList = MutableLiveData<MutableList<PackageInfo>?>(null)
+    val packageInfoList: LiveData<MutableList<PackageInfo>?>
         get() = _packageInfoList
 
     /**
@@ -44,39 +49,62 @@ class AppPackageListViewModel : ViewModel() {
      */
     fun loadInstalledPackages(context: Context?) {
         val tmp: MutableList<PackageInfo> = mutableListOf()
-        val pm = context?.packageManager
-        if (pm != null) {
-            pm.getInstalledApplications(0).forEach {
-                tmp.add(
-                    PackageInfo(
-                        it.loadIcon(pm),
-                        it.loadLabel(pm).toString(),
-                        it.packageName
+        context?.packageManager?.also { pm ->
+            viewModelScope.launch(Dispatchers.IO) {
+                val currentAllowed =
+                    AppBlockerApplication.appDatabase.allowlistDao().getAllowedPackages().first()
+                pm.getInstalledApplications(0).forEach { appInfo ->
+                    tmp.add(
+                        PackageInfo(
+                            appInfo.loadIcon(pm),
+                            appInfo.loadLabel(pm).toString(),
+                            appInfo.packageName,
+                            currentAllowed.contains(appInfo.packageName)
+                        )
                     )
-                )
+                }
+                _packageInfoList.postValue(tmp)
             }
-            _packageInfoList.postValue(tmp)
         }
     }
 
     /**
      * 許可アプリを変更する関数
+     * @param packageInfo フィルター規則を変更したいパッケージ名
      */
     fun changeFiltersRule(packageInfo: PackageInfo) {
         val currentList = allowlist.value
-        if (currentList != null && currentList.contains(packageInfo.packageName)) {
-            // 許可 → 拒否
-            viewModelScope.launch {
+        var isAllowed: Boolean
+        viewModelScope.launch {
+            isAllowed = if (currentList != null && currentList.contains(packageInfo.packageName)) {
+                // 許可 → 拒否
                 AllowlistRepository.disallowPackage(packageInfo.packageName)
-            }
-        } else {
-            // 拒否 → 許可
-            viewModelScope.launch {
+                false
+            } else {
+                // 拒否 → 許可
                 AllowlistRepository.insertAllowedPackage(
                     packageInfo.packageName,
                     packageInfo.appName
                 )
+                true
             }
+
+            // UI表示用にフラグ変更
+            notifyAllowed(packageInfo.packageName, isAllowed)
+        }
+    }
+
+    /**
+     * フィルター規則を変更したことをLiveDataに伝える関数
+     * @param packageName 規則を変更したパッケージ名
+     * @param isAllowed 変更後の規則
+     */
+    private fun notifyAllowed(packageName: String, isAllowed: Boolean) {
+        _packageInfoList.value?.also { tmp ->
+            tmp.forEach {
+                if (it.packageName == packageName) it.isAllowed = isAllowed
+            }
+            _packageInfoList.postValue(tmp)
         }
     }
 }

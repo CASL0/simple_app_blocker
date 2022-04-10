@@ -17,6 +17,7 @@
 package jp.co.casl0.android.simpleappblocker.apppackagelist
 
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import jp.co.casl0.android.simpleappblocker.PackageInfo
 import jp.co.casl0.android.simpleappblocker.R
 
-class AppPackageListAdapter(context: Context?, var packageInfoList: List<PackageInfo>) :
+class AppPackageListAdapter(private val context: Context?, var packageInfoList: List<PackageInfo>) :
     RecyclerView.Adapter<AppPackageListAdapter.AppPackageListViewHolder>() {
     inner class AppPackageListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val packageIconImageView: ImageView = itemView.findViewById(R.id.package_icon_imageview)
@@ -48,7 +49,14 @@ class AppPackageListAdapter(context: Context?, var packageInfoList: List<Package
 
     override fun onBindViewHolder(holder: AppPackageListViewHolder, position: Int) {
         holder.packageIconImageView.setImageDrawable(packageInfoList[position].icon)
-        holder.appNameTextView.text = packageInfoList[position].appName
+        holder.appNameTextView.apply {
+            text = packageInfoList[position].appName
+            if (packageInfoList[position].isAllowed) {
+                getColorInt(R.color.filters_enabled)?.also { color ->
+                    setTextColor(color)
+                }
+            }
+        }
         holder.packageTextView.text = packageInfoList[position].packageName
         holder.itemView.setOnClickListener {
             itemClickListener.onItemClicked(it, position, packageInfoList[position])
@@ -61,5 +69,13 @@ class AppPackageListAdapter(context: Context?, var packageInfoList: List<Package
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         itemClickListener = listener
+    }
+
+    private fun getColorInt(resourceId: Int): Int? {
+        return if (Build.VERSION.SDK_INT >= 23) {
+            context?.resources?.getColor(resourceId, context.theme)
+        } else {
+            context?.resources?.getColor(resourceId)
+        }
     }
 }

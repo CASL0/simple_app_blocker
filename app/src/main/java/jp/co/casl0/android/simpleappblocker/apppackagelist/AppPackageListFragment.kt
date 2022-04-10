@@ -57,13 +57,18 @@ class AppPackageListFragment : Fragment() {
         appPackageListViewModel.packageInfoList.observe(viewLifecycleOwner) {
             if (it != null) {
                 adapter.packageInfoList = it
-                recyclerView.adapter?.notifyDataSetChanged()
+                recyclerView.adapter?.notifyItemRangeChanged(0, adapter.packageInfoList.size)
             }
         }
         appPackageListViewModel.loadInstalledPackages(context)
 
         appPackageListViewModel.allowlist.observe(viewLifecycleOwner) { newAllowlist ->
-            (activity as? MainActivity)?.appBlockerService?.updateFilters(newAllowlist)
+            (activity as? MainActivity)?.appBlockerService?.run {
+                if (enabled) {
+                    // 既に適用中のみフィルターを更新する
+                    updateFilters(newAllowlist)
+                }
+            }
         }
         return root
     }

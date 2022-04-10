@@ -33,6 +33,8 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,6 +42,9 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -91,6 +96,11 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this).get(MainActivityViewModel::class.java)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        appBlockerService?.disableFilters()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         try {
             menuInflater.inflate(R.menu.options, menu)
@@ -102,14 +112,19 @@ class MainActivity : AppCompatActivity() {
                     mainActivityViewModel.filtersEnabled = true
                     setActionBarTextColor(
                         supportActionBar,
-                        getColorInt(R.color.title_filters_enabled)
+                        getColorInt(R.color.filters_enabled)
                     )
-                    appBlockerService?.updateFilters(listOf())
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        appBlockerService?.updateFilters(
+                            AppBlockerApplication.appDatabase.allowlistDao()
+                                .getAllowedPackages().first()
+                        )
+                    }
                 } else {
                     mainActivityViewModel.filtersEnabled = false
                     setActionBarTextColor(
                         supportActionBar,
-                        getColorInt(R.color.title_filters_disabled)
+                        getColorInt(R.color.filters_disabled)
                     )
                     appBlockerService?.disableFilters()
                 }

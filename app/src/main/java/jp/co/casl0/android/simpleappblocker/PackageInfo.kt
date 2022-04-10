@@ -22,5 +22,5 @@ data class PackageInfo(
     val icon: Drawable,
     val appName: String,
     val packageName: String,
-    val isAllowed: Boolean = false
+    var isAllowed: Boolean = false
 )
