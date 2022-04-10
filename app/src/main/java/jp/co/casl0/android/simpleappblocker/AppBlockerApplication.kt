@@ -17,18 +17,17 @@
 package jp.co.casl0.android.simpleappblocker
 
 import android.app.Application
-import androidx.room.Room
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDatabase
+import jp.co.casl0.android.simpleappblocker.apppackagelist.AllowlistRepository
 
 class AppBlockerApplication : Application() {
-    companion object {
-        lateinit var appDatabase: AllowlistDatabase
-    }
+    /**
+     * 許可アプリ操作用のデータベースインスタンス
+     */
+    val database by lazy { AllowlistDatabase.getDatabase(this) }
 
-    override fun onCreate() {
-        super.onCreate()
-        appDatabase =
-            Room.databaseBuilder(applicationContext, AllowlistDatabase::class.java, "app_database")
-                .build()
-    }
+    /**
+     * 許可アプリリポジトリ
+     */
+    val repository by lazy { AllowlistRepository(database.allowlistDao()) }
 }

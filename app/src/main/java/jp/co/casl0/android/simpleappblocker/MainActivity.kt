@@ -33,7 +33,6 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -115,10 +114,11 @@ class MainActivity : AppCompatActivity() {
                         getColorInt(R.color.filters_enabled)
                     )
                     lifecycleScope.launch(Dispatchers.IO) {
-                        appBlockerService?.updateFilters(
-                            AppBlockerApplication.appDatabase.allowlistDao()
-                                .getAllowedPackages().first()
-                        )
+                        (application as? AppBlockerApplication)?.repository?.allowlist?.let {
+                            appBlockerService?.updateFilters(
+                                it.first()
+                            )
+                        }
                     }
                 } else {
                     mainActivityViewModel.filtersEnabled = false

@@ -17,25 +17,23 @@
 package jp.co.casl0.android.simpleappblocker.apppackagelist
 
 import android.content.Context
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.PackageInfo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class AppPackageListViewModel : ViewModel() {
+class AppPackageListViewModel(private val allowlistRepository: AllowlistRepository) : ViewModel() {
 
     /**
      * 許可済みパッケージリスト
      */
-    val allowlist: LiveData<List<String>> = AllowlistRepository.allowlist.asLiveData()
+    val allowlist: LiveData<List<String>> = allowlistRepository.allowlist.asLiveData()
 
     /**
      * インストール済みパッケージリスト
@@ -51,8 +49,7 @@ class AppPackageListViewModel : ViewModel() {
         val tmp: MutableList<PackageInfo> = mutableListOf()
         context?.packageManager?.also { pm ->
             viewModelScope.launch(Dispatchers.IO) {
-                val currentAllowed =
-                    AppBlockerApplication.appDatabase.allowlistDao().getAllowedPackages().first()
+                val currentAllowed = allowlistRepository.allowlist.first()
                 pm.getInstalledApplications(0).forEach { appInfo ->
                     tmp.add(
                         PackageInfo(
@@ -78,11 +75,11 @@ class AppPackageListViewModel : ViewModel() {
         viewModelScope.launch {
             isAllowed = if (currentList != null && currentList.contains(packageInfo.packageName)) {
                 // 許可 → 拒否
-                AllowlistRepository.disallowPackage(packageInfo.packageName)
+                allowlistRepository.disallowPackage(packageInfo.packageName)
                 false
             } else {
                 // 拒否 → 許可
-                AllowlistRepository.insertAllowedPackage(
+                allowlistRepository.insertAllowedPackage(
                     packageInfo.packageName,
                     packageInfo.appName
                 )
@@ -106,5 +103,16 @@ class AppPackageListViewModel : ViewModel() {
             }
             _packageInfoList.postValue(tmp)
         }
+    }
+}
+
+class AppPackageListViewModelFactory(private val repository: AllowlistRepository) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(AppPackageListViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return AppPackageListViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

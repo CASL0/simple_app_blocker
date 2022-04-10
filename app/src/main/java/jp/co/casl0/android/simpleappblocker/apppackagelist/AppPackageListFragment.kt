@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import jp.co.casl0.android.simpleappblocker.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.MainActivity
 import jp.co.casl0.android.simpleappblocker.PackageInfo
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAppPackageListBinding
@@ -38,7 +39,10 @@ class AppPackageListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val appPackageListViewModel =
-            ViewModelProvider(this).get(AppPackageListViewModel::class.java)
+            ViewModelProvider(
+                this,
+                AppPackageListViewModelFactory((context?.applicationContext as AppBlockerApplication).repository)
+            ).get(AppPackageListViewModel::class.java)
 
         _binding = FragmentAppPackageListBinding.inflate(inflater, container, false)
         val root: View = binding.root
