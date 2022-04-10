@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker
+package jp.co.casl0.android.simpleappblocker.appdatabase
 
-import android.graphics.drawable.Drawable
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
-data class PackageInfo(
-    val icon: Drawable,
-    val appName: String,
-    val packageName: String,
-    val isAllowed: Boolean = false
-)
+@Database(entities = [AllowedPackage::class], version = 1, exportSchema = false)
+abstract class AllowlistDatabase : RoomDatabase() {
+    abstract fun allowlistDao(): AllowlistDAO
+}

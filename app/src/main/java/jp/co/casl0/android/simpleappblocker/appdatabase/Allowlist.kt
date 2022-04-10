@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker
+package jp.co.casl0.android.simpleappblocker.appdatabase
 
-import android.graphics.drawable.Drawable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class PackageInfo(
-    val icon: Drawable,
-    val appName: String,
-    val packageName: String,
-    val isAllowed: Boolean = false
+@Entity(tableName = "allowlist")
+data class AllowedPackage(
+    @PrimaryKey @ColumnInfo(name = "package_name") val packageName: String,
+    @ColumnInfo(name = "app_name") val appName: String,
+    @ColumnInfo(name = "added_date") val addedTime: String
 )

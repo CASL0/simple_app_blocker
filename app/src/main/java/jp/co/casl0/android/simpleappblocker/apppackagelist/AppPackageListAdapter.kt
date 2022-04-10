@@ -34,7 +34,12 @@ class AppPackageListAdapter(context: Context?, var packageInfoList: List<Package
         val packageTextView: TextView = itemView.findViewById(R.id.package_textview)
     }
 
+    interface OnItemClickListener {
+        fun onItemClicked(view: View, position: Int, packageInfo: PackageInfo)
+    }
+
     private val inflater = LayoutInflater.from(context)
+    private lateinit var itemClickListener: OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppPackageListViewHolder {
         val itemView = inflater.inflate(R.layout.app_package_view, parent, false)
@@ -45,9 +50,16 @@ class AppPackageListAdapter(context: Context?, var packageInfoList: List<Package
         holder.packageIconImageView.setImageDrawable(packageInfoList[position].icon)
         holder.appNameTextView.text = packageInfoList[position].appName
         holder.packageTextView.text = packageInfoList[position].packageName
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClicked(it, position, packageInfoList[position])
+        }
     }
 
     override fun getItemCount(): Int {
         return packageInfoList.size
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        itemClickListener = listener
     }
 }

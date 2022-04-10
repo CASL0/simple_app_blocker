@@ -17,16 +17,31 @@
 package jp.co.casl0.android.simpleappblocker.apppackagelist
 
 import android.content.Context
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import jp.co.casl0.android.simpleappblocker.PackageInfo
+import kotlinx.coroutines.launch
 
 class AppPackageListViewModel : ViewModel() {
+
+    /**
+     * 許可済みパッケージリスト
+     */
+    val allowlist: LiveData<List<String>> = AllowlistRepository.allowlist.asLiveData()
+
+    /**
+     * インストール済みパッケージリスト
+     */
     private val _packageInfoList = MutableLiveData<MutableList<PackageInfo>>(null)
     val packageInfoList: LiveData<MutableList<PackageInfo>>
         get() = _packageInfoList
 
+    /**
+     * インストール済みパッケージを読み込む関数
+     */
     fun loadInstalledPackages(context: Context?) {
         val tmp: MutableList<PackageInfo> = mutableListOf()
         val pm = context?.packageManager
@@ -44,4 +59,24 @@ class AppPackageListViewModel : ViewModel() {
         }
     }
 
+    /**
+     * 許可アプリを変更する関数
+     */
+    fun changeFiltersRule(packageInfo: PackageInfo) {
+        val currentList = allowlist.value
+        if (currentList != null && currentList.contains(packageInfo.packageName)) {
+            // 許可 → 拒否
+            viewModelScope.launch {
+                AllowlistRepository.disallowPackage(packageInfo.packageName)
+            }
+        } else {
+            // 拒否 → 許可
+            viewModelScope.launch {
+                AllowlistRepository.insertAllowedPackage(
+                    packageInfo.packageName,
+                    packageInfo.appName
+                )
+            }
+        }
+    }
 }

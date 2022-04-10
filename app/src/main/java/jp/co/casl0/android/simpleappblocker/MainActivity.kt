@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainActivityViewModel: MainActivityViewModel
-    private lateinit var appBlockerService: AppBlockerService
+    var appBlockerService: AppBlockerService? = null
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -104,14 +104,14 @@ class MainActivity : AppCompatActivity() {
                         supportActionBar,
                         getColorInt(R.color.title_filters_enabled)
                     )
-                    appBlockerService.updateFilters(listOf())
+                    appBlockerService?.updateFilters(listOf())
                 } else {
                     mainActivityViewModel.filtersEnabled = false
                     setActionBarTextColor(
                         supportActionBar,
                         getColorInt(R.color.title_filters_disabled)
                     )
-                    appBlockerService.disableFilters()
+                    appBlockerService?.disableFilters()
                 }
             }
             actionSwitch?.isChecked = mainActivityViewModel.filtersEnabled

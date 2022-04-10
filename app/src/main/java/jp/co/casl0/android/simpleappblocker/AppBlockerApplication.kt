@@ -16,11 +16,19 @@
 
 package jp.co.casl0.android.simpleappblocker
 
-import android.graphics.drawable.Drawable
+import android.app.Application
+import androidx.room.Room
+import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDatabase
 
-data class PackageInfo(
-    val icon: Drawable,
-    val appName: String,
-    val packageName: String,
-    val isAllowed: Boolean = false
-)
+class AppBlockerApplication : Application() {
+    companion object {
+        lateinit var appDatabase: AllowlistDatabase
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        appDatabase =
+            Room.databaseBuilder(applicationContext, AllowlistDatabase::class.java, "app_database")
+                .build()
+    }
+}
