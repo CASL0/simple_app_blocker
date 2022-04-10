@@ -22,12 +22,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import jp.co.casl0.android.simpleappblocker.PacketInfo
 import jp.co.casl0.android.simpleappblocker.R
 
-class BlockLogListAdapter(context: Context?, var blockLogList: List<Pair<String, String>>) :
+class BlockLogListAdapter(context: Context?, var blockLogList: List<PacketInfo>) :
     RecyclerView.Adapter<BlockLogListAdapter.BlockLogListViewHolder>() {
     inner class BlockLogListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val blockAddressesTextView: TextView = itemView.findViewById(R.id.block_packet_addresses)
+        val srcAddressTextView: TextView = itemView.findViewById(R.id.src_address_textView)
+        val dstAddressTextView: TextView = itemView.findViewById(R.id.dst_address_textView)
         val blockTimeTextView: TextView = itemView.findViewById(R.id.block_time)
     }
 
@@ -43,7 +45,8 @@ class BlockLogListAdapter(context: Context?, var blockLogList: List<Pair<String,
     }
 
     override fun onBindViewHolder(holder: BlockLogListViewHolder, position: Int) {
-        holder.blockAddressesTextView.text = blockLogList[position].first
-        holder.blockTimeTextView.text = blockLogList[position].second
+        holder.srcAddressTextView.text = blockLogList[position].getSrcAddressAndPort()
+        holder.dstAddressTextView.text = blockLogList[position].getDstAddressAndPort()
+        holder.blockTimeTextView.text = blockLogList[position].blockTime
     }
 }

@@ -33,10 +33,10 @@ class BlockLogViewModel : ViewModel() {
         private const val MAX_NUM_PACKET_LOG = 50
     }
 
-    private val _blockPacketInfoList = MutableLiveData<MutableList<Pair<String, String>>?>(
+    private val _blockPacketInfoList = MutableLiveData<MutableList<PacketInfo>?>(
         mutableListOf()
     )
-    val blockPacketInfoList: LiveData<MutableList<Pair<String, String>>?>
+    val blockPacketInfoList: LiveData<MutableList<PacketInfo>?>
         get() = _blockPacketInfoList
 
     /**
@@ -48,10 +48,7 @@ class BlockLogViewModel : ViewModel() {
         if (tmp != null && tmp.size >= MAX_NUM_PACKET_LOG) {
             tmp.removeLast()
         }
-        tmp?.add(0, Pair(transformAddressesString(packetInfo), packetInfo.blockTime))
+        tmp?.add(0, packetInfo)
         if (tmp != null) _blockPacketInfoList.postValue(tmp)
     }
-
-    private fun transformAddressesString(packetInfo: PacketInfo): String =
-        "${packetInfo.srcAddress}(${packetInfo.srcPort}) → ${packetInfo.dstAddress}(${packetInfo.dstPort})"
 }
