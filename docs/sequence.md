@@ -6,18 +6,23 @@ Simple App Blocker のシーケンス図です。
 @startuml
 autoactivate on
 actor ユーザー as user
-participant ApplistFragment
-participant ApplistViewModel
+participant AppPackageListFragment
+participant AppPackageListViewModel
+participant AllowlistRepository
 participant AppBlockerService
-participant AppBlockerTask
 participant AllowlistDAO
-user -> ApplistFragment : 許可アプリ更新
-ApplistFragment -> ApplistViewModel : updateAllowlist()
-ApplistViewModel -> AppBlockerService : connectTun()
-note right : 仮想インターフェースを更新
-AppBlockerService --> AppBlockerTask : run()
-ApplistViewModel --> AllowlistDAO : insertPackages()
-note right : AppDatabaseに許可アプリ一覧を保存
+database Room
+user -> AppPackageListFragment : 許可アプリ更新
+AppPackageListFragment -> AppPackageListViewModel : changeFiltersRule()
+AppPackageListViewModel --> AllowlistRepository : insertAllowedPackage()
+note right : Dispatchers.IOで実行
+AllowlistRepository --> AllowlistDAO : insertAllowedPackages()
+AllowlistDAO --> Room : 許可アプリをInsert
+== Roomの更新 ==
+AppPackageListViewModel <-- Room : Flowに更新値をemit
+AppPackageListFragment <-- AppPackageListViewModel : LiveData.onChanged
+AppPackageListFragment -> AppBlockerService : updateFilters()
+return
 @enduml
 ```
 
@@ -25,18 +30,24 @@ note right : AppDatabaseに許可アプリ一覧を保存
 ```plantuml
 @startuml
 autoactivate on
+actor ユーザー as user
 participant AppBlockerService
-participant BlocklistViewModel
-participant BlocklistFragment
+participant AppBlockerConnection
+participant BlockLogViewModel
+participant BlockLogFragment
 participant EventBus
-AppBlockerService -> AppBlockerService : analyzePacket()
+user -> AppBlockerService : フィルター適用
+AppBlockerService --> AppBlockerConnection : run()
+== アプリの通信をブロック ==
+AppBlockerConnection -> AppBlockerConnection : パケットの解析
 return
-AppBlockerService --> EventBus : ブロックしたパケット情報をpost
-== EventBusから通知受信 ==
-EventBus --> BlocklistViewModel : onPacketBlocked()
-BlocklistViewModel -> BlocklistViewModel : blocklist.postValue()
+AppBlockerConnection --> EventBus : ブロックしたパケット情報をpost
+== EventBusのブロードキャスト ==
+EventBus --> BlockLogViewModel : EventBusから通知
+BlockLogViewModel -> BlockLogViewModel : onPacketBlocked()
+BlockLogViewModel -> BlockLogViewModel : blockPacketInfoList.postValue()
 return
-BlocklistViewModel --> BlocklistFragment : LiveData.onChanged()
+BlockLogViewModel --> BlockLogFragment : LiveData.onChanged()
 note right : ブロックしたアプリ一覧更新
 @enduml
 ```
