@@ -20,13 +20,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.lifecycleScope
 import jp.co.casl0.android.simpleappblocker.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.MainActivity
-import jp.co.casl0.android.simpleappblocker.PackageInfo
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAppPackageListBinding
+import jp.co.casl0.android.simpleappblocker.ui.organisms.AppPackageList
+import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
+import kotlinx.coroutines.launch
 
 class AppPackageListFragment : Fragment() {
 
@@ -47,24 +50,21 @@ class AppPackageListFragment : Fragment() {
         _binding = FragmentAppPackageListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // パッケージリストの設定
-        val recyclerView = binding.appPackageRecyclerview
-        val adapter = AppPackageListAdapter(context, listOf()).apply {
-            setOnItemClickListener(object : AppPackageListAdapter.OnItemClickListener {
-                override fun onItemClicked(view: View, position: Int, packageInfo: PackageInfo) {
-                    appPackageListViewModel.changeFiltersRule(packageInfo)
-                }
-            })
+        lifecycleScope.launch {
+            appPackageListViewModel.loadInstalledPackages(context)
         }
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        appPackageListViewModel.packageInfoList.observe(viewLifecycleOwner) {
-            if (it != null) {
-                adapter.packageInfoList = it
-                recyclerView.adapter?.notifyItemRangeChanged(0, adapter.packageInfoList.size)
+
+        binding.appPackageRecyclerview.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                ApplicationTheme {
+                    AppPackageList(
+                        appPackageListViewModel.packageInfoList,
+                        appPackageListViewModel.onCardClicked
+                    )
+                }
             }
         }
-        appPackageListViewModel.loadInstalledPackages(context)
 
         appPackageListViewModel.allowlist.observe(viewLifecycleOwner) { newAllowlist ->
             (activity as? MainActivity)?.appBlockerService?.run {

@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         appBlockerService?.disableFilters()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         try {
             menuInflater.inflate(R.menu.options, menu)
 

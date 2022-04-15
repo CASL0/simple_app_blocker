@@ -17,18 +17,24 @@
 package jp.co.casl0.android.simpleappblocker.ui.atoms
 
 import android.content.res.Configuration
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.tooling.preview.Preview
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
 fun SubText(text: String) {
-    Text(
-        text = text,
-        color = MaterialTheme.colors.primaryVariant,
-    )
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+        Text(
+            text = text,
+            color = MaterialTheme.colors.primaryVariant,
+        )
+
+    }
 }
 
 @Preview(name = "Light Mode")

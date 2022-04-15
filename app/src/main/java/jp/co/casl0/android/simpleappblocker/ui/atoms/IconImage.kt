@@ -18,13 +18,14 @@ package jp.co.casl0.android.simpleappblocker.ui.atoms
 
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.DrawablePainter
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
@@ -33,7 +34,7 @@ fun IconImage(icon: Drawable, description: String? = null) {
     Image(
         painter = DrawablePainter(icon),
         contentDescription = description,
-        modifier = Modifier.clip(CircleShape).fillMaxHeight()
+        modifier = Modifier.clip(CircleShape).size(50.dp)
     )
 }
 

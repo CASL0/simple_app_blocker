@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,17 +34,21 @@ import jp.co.casl0.android.simpleappblocker.ui.atoms.SubText
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
-fun AppPackageCard(icon: Drawable, appName: String, packageName: String) {
+fun AppPackageCard(
+    icon: Drawable,
+    appName: String,
+    packageName: String,
+    modifier: Modifier = Modifier,
+) {
     Surface(
-        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp).height(IntrinsicSize.Max)
+        modifier = modifier.height(IntrinsicSize.Max).fillMaxWidth()
     ) {
         Row(
-            modifier = Modifier.background(MaterialTheme.colors.background)
-                .fillMaxWidth().padding(8.dp)
+            modifier = modifier.background(MaterialTheme.colors.background)
+                .padding(8.dp)
         ) {
             IconImage(icon)
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
+            Column(modifier = modifier.padding(start = 8.dp).align(Alignment.CenterVertically)) {
                 HeaderText(appName)
                 SubText(packageName)
             }

@@ -19,14 +19,14 @@ package jp.co.casl0.android.simpleappblocker.apppackagelist
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.PackageInfo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AppPackageListViewModel(private val allowlistRepository: AllowlistRepository) : ViewModel() {
 
@@ -38,70 +38,52 @@ class AppPackageListViewModel(private val allowlistRepository: AllowlistReposito
     /**
      * インストール済みパッケージリスト
      */
-    private val _packageInfoList = MutableLiveData<MutableList<PackageInfo>?>(null)
-    val packageInfoList: LiveData<MutableList<PackageInfo>?>
+    private val _packageInfoList: MutableList<PackageInfo> = mutableListOf()
+    val packageInfoList: MutableList<PackageInfo>
         get() = _packageInfoList
 
     /**
      * インストール済みパッケージを読み込む関数
      */
-    fun loadInstalledPackages(context: Context?) {
-        val tmp: MutableList<PackageInfo> = mutableListOf()
+    suspend fun loadInstalledPackages(context: Context?) = withContext(Dispatchers.IO) {
         context?.packageManager?.also { pm ->
-            viewModelScope.launch(Dispatchers.IO) {
-                val currentAllowed = allowlistRepository.allowlist.first()
-                pm.getInstalledApplications(0).forEach { appInfo ->
-                    tmp.add(
-                        PackageInfo(
-                            appInfo.loadIcon(pm),
-                            appInfo.loadLabel(pm).toString(),
-                            appInfo.packageName,
-                            currentAllowed.contains(appInfo.packageName)
-                        )
+            pm.getInstalledApplications(0).forEach { appInfo ->
+                _packageInfoList.add(
+                    PackageInfo(
+                        appInfo.loadIcon(pm),
+                        appInfo.loadLabel(pm).toString(),
+                        appInfo.packageName,
                     )
-                }
-                _packageInfoList.postValue(tmp)
+                )
             }
         }
+    }
+
+    /**
+     * リストのアイテムクリック時のイベントハンドラ
+     */
+    val onCardClicked: (PackageInfo) -> Unit = { packageInfo ->
+        Logger.d("onCardClicked: ${packageInfo.appName} (${packageInfo.packageName})")
+        changeFiltersRule(packageInfo)
     }
 
     /**
      * 許可アプリを変更する関数
      * @param packageInfo フィルター規則を変更したいパッケージ名
      */
-    fun changeFiltersRule(packageInfo: PackageInfo) {
+    private fun changeFiltersRule(packageInfo: PackageInfo) {
         val currentList = allowlist.value
-        var isAllowed: Boolean
         viewModelScope.launch {
-            isAllowed = if (currentList != null && currentList.contains(packageInfo.packageName)) {
+            if (currentList != null && currentList.contains(packageInfo.packageName)) {
                 // 許可 → 拒否
                 allowlistRepository.disallowPackage(packageInfo.packageName)
-                false
             } else {
                 // 拒否 → 許可
                 allowlistRepository.insertAllowedPackage(
                     packageInfo.packageName,
                     packageInfo.appName
                 )
-                true
             }
-
-            // UI表示用にフラグ変更
-            notifyAllowed(packageInfo.packageName, isAllowed)
-        }
-    }
-
-    /**
-     * フィルター規則を変更したことをLiveDataに伝える関数
-     * @param packageName 規則を変更したパッケージ名
-     * @param isAllowed 変更後の規則
-     */
-    private fun notifyAllowed(packageName: String, isAllowed: Boolean) {
-        _packageInfoList.value?.also { tmp ->
-            tmp.forEach {
-                if (it.packageName == packageName) it.isAllowed = isAllowed
-            }
-            _packageInfoList.postValue(tmp)
         }
     }
 }

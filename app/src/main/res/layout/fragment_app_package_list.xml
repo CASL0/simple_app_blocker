@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".apppackagelist.AppPackageListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.compose.ui.platform.ComposeView
         android:id="@+id/app_package_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
