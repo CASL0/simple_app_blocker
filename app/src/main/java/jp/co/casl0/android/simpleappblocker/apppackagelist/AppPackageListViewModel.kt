@@ -39,7 +39,7 @@ class AppPackageListViewModel(private val allowlistRepository: AllowlistReposito
      * インストール済みパッケージリスト
      */
     private val _packageInfoList: MutableList<PackageInfo> = mutableListOf()
-    val packageInfoList: MutableList<PackageInfo>
+    val packageInfoList: List<PackageInfo>
         get() = _packageInfoList
 
     /**
