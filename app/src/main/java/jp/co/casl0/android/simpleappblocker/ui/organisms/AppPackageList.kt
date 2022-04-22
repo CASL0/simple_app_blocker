@@ -36,7 +36,8 @@ fun AppPackageList(packageList: List<PackageInfo>, onCardClicked: ((PackageInfo)
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
-            items(items = packageList) { packageInfo ->
+            items(items = packageList,
+                key = { packageInfo -> packageInfo.packageName }) { packageInfo ->
                 AppPackageCard(
                     icon = packageInfo.icon,
                     appName = packageInfo.appName,

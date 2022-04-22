@@ -51,7 +51,7 @@ class AppPackageListFragment : Fragment() {
         val root: View = binding.root
 
         lifecycleScope.launch {
-            appPackageListViewModel.loadInstalledPackages(context)
+            appPackageListViewModel.loadInstalledPackagesConnectingToNetwork(context)
         }
 
         binding.appPackageRecyclerview.apply {

@@ -17,6 +17,7 @@
 package jp.co.casl0.android.simpleappblocker.apppackagelist
 
 import android.content.Context
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.PackageInfo
+import jp.co.casl0.android.simpleappblocker.utilities.NetworkConnectivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -38,26 +40,35 @@ class AppPackageListViewModel(private val allowlistRepository: AllowlistReposito
     /**
      * インストール済みパッケージリスト
      */
-    private val _packageInfoList: MutableList<PackageInfo> = mutableListOf()
+    private val _packageInfoList = mutableStateListOf<PackageInfo>()
     val packageInfoList: List<PackageInfo>
         get() = _packageInfoList
 
     /**
-     * インストール済みパッケージを読み込む関数
+     * Manifest.permission.INTERNETが付与されているインストール済みパッケージを読み込む関数
      */
-    suspend fun loadInstalledPackages(context: Context?) = withContext(Dispatchers.IO) {
-        context?.packageManager?.also { pm ->
-            pm.getInstalledApplications(0).forEach { appInfo ->
-                _packageInfoList.add(
-                    PackageInfo(
-                        appInfo.loadIcon(pm),
-                        appInfo.loadLabel(pm).toString(),
-                        appInfo.packageName,
-                    )
-                )
+    suspend fun loadInstalledPackagesConnectingToNetwork(context: Context?) =
+        withContext(Dispatchers.Main) {
+            context?.packageManager?.also { pm ->
+                pm.getInstalledApplications(0).forEach { appInfo ->
+                    // Manifest.permission.INTERNETが付与されていないアプリは表示しない
+                    val installed = packageInfoList.find { it.packageName == appInfo.packageName }
+                    if (installed == null && NetworkConnectivity.hasInternetPermission(
+                            context,
+                            appInfo.packageName
+                        )
+                    ) {
+                        _packageInfoList.add(
+                            PackageInfo(
+                                appInfo.loadIcon(pm),
+                                appInfo.loadLabel(pm).toString(),
+                                appInfo.packageName,
+                            )
+                        )
+                    }
+                }
             }
         }
-    }
 
     /**
      * リストのアイテムクリック時のイベントハンドラ
