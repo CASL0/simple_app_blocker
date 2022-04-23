@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
@@ -39,7 +40,7 @@ fun BlockLogItem(src: String, dst: String, time: String, modifier: Modifier = Mo
     ) {
         Column(
             modifier = modifier.background(MaterialTheme.colors.background)
-                .padding(16.dp).width(IntrinsicSize.Max)
+                .padding(8.dp).width(IntrinsicSize.Max)
         ) {
             Row(
                 modifier = modifier.fillMaxWidth(),
@@ -47,14 +48,13 @@ fun BlockLogItem(src: String, dst: String, time: String, modifier: Modifier = Mo
             ) { // ブロック時刻
                 Text(text = time, color = MaterialTheme.colors.secondaryVariant)
             }
-            Spacer(modifier = modifier.height(4.dp))
             Row { // 送信元IPアドレス
                 Text(
                     text = stringResource(R.string.block_log_src),
                     color = MaterialTheme.colors.primary
                 )
                 Spacer(modifier = modifier.width(8.dp))
-                Text(text = src, color = MaterialTheme.colors.primary)
+                Text(text = src, color = MaterialTheme.colors.primary, fontWeight = FontWeight.Bold)
             }
             Spacer(modifier = modifier.height(4.dp))
             Row { // 宛先IPアドレス
@@ -63,7 +63,7 @@ fun BlockLogItem(src: String, dst: String, time: String, modifier: Modifier = Mo
                     color = MaterialTheme.colors.primary
                 )
                 Spacer(modifier = modifier.width(8.dp))
-                Text(text = dst, color = MaterialTheme.colors.primary)
+                Text(text = dst, color = MaterialTheme.colors.primary, fontWeight = FontWeight.Bold)
             }
         }
     }

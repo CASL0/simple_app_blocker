@@ -20,7 +20,6 @@ import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -35,7 +34,7 @@ import jp.co.casl0.android.simpleappblocker.ui.atoms.SubText
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
-fun AppPackageCard(
+fun AppPackageItem(
     icon: Drawable,
     appName: String,
     packageName: String,
@@ -61,10 +60,10 @@ fun AppPackageCard(
 @Preview(name = "Light Mode")
 @Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun PreviewAppPackageCard() {
+fun PreviewAppPackageItem() {
     ApplicationTheme {
         val packageName = LocalContext.current.packageName
         val icon = LocalContext.current.packageManager.getApplicationIcon(packageName)
-        AppPackageCard(icon, "SimpleAppBlocker", packageName)
+        AppPackageItem(icon, "SimpleAppBlocker", packageName)
     }
 }

@@ -27,7 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.PackageInfo
-import jp.co.casl0.android.simpleappblocker.ui.molecules.AppPackageCard
+import jp.co.casl0.android.simpleappblocker.ui.molecules.AppPackageItem
 
 @Composable
 fun AppPackageList(packageList: List<PackageInfo>, onCardClicked: ((PackageInfo) -> Unit)) {
@@ -38,7 +38,7 @@ fun AppPackageList(packageList: List<PackageInfo>, onCardClicked: ((PackageInfo)
         ) {
             items(items = packageList,
                 key = { packageInfo -> packageInfo.packageName }) { packageInfo ->
-                AppPackageCard(
+                AppPackageItem(
                     icon = packageInfo.icon,
                     appName = packageInfo.appName,
                     packageName = packageInfo.packageName,
