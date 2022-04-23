@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".blocklog.BlockLogFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.compose.ui.platform.ComposeView
         android:id="@+id/blockLogRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

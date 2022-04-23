@@ -9,4 +9,6 @@
     <string name="title_app_package_list">アプリ一覧</string>
     <string name="blocklog_label_src_address">送信元</string>
     <string name="blocklog_label_dst_address">宛先</string>
+    <string name="block_log_src">src</string>
+    <string name="block_log_dst">dst</string>
 </resources>

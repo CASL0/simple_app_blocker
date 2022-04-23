@@ -20,10 +20,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentBlocklogBinding
+import jp.co.casl0.android.simpleappblocker.ui.organisms.AppPackageList
+import jp.co.casl0.android.simpleappblocker.ui.organisms.BlockLogList
+import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 class BlockLogFragment : Fragment() {
 
@@ -40,14 +44,13 @@ class BlockLogFragment : Fragment() {
 
         _binding = FragmentBlocklogBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val recyclerView = binding.blockLogRecyclerView
-        val adapter = BlockLogListAdapter(context, listOf())
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        blockLogViewModel.blockPacketInfoList.observe(viewLifecycleOwner) {
-            if (it != null) {
-                adapter.blockLogList = it
-                recyclerView.adapter?.notifyDataSetChanged()
+
+        binding.blockLogRecyclerView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                ApplicationTheme {
+                    BlockLogList(blockLogViewModel.blockPacketInfoList)
+                }
             }
         }
         return root

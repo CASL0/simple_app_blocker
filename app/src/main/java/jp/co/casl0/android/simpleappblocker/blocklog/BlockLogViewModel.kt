@@ -16,8 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.blocklog
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import jp.co.casl0.android.simpleappblocker.PacketInfo
 import org.greenrobot.eventbus.EventBus
@@ -33,10 +32,8 @@ class BlockLogViewModel : ViewModel() {
         private const val MAX_NUM_PACKET_LOG = 50
     }
 
-    private val _blockPacketInfoList = MutableLiveData<MutableList<PacketInfo>?>(
-        mutableListOf()
-    )
-    val blockPacketInfoList: LiveData<MutableList<PacketInfo>?>
+    private val _blockPacketInfoList = mutableStateListOf<PacketInfo>()
+    val blockPacketInfoList: List<PacketInfo>
         get() = _blockPacketInfoList
 
     /**
@@ -44,11 +41,9 @@ class BlockLogViewModel : ViewModel() {
      */
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onPacketBlocked(packetInfo: PacketInfo) {
-        val tmp = _blockPacketInfoList.value
-        if (tmp != null && tmp.size >= MAX_NUM_PACKET_LOG) {
-            tmp.removeLast()
+        if (blockPacketInfoList.size >= MAX_NUM_PACKET_LOG) {
+            _blockPacketInfoList.removeLast()
         }
-        tmp?.add(0, packetInfo)
-        if (tmp != null) _blockPacketInfoList.postValue(tmp)
+        _blockPacketInfoList.add(0, packetInfo)
     }
 }
