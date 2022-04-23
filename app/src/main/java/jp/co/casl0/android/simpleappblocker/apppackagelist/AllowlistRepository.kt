@@ -18,7 +18,6 @@ package jp.co.casl0.android.simpleappblocker.apppackagelist
 
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowedPackage
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDAO
-import jp.co.casl0.android.simpleappblocker.toFormatString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

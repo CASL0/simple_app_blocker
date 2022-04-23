@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker
+package jp.co.casl0.android.simpleappblocker.service
 
 import android.os.ParcelFileDescriptor
 import com.orhanobut.logger.Logger
+import jp.co.casl0.android.simpleappblocker.PacketInfo
+import jp.co.casl0.android.simpleappblocker.PcapPlusPlusInterface
 import kotlinx.coroutines.Runnable
 import org.greenrobot.eventbus.EventBus
 import java.io.FileInputStream

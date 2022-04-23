@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".AppBlockerService"
+            android:name=".service.AppBlockerService"
             android:exported="false"
             android:permission="android.permission.BIND_VPN_SERVICE">
             <intent-filter>

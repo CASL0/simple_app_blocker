@@ -41,6 +41,7 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
+import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity() {
             menuInflater.inflate(R.menu.options, menu)
 
             // アクションバーのスイッチのイベントハンドラを設定
-            val actionSwitch = menu?.findItem(R.id.app_bar_switch)?.actionView as? SwitchCompat
+            val actionSwitch = menu.findItem(R.id.app_bar_switch)?.actionView as? SwitchCompat
             actionSwitch?.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     mainActivityViewModel.filtersEnabled = true
