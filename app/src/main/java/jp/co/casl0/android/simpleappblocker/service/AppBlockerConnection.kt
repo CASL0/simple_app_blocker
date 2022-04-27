@@ -60,6 +60,7 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
                         PcapPlusPlusInterface.getSrcPortNative(packet.array(), length),
                         PcapPlusPlusInterface.getDstIpAddressNative(packet.array(), length),
                         PcapPlusPlusInterface.getDstPortNative(packet.array(), length),
+                        PcapPlusPlusInterface.getProtocolAsStringNative(packet.array(), length),
                         Calendar.getInstance().toFormatString("yyyy-MM-dd HH:mm:ss")
                     )
                 )

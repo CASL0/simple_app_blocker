@@ -38,6 +38,14 @@ object PcapPlusPlusInterface {
     external fun getDstPortNative(packet: ByteArray?, length: Int): Int
 
     /**
+     * パケットのプロトコルを取得する関数
+     * @param packet パケットのバイト列
+     * @param length パケットのバイト長
+     * @return プロトコル文字列
+     */
+    external fun getProtocolAsStringNative(packet: ByteArray?, length: Int): String
+
+    /**
      * サーバー名を取得する関数
      * @param packet パケットのバイト列
      * @param length パケットのバイト長

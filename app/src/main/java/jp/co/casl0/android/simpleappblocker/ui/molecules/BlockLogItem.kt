@@ -27,13 +27,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
-fun BlockLogItem(src: String, dst: String, time: String, modifier: Modifier = Modifier) {
+fun BlockLogItem(
+    src: String,
+    dst: String,
+    protocol: String,
+    time: String,
+    modifier: Modifier = Modifier
+) {
     Card(
         shape = MaterialTheme.shapes.medium,
         modifier = modifier.height(IntrinsicSize.Max).fillMaxWidth()
@@ -44,10 +51,24 @@ fun BlockLogItem(src: String, dst: String, time: String, modifier: Modifier = Mo
         ) {
             Row(
                 modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) { // ブロック時刻
-                Text(text = time, color = MaterialTheme.colors.secondaryVariant)
+            ) {
+                // プロトコル
+                Text(
+                    text = protocol,
+                    textAlign = TextAlign.Left,
+                    modifier = modifier.weight(1.0f),
+                    color = MaterialTheme.colors.primary,
+                    fontWeight = FontWeight.Bold
+                )
+                // ブロック時刻
+                Text(
+                    text = time,
+                    color = MaterialTheme.colors.secondaryVariant,
+                    textAlign = TextAlign.Right,
+                    modifier = modifier.weight(1.0f)
+                )
             }
+            Spacer(modifier = modifier.height(4.dp))
             Row { // 送信元IPアドレス
                 Text(
                     text = stringResource(R.string.block_log_src),
@@ -77,6 +98,7 @@ fun PreviewBlockLogItem() {
         BlockLogItem(
             src = "1.1.1.1 (40000)",
             dst = "2.2.2.2 (50000)",
+            protocol = "TCP",
             time = "yyyy-MM-dd HH:mm:ss"
         )
     }

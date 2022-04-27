@@ -21,6 +21,7 @@ data class PacketInfo(
     val srcPort: Int,
     val dstAddress: String,
     val dstPort: Int,
+    val protocol: String,
     val blockTime: String
 ) {
     /**

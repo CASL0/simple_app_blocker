@@ -39,6 +39,7 @@ fun BlockLogList(blockedPackets: List<PacketInfo>) {
                 BlockLogItem(
                     src = packet.getSrcAddressAndPort(),
                     dst = packet.getDstAddressAndPort(),
+                    protocol = packet.protocol,
                     time = packet.blockTime
                 )
             }

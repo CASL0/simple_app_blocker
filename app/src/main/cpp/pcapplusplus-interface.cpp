@@ -137,6 +137,23 @@ Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getServerNameNat
     return env->NewStringUTF("");
 }
 
+JNIEXPORT jstring JNICALL
+Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getProtocolAsStringNative(
+        JNIEnv *env,
+        jobject thiz,
+        jbyteArray packet,
+        jint packetLength) {
+    const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
+    auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
+                                               packetLength);
+    if (parsedPacket.getLayerOfType<pcpp::TcpLayer>() != nullptr) {
+        return env->NewStringUTF("TCP");
+    } else if (parsedPacket.getLayerOfType<pcpp::UdpLayer>() != nullptr) {
+        return env->NewStringUTF("UDP");
+    }
+    return env->NewStringUTF("Unknown");
+}
+
 /**
  * パケットバイト列をpcpp::Packetに変換する関数
  * @param packetBytes パケットバイト列
