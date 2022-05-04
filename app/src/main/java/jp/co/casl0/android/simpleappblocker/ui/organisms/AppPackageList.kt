@@ -26,23 +26,23 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.PackageInfo
+import jp.co.casl0.android.simpleappblocker.AppPackage
 import jp.co.casl0.android.simpleappblocker.ui.molecules.AppPackageItem
 
 @Composable
-fun AppPackageList(packageList: List<PackageInfo>, onCardClicked: ((PackageInfo) -> Unit)) {
+fun AppPackageList(packageList: List<AppPackage>, onCardClicked: ((AppPackage) -> Unit)) {
     Surface(modifier = Modifier.padding(vertical = 8.dp)) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
             items(items = packageList,
-                key = { packageInfo -> packageInfo.packageName }) { packageInfo ->
+                key = { appPackage -> appPackage.packageName }) { appPackage ->
                 AppPackageItem(
-                    icon = packageInfo.icon,
-                    appName = packageInfo.appName,
-                    packageName = packageInfo.packageName,
-                    modifier = Modifier.clickable { onCardClicked(packageInfo) }
+                    icon = appPackage.icon,
+                    appName = appPackage.appName,
+                    packageName = appPackage.packageName,
+                    modifier = Modifier.clickable { onCardClicked(appPackage) }
                 )
             }
         }

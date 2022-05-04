@@ -59,7 +59,7 @@ class AppPackageListFragment : Fragment() {
             setContent {
                 ApplicationTheme {
                     AppPackageList(
-                        appPackageListViewModel.packageInfoList,
+                        appPackageListViewModel.appPackageList,
                         appPackageListViewModel.onCardClicked
                     )
                 }

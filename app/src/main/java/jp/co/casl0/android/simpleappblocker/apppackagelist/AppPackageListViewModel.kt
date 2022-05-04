@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.PackageInfo
+import jp.co.casl0.android.simpleappblocker.AppPackage
 import jp.co.casl0.android.simpleappblocker.utilities.NetworkConnectivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,9 +40,9 @@ class AppPackageListViewModel(private val allowlistRepository: AllowlistReposito
     /**
      * インストール済みパッケージリスト
      */
-    private val _packageInfoList = mutableStateListOf<PackageInfo>()
-    val packageInfoList: List<PackageInfo>
-        get() = _packageInfoList
+    private val _appPackageList = mutableStateListOf<AppPackage>()
+    val appPackageList: List<AppPackage>
+        get() = _appPackageList
 
     /**
      * Manifest.permission.INTERNETが付与されているインストール済みパッケージを読み込む関数
@@ -52,14 +52,14 @@ class AppPackageListViewModel(private val allowlistRepository: AllowlistReposito
             context?.packageManager?.also { pm ->
                 pm.getInstalledApplications(0).forEach { appInfo ->
                     // Manifest.permission.INTERNETが付与されていないアプリは表示しない
-                    val installed = packageInfoList.find { it.packageName == appInfo.packageName }
+                    val installed = appPackageList.find { it.packageName == appInfo.packageName }
                     if (installed == null && NetworkConnectivity.hasInternetPermission(
                             context,
                             appInfo.packageName
                         )
                     ) {
-                        _packageInfoList.add(
-                            PackageInfo(
+                        _appPackageList.add(
+                            AppPackage(
                                 appInfo.loadIcon(pm),
                                 appInfo.loadLabel(pm).toString(),
                                 appInfo.packageName,
@@ -73,26 +73,26 @@ class AppPackageListViewModel(private val allowlistRepository: AllowlistReposito
     /**
      * リストのアイテムクリック時のイベントハンドラ
      */
-    val onCardClicked: (PackageInfo) -> Unit = { packageInfo ->
-        Logger.d("onCardClicked: ${packageInfo.appName} (${packageInfo.packageName})")
-        changeFiltersRule(packageInfo)
+    val onCardClicked: (AppPackage) -> Unit = { appPackage ->
+        Logger.d("onCardClicked: ${appPackage.appName} (${appPackage.packageName})")
+        changeFiltersRule(appPackage)
     }
 
     /**
      * 許可アプリを変更する関数
-     * @param packageInfo フィルター規則を変更したいパッケージ名
+     * @param appPackage フィルター規則を変更したいパッケージ名
      */
-    private fun changeFiltersRule(packageInfo: PackageInfo) {
+    private fun changeFiltersRule(appPackage: AppPackage) {
         val currentList = allowlist.value
         viewModelScope.launch {
-            if (currentList != null && currentList.contains(packageInfo.packageName)) {
+            if (currentList != null && currentList.contains(appPackage.packageName)) {
                 // 許可 → 拒否
-                allowlistRepository.disallowPackage(packageInfo.packageName)
+                allowlistRepository.disallowPackage(appPackage.packageName)
             } else {
                 // 拒否 → 許可
                 allowlistRepository.insertAllowedPackage(
-                    packageInfo.packageName,
-                    packageInfo.appName
+                    appPackage.packageName,
+                    appPackage.appName
                 )
             }
         }
