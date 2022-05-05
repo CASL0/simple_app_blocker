@@ -37,13 +37,15 @@ fun AppPackageList(packageList: List<AppPackage>, onCardClicked: ((AppPackage) -
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
             items(items = packageList,
-                key = { appPackage -> appPackage.packageName }) { appPackage ->
-                AppPackageItem(
-                    icon = appPackage.icon,
-                    appName = appPackage.appName,
-                    packageName = appPackage.packageName,
-                    modifier = Modifier.clickable { onCardClicked(appPackage) }
-                )
+                key = { appPackage -> appPackage.packageName!! }) { appPackage ->
+                if (appPackage.icon != null && appPackage.appName != null && appPackage.packageName != null) {
+                    AppPackageItem(
+                        icon = appPackage.icon,
+                        appName = appPackage.appName,
+                        packageName = appPackage.packageName,
+                        modifier = Modifier.clickable { onCardClicked(appPackage) }
+                    )
+                }
             }
         }
     }

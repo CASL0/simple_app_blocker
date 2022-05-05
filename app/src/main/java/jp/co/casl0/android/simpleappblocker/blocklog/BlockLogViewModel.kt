@@ -16,14 +16,23 @@
 
 package jp.co.casl0.android.simpleappblocker.blocklog
 
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.orhanobut.logger.Logger
+import jp.co.casl0.android.simpleappblocker.AppPackage
 import jp.co.casl0.android.simpleappblocker.PacketInfo
+import jp.co.casl0.android.simpleappblocker.utilities.NetworkConnectivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class BlockLogViewModel : ViewModel() {
+class BlockLogViewModel(context: Context?) : ViewModel() {
+    private val packageManager = context?.packageManager
+    private val networkConnectivity = NetworkConnectivity(context)
+
     init {
         EventBus.getDefault().register(this)
     }
@@ -32,8 +41,8 @@ class BlockLogViewModel : ViewModel() {
         private const val MAX_NUM_PACKET_LOG = 50
     }
 
-    private val _blockPacketInfoList = mutableStateListOf<PacketInfo>()
-    val blockPacketInfoList: List<PacketInfo>
+    private val _blockPacketInfoList = mutableStateListOf<Pair<PacketInfo, AppPackage?>>()
+    val blockPacketInfoList: List<Pair<PacketInfo, AppPackage?>>
         get() = _blockPacketInfoList
 
     /**
@@ -44,6 +53,46 @@ class BlockLogViewModel : ViewModel() {
         if (blockPacketInfoList.size >= MAX_NUM_PACKET_LOG) {
             _blockPacketInfoList.removeLast()
         }
-        _blockPacketInfoList.add(0, packetInfo)
+        val uid = networkConnectivity.retrieveUid(packetInfo)
+        _blockPacketInfoList.add(0, Pair(packetInfo, lookupAppPackage(uid)))
+    }
+
+    /**
+     * uidからアプリ情報を取得する関数
+     * @param uid アプリ情報を取得したいパッケージのuid
+     * @return 取得したアプリ情報、見つからなかった場合はnull
+     */
+    private fun lookupAppPackage(uid: Int): AppPackage? {
+        packageManager?.getNameForUid(uid)?.also { packageName ->
+            val appPackage = try {
+                val appInfo = packageManager.getPackageInfo(packageName, 0).applicationInfo
+                AppPackage(
+                    appInfo.loadIcon(packageManager),
+                    appInfo.loadLabel(packageManager).toString(),
+                    appInfo.packageName,
+                )
+            } catch (e: PackageManager.NameNotFoundException) {
+                val errMsg = e.localizedMessage
+                if (errMsg != null) Logger.d(errMsg)
+                AppPackage(
+                    null,
+                    errMsg,
+                    null,
+                )
+            }
+            return appPackage
+        }
+        return null
+    }
+}
+
+class BlockLogViewModelFactory(private val context: Context?) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(BlockLogViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return BlockLogViewModel(context) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

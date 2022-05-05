@@ -87,13 +87,17 @@ class AppPackageListViewModel(private val allowlistRepository: AllowlistReposito
         viewModelScope.launch {
             if (currentList != null && currentList.contains(appPackage.packageName)) {
                 // 許可 → 拒否
-                allowlistRepository.disallowPackage(appPackage.packageName)
+                if (appPackage.packageName != null) {
+                    allowlistRepository.disallowPackage(appPackage.packageName)
+                }
             } else {
                 // 拒否 → 許可
-                allowlistRepository.insertAllowedPackage(
-                    appPackage.packageName,
-                    appPackage.appName
-                )
+                if (appPackage.packageName != null && appPackage.appName != null) {
+                    allowlistRepository.insertAllowedPackage(
+                        appPackage.packageName,
+                        appPackage.appName
+                    )
+                }
             }
         }
     }

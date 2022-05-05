@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.organisms
+package jp.co.casl0.android.simpleappblocker.ui.template
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,24 +25,30 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import jp.co.casl0.android.simpleappblocker.AppPackage
 import jp.co.casl0.android.simpleappblocker.PacketInfo
-import jp.co.casl0.android.simpleappblocker.ui.molecules.BlockLogItem
+import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.ui.organisms.BlockLogItem
 
 @Composable
-fun BlockLogList(blockedPackets: List<PacketInfo>) {
+fun BlockLogList(blockedPackets: List<Pair<PacketInfo, AppPackage?>>) {
     Surface(modifier = Modifier.padding(vertical = 8.dp)) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
             items(items = blockedPackets) { packet ->
-                BlockLogItem(
-                    src = packet.getSrcAddressAndPort(),
-                    dst = packet.getDstAddressAndPort(),
-                    protocol = packet.protocol,
-                    time = packet.blockTime
-                )
+                Column {
+                    BlockLogItem(
+                        src = packet.first.getSrcAddressAndPort(),
+                        dst = packet.first.getDstAddressAndPort(),
+                        protocol = packet.first.protocol,
+                        time = packet.first.blockTime,
+                        appName = packet.second?.appName ?: stringResource(R.string.unknown_app),
+                    )
+                }
             }
         }
     }

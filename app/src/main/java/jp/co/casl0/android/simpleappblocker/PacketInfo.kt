@@ -22,7 +22,7 @@ data class PacketInfo(
     val dstAddress: String,
     val dstPort: Int,
     val protocol: String,
-    val blockTime: String
+    val blockTime: String,
 ) {
     /**
      * 送信元のIP・ポートの情報を取得する関数

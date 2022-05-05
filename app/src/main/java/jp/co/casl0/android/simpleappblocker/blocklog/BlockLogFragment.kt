@@ -23,10 +23,8 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentBlocklogBinding
-import jp.co.casl0.android.simpleappblocker.ui.organisms.AppPackageList
-import jp.co.casl0.android.simpleappblocker.ui.organisms.BlockLogList
+import jp.co.casl0.android.simpleappblocker.ui.template.BlockLogList
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 class BlockLogFragment : Fragment() {
@@ -40,7 +38,10 @@ class BlockLogFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val blockLogViewModel =
-            ViewModelProvider(this).get(BlockLogViewModel::class.java)
+            ViewModelProvider(
+                this,
+                BlockLogViewModelFactory(context)
+            ).get(BlockLogViewModel::class.java)
 
         _binding = FragmentBlocklogBinding.inflate(inflater, container, false)
         val root: View = binding.root

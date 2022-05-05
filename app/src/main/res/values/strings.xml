@@ -11,4 +11,5 @@
     <string name="blocklog_label_dst_address">宛先</string>
     <string name="block_log_src">src</string>
     <string name="block_log_dst">dst</string>
+    <string name="unknown_app">不明なアプリ</string>
 </resources>
