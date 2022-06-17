@@ -38,7 +38,7 @@ class BlockLogViewModel(context: Context?) : ViewModel() {
     }
 
     companion object {
-        private const val MAX_NUM_PACKET_LOG = 50
+        private const val MAX_NUM_PACKET_LOG = 200
     }
 
     private val _blockPacketInfoList = mutableStateListOf<Pair<PacketInfo, AppPackage?>>()
@@ -51,10 +51,13 @@ class BlockLogViewModel(context: Context?) : ViewModel() {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onPacketBlocked(packetInfo: PacketInfo) {
         if (blockPacketInfoList.size >= MAX_NUM_PACKET_LOG) {
-            _blockPacketInfoList.removeLast()
+            _blockPacketInfoList.removeFirst()
         }
         val uid = networkConnectivity.retrieveUid(packetInfo)
-        _blockPacketInfoList.add(0, Pair(packetInfo, lookupAppPackage(uid)))
+        val packageName = lookupAppPackage(uid)
+        if (packageName != null) {
+            _blockPacketInfoList.add(Pair(packetInfo, packageName))
+        }
     }
 
     /**
