@@ -30,18 +30,16 @@ import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
 fun BlockLogItem(
-    src: String,
-    dst: String,
-    protocol: String,
-    time: String,
-    appName: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.height(IntrinsicSize.Max).fillMaxWidth()
+        modifier = modifier
+            .height(IntrinsicSize.Max)
+            .fillMaxWidth()
     ) {
-        BlockLogContent(src, dst, protocol, time, appName, modifier)
+        content()
     }
 }
 
@@ -50,12 +48,14 @@ fun BlockLogItem(
 @Composable
 fun PreviewBlockLogItem() {
     ApplicationTheme {
-        BlockLogItem(
-            src = "1.1.1.1 (40000)",
-            dst = "2.2.2.2 (50000)",
-            protocol = "TCP",
-            time = "yyyy-MM-dd HH:mm:ss",
-            appName = "Chrome",
-        )
+        BlockLogItem() {
+            BlockLogContent(
+                src = "1.1.1.1 (40000)",
+                dst = "2.2.2.2 (50000)",
+                protocol = "TCP",
+                time = "yyyy-MM-dd HH:mm:ss",
+                appName = "Chrome",
+            )
+        }
     }
 }

@@ -40,7 +40,8 @@ fun BlockLogContent(
 ) {
     Column(
         modifier = modifier.background(MaterialTheme.colors.background)
-            .padding(8.dp).width(IntrinsicSize.Max)
+            .padding(8.dp).width(IntrinsicSize.Max),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Row(modifier = modifier.fillMaxWidth()) {
             Text(
@@ -50,7 +51,6 @@ fun BlockLogContent(
                 modifier = modifier.align(Alignment.CenterVertically)
             )
         }
-        Spacer(modifier = modifier.height(4.dp))
         Row(modifier = modifier.fillMaxWidth()) {
             // プロトコル
             Text(
@@ -68,7 +68,6 @@ fun BlockLogContent(
                 modifier = modifier.weight(1.0f)
             )
         }
-        Spacer(modifier = modifier.height(4.dp))
         Row { // 送信元IPアドレス
             Text(
                 text = stringResource(R.string.block_log_src),
@@ -81,7 +80,6 @@ fun BlockLogContent(
                 fontWeight = FontWeight.Bold
             )
         }
-        Spacer(modifier = modifier.height(4.dp))
         Row { // 宛先IPアドレス
             Text(
                 text = stringResource(R.string.block_log_dst),

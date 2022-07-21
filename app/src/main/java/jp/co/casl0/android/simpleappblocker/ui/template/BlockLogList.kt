@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.AppPackage
 import jp.co.casl0.android.simpleappblocker.PacketInfo
 import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.ui.molecules.BlockLogContent
 import jp.co.casl0.android.simpleappblocker.ui.organisms.BlockLogItem
 
 @Composable
@@ -41,13 +42,15 @@ fun BlockLogList(blockedPackets: List<Pair<PacketInfo, AppPackage?>>) {
         ) {
             items(items = blockedPackets) { packet ->
                 Column {
-                    BlockLogItem(
-                        src = packet.first.getSrcAddressAndPort(),
-                        dst = packet.first.getDstAddressAndPort(),
-                        protocol = packet.first.protocol,
-                        time = packet.first.blockTime,
-                        appName = packet.second?.appName ?: stringResource(R.string.unknown_app),
-                    )
+                    BlockLogItem {
+                        BlockLogContent(
+                            src = packet.first.getSrcAddressAndPort(),
+                            dst = packet.first.getDstAddressAndPort(),
+                            protocol = packet.first.protocol,
+                            time = packet.first.blockTime,
+                            appName = packet.second?.appName ?: stringResource(R.string.unknown_app),
+                        )
+                    }
                 }
             }
         }
