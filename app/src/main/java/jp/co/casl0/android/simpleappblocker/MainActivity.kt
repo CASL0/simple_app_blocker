@@ -29,6 +29,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.InflateException
 import android.view.Menu
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -47,13 +48,20 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        private const val REQUEST_CODE_VPN_SERVICE = 100
-    }
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainActivityViewModel: MainActivityViewModel
     var appBlockerService: AppBlockerService? = null
+    private val vpnPrepare =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                Intent(this, AppBlockerService::class.java).also {
+                    bindService(it, connection, Context.BIND_AUTO_CREATE)
+                }
+            } else {
+                Logger.d("VpnService rejected")
+                finish()
+            }
+        }
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -69,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     private fun configureVpnService() {
         val vpnPrepareIntent = VpnService.prepare(this)
         if (vpnPrepareIntent != null) {
-            startActivityForResult(vpnPrepareIntent, REQUEST_CODE_VPN_SERVICE)
+            vpnPrepare.launch(vpnPrepareIntent)
         } else {
             // 既にVPN同意済み
             Logger.d("VpnService already agreed")
@@ -136,21 +144,6 @@ class MainActivity : AppCompatActivity() {
             if (errMsg != null) Logger.d(errMsg)
         }
         return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_VPN_SERVICE) {
-            if (resultCode == RESULT_OK) {
-                Intent(this, AppBlockerService::class.java).also {
-                    bindService(it, connection, Context.BIND_AUTO_CREATE)
-                }
-                return
-            } else {
-                Logger.d("VpnService rejected")
-                finish()
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onNewIntent(intent: Intent?) {
