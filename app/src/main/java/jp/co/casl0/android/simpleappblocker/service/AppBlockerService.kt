@@ -27,7 +27,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.MainActivity
+import jp.co.casl0.android.simpleappblocker.ui.MainActivity
 import jp.co.casl0.android.simpleappblocker.R
 import java.util.concurrent.atomic.AtomicReference
 

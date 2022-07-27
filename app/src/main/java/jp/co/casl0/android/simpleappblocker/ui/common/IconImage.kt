@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.atoms
+package jp.co.casl0.android.simpleappblocker.ui.common
 
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image

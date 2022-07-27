@@ -14,34 +14,47 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.atoms
+package jp.co.casl0.android.simpleappblocker.ui.blocklog
 
 import android.content.res.Configuration
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
-fun SubText(text: String) {
-    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-        Text(
-            text = text,
-            color = MaterialTheme.colors.primaryVariant,
-        )
-
+fun BlockLogItem(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        modifier = modifier
+            .height(IntrinsicSize.Max)
+            .fillMaxWidth()
+    ) {
+        content()
     }
 }
 
 @Preview(name = "Light Mode")
 @Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun PreviewSubText() {
+fun PreviewBlockLogItem() {
     ApplicationTheme {
-        SubText("Sub Text Preview!")
+        BlockLogItem() {
+            BlockLogContent(
+                src = "1.1.1.1 (40000)",
+                dst = "2.2.2.2 (50000)",
+                protocol = "TCP",
+                time = "yyyy-MM-dd HH:mm:ss",
+                appName = "Chrome",
+            )
+        }
     }
 }

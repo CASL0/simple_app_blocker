@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker
+package jp.co.casl0.android.simpleappblocker.ui
 
 import android.content.ComponentName
 import android.content.Context
@@ -41,6 +41,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
+import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
 import kotlinx.coroutines.Dispatchers

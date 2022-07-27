@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker
+package jp.co.casl0.android.simpleappblocker.app
 
-data class PacketInfo(
-    val srcAddress: String,
-    val srcPort: Int,
-    val dstAddress: String,
-    val dstPort: Int,
-    val protocol: String,
-    val blockTime: String,
-) {
+import android.app.Application
+import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDatabase
+import jp.co.casl0.android.simpleappblocker.apppackagelist.AllowlistRepository
+
+class AppBlockerApplication : Application() {
     /**
-     * 送信元のIP・ポートの情報を取得する関数
+     * 許可アプリ操作用のデータベースインスタンス
      */
-    fun getSrcAddressAndPort(): String = "$srcAddress ($srcPort)"
+    val database by lazy { AllowlistDatabase.getDatabase(this) }
 
     /**
-     * 宛先のIP・ポートの情報を取得する関数
+     * 許可アプリリポジトリ
      */
-    fun getDstAddressAndPort(): String = "$dstAddress ($dstPort)"
+    val repository by lazy { AllowlistRepository(database.allowlistDao()) }
 }

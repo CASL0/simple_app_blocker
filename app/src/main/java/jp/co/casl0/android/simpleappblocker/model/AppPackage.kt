@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker
+package jp.co.casl0.android.simpleappblocker.model
 
-import android.app.Application
-import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDatabase
-import jp.co.casl0.android.simpleappblocker.apppackagelist.AllowlistRepository
+import android.graphics.drawable.Drawable
 
-class AppBlockerApplication : Application() {
-    /**
-     * 許可アプリ操作用のデータベースインスタンス
-     */
-    val database by lazy { AllowlistDatabase.getDatabase(this) }
-
-    /**
-     * 許可アプリリポジトリ
-     */
-    val repository by lazy { AllowlistRepository(database.allowlistDao()) }
-}
+data class AppPackage(
+    val icon: Drawable?,
+    val appName: String?,
+    val packageName: String?,
+    var isAllowed: Boolean = false
+)

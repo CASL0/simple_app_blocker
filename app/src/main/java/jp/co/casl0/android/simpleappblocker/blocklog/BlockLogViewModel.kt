@@ -22,8 +22,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.AppPackage
-import jp.co.casl0.android.simpleappblocker.PacketInfo
+import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.utilities.NetworkConnectivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe

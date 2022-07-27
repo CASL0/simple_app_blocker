@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.template
+package jp.co.casl0.android.simpleappblocker.ui.blocklog
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,11 +27,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.AppPackage
-import jp.co.casl0.android.simpleappblocker.PacketInfo
+import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.ui.molecules.BlockLogContent
-import jp.co.casl0.android.simpleappblocker.ui.organisms.BlockLogItem
+import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogContent
+import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogItem
 
 @Composable
 fun BlockLogList(blockedPackets: List<Pair<PacketInfo, AppPackage?>>) {

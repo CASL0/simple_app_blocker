@@ -14,30 +14,34 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.atoms
+package jp.co.casl0.android.simpleappblocker.ui.common
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.content.res.Configuration
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.tooling.preview.Preview
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
-fun HeaderText(text: String) {
-    Text(
-        text = text,
-        color = MaterialTheme.colors.primary,
-        fontWeight = FontWeight.Bold,
-    )
+fun SubText(text: String) {
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+        Text(
+            text = text,
+            color = MaterialTheme.colors.primaryVariant,
+        )
+
+    }
 }
 
 @Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun PreviewHeaderText() {
+fun PreviewSubText() {
     ApplicationTheme {
-        HeaderText("Header Text Preview!")
+        SubText("Sub Text Preview!")
     }
 }

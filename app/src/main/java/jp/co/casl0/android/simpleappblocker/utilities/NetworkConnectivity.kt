@@ -25,7 +25,7 @@ import android.os.Build
 import android.os.Process.INVALID_UID
 import android.system.OsConstants
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.PacketInfo
+import jp.co.casl0.android.simpleappblocker.model.PacketInfo
 import java.lang.IllegalArgumentException
 import java.net.InetAddress
 import java.net.InetSocketAddress

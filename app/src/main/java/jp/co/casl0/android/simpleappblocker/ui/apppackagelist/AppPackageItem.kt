@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.molecules
+package jp.co.casl0.android.simpleappblocker.ui.apppackagelist
 
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
@@ -28,9 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.ui.atoms.HeaderText
-import jp.co.casl0.android.simpleappblocker.ui.atoms.IconImage
-import jp.co.casl0.android.simpleappblocker.ui.atoms.SubText
+import jp.co.casl0.android.simpleappblocker.ui.common.HeaderText
+import jp.co.casl0.android.simpleappblocker.ui.common.IconImage
+import jp.co.casl0.android.simpleappblocker.ui.common.SubText
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable

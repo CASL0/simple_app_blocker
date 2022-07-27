@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentBlocklogBinding
-import jp.co.casl0.android.simpleappblocker.ui.template.BlockLogList
+import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogList
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 class BlockLogFragment : Fragment() {

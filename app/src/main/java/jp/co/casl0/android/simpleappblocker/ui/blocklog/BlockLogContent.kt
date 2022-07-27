@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.molecules
+package jp.co.casl0.android.simpleappblocker.ui.blocklog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.AppPackage
+import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.utilities.NetworkConnectivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

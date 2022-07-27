@@ -14,10 +14,23 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker
+package jp.co.casl0.android.simpleappblocker.model
 
-import androidx.lifecycle.ViewModel
+data class PacketInfo(
+    val srcAddress: String,
+    val srcPort: Int,
+    val dstAddress: String,
+    val dstPort: Int,
+    val protocol: String,
+    val blockTime: String,
+) {
+    /**
+     * 送信元のIP・ポートの情報を取得する関数
+     */
+    fun getSrcAddressAndPort(): String = "$srcAddress ($srcPort)"
 
-class MainActivityViewModel : ViewModel() {
-    var filtersEnabled = false
+    /**
+     * 宛先のIP・ポートの情報を取得する関数
+     */
+    fun getDstAddressAndPort(): String = "$dstAddress ($dstPort)"
 }

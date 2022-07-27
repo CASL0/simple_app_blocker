@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.organisms
+package jp.co.casl0.android.simpleappblocker.ui.apppackagelist
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,8 +26,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.AppPackage
-import jp.co.casl0.android.simpleappblocker.ui.molecules.AppPackageItem
+import jp.co.casl0.android.simpleappblocker.model.AppPackage
 
 @Composable
 fun AppPackageList(packageList: List<AppPackage>, onCardClicked: ((AppPackage) -> Unit)) {

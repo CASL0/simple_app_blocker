@@ -24,10 +24,10 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import jp.co.casl0.android.simpleappblocker.AppBlockerApplication
-import jp.co.casl0.android.simpleappblocker.MainActivity
+import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
+import jp.co.casl0.android.simpleappblocker.ui.MainActivity
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAppPackageListBinding
-import jp.co.casl0.android.simpleappblocker.ui.organisms.AppPackageList
+import jp.co.casl0.android.simpleappblocker.ui.apppackagelist.AppPackageList
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 import kotlinx.coroutines.launch
 
