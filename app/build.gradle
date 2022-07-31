@@ -66,6 +66,8 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.4.2'
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.4.0'
+    // for LiveData
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
     // Compose Material Design
     implementation 'androidx.compose.material:material:1.1.1'
     // Material design icons
@@ -82,4 +84,6 @@ dependencies {
     implementation "com.google.accompanist:accompanist-drawablepainter:0.16.0"
     implementation 'com.orhanobut:logger:2.2.0'
     implementation 'org.greenrobot:eventbus:3.3.1'
+    // Coil
+    implementation 'io.coil-kt:coil-compose:1.4.0'
 }

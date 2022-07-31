@@ -12,4 +12,6 @@
     <string name="block_log_src">src</string>
     <string name="block_log_dst">dst</string>
     <string name="unknown_app">不明なアプリ</string>
+    <string name="allowlist_section_header">許可したアプリ一覧</string>
+    <string name="default_icon_img_url">https://developer.android.com/images/brand/Android_Robot.png</string>
 </resources>

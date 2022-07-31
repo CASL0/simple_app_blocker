@@ -142,8 +142,9 @@ class MainActivity : AppCompatActivity() {
             }
             actionSwitch?.isChecked = mainActivityViewModel.filtersEnabled
         } catch (e: InflateException) {
-            val errMsg = e.localizedMessage
-            if (errMsg != null) Logger.d(errMsg)
+            e.localizedMessage?.let { errMsg ->
+                Logger.d(errMsg)
+            }
         }
         return true
     }
