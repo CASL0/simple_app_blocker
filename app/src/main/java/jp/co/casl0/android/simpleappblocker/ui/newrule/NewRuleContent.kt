@@ -27,16 +27,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
-import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowlistItem
 
 @Composable
 fun NewRuleContent(
@@ -70,7 +65,9 @@ fun NewRuleContent(
             items(items = installedPackages,
                 key = { installedPackage -> installedPackage.packageName!! }
             ) { installedPackage ->
-                AllowlistItem(installedPackage, modifier = modifier.clickable { onListItemClicked(installedPackage) })
+                NewRuleItem(
+                    installedPackage,
+                    modifier = modifier.clickable { onListItemClicked(installedPackage) })
             }
         }
     }
