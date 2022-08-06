@@ -14,37 +14,30 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.alllowlsit
+package jp.co.casl0.android.simpleappblocker.ui
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import jp.co.casl0.android.simpleappblocker.apppackagelist.AllowlistRepository
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
-import kotlinx.coroutines.launch
 
-class AllowlistViewModel(private val allowlistRepository: AllowlistRepository) : ViewModel() {
+class MainViewModel(allowlistRepository: AllowlistRepository) : ViewModel() {
+    var filtersEnabled = false
+
     /**
      * 許可リスト
      */
     val allowlist: LiveData<List<String>> = allowlistRepository.allowlist.asLiveData()
 
-    /**
-     * 指定のパッケージをブロックに変更する
-     */
-    val disallowPackage: (AppPackage) -> Unit = { appPackage: AppPackage ->
-        viewModelScope.launch {
-            appPackage.packageName?.let {
-                allowlistRepository.disallowPackage(it)
-            }
-        }
-    }
 }
 
-class AllowlistViewModelFactory(private val repository: AllowlistRepository) :
+class MainViewModelFactory(private val repository: AllowlistRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AllowlistViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return AllowlistViewModel(repository) as T
+            return MainViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -26,6 +26,7 @@ import jp.co.casl0.android.simpleappblocker.model.AppPackage
 fun AllowlistScreen(
     allowedPackages: List<AppPackage>,
     onAddButtonClicked: () -> Unit,
+    onItemRemove: (appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column {
@@ -34,7 +35,7 @@ fun AllowlistScreen(
             onAddButtonClicked = onAddButtonClicked,
             modifier = modifier
         ) {
-            AllowlistContent(allowedPackages, modifier)
+            AllowlistContent(allowedPackages, onItemRemove, modifier)
         }
     }
 }

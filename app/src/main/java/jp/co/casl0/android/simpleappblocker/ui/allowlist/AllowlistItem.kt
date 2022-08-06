@@ -19,11 +19,15 @@ package jp.co.casl0.android.simpleappblocker.ui.allowlist
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,14 +46,19 @@ import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 @Composable
 fun AllowlistItem(
     appPackage: AppPackage,
+    onItemRemove: (appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.height(IntrinsicSize.Max).fillMaxWidth()
+        modifier = modifier
+            .height(IntrinsicSize.Max)
+            .fillMaxWidth()
     ) {
         Row(
-            modifier = modifier.background(MaterialTheme.colors.background).padding(8.dp),
+            modifier = modifier
+                .background(MaterialTheme.colors.background)
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image( // アイコン画像
@@ -63,19 +72,33 @@ fun AllowlistItem(
                     )
                 },
                 contentDescription = "icon",
-                modifier = modifier.clip(CircleShape).size(50.dp)
+                modifier = modifier
+                    .clip(CircleShape)
+                    .size(50.dp)
             )
-            Column(modifier = modifier.padding(start = 8.dp)) {
-                Text( // アプリ名
+            Column(
+                modifier = modifier
+                    .padding(start = 8.dp)
+                    .weight(1f)
+            ) {
+                Text(
+                    // アプリ名
                     text = appPackage.appName ?: "",
                     color = MaterialTheme.colors.primary,
                     fontWeight = FontWeight.Bold,
                 )
-                Text( // パッケージ名
+                Text(
+                    // パッケージ名
                     text = appPackage.packageName ?: "",
                     color = MaterialTheme.colors.onSurface,
                 )
             }
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Close",
+                modifier = modifier
+                    .clickable { onItemRemove(appPackage) }
+            )
         }
     }
 }
@@ -87,6 +110,6 @@ fun PreviewAllowlistItem() {
     ApplicationTheme {
         val packageName = LocalContext.current.packageName
         val icon = LocalContext.current.packageManager.getApplicationIcon(packageName)
-        AllowlistItem(AppPackage(icon, "SimpleAppBlocker", packageName))
+        AllowlistItem(AppPackage(icon, "SimpleAppBlocker", packageName), {})
     }
 }

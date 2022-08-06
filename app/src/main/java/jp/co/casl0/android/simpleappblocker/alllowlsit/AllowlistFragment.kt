@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAllowlistBinding
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
@@ -92,5 +93,5 @@ fun AllowlistFragmentScreen(
             )
         }
     }
-    AllowlistScreen(newAllowedPackages, onAddButtonClicked)
+    AllowlistScreen(newAllowedPackages, onAddButtonClicked, allowlistViewModel.disallowPackage)
 }

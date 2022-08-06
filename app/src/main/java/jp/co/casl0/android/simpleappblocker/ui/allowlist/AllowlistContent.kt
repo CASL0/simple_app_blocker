@@ -27,7 +27,11 @@ import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 
 @Composable
-fun AllowlistContent(allowedPackages: List<AppPackage>, modifier: Modifier = Modifier) {
+fun AllowlistContent(
+    allowedPackages: List<AppPackage>,
+    onItemRemove: (appPackage: AppPackage) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val scrollState = rememberLazyListState()
     LazyColumn(
         state = scrollState,
@@ -37,7 +41,7 @@ fun AllowlistContent(allowedPackages: List<AppPackage>, modifier: Modifier = Mod
         items(items = allowedPackages,
             key = { allowedPackage -> allowedPackage.packageName!! }
         ) { allowedPackage ->
-            AllowlistItem(allowedPackage, modifier = modifier)
+            AllowlistItem(allowedPackage, onItemRemove, modifier = modifier)
         }
     }
 }

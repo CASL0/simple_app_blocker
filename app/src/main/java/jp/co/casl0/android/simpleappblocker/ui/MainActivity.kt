@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mainActivityViewModel: MainActivityViewModel
+    private lateinit var _viewModel: MainViewModel
     var appBlockerService: AppBlockerService? = null
     private val vpnPrepare =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -102,8 +102,20 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
         configureVpnService()
-        mainActivityViewModel =
-            ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        _viewModel =
+            ViewModelProvider(
+                this,
+                MainViewModelFactory((applicationContext as AppBlockerApplication).repository)
+            ).get(MainViewModel::class.java)
+
+        _viewModel.allowlist.observe(this) { newAllowlist ->
+            appBlockerService?.run {
+                if (enabled) {
+                    // 既に適用中のみフィルターを更新する
+                    updateFilters(newAllowlist)
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -119,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             val actionSwitch = menu.findItem(R.id.app_bar_switch)?.actionView as? SwitchCompat
             actionSwitch?.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    mainActivityViewModel.filtersEnabled = true
+                    _viewModel.filtersEnabled = true
                     setActionBarTextColor(
                         supportActionBar,
                         getColorInt(R.color.filters_enabled)
@@ -132,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    mainActivityViewModel.filtersEnabled = false
+                    _viewModel.filtersEnabled = false
                     setActionBarTextColor(
                         supportActionBar,
                         getColorInt(R.color.filters_disabled)
@@ -140,7 +152,7 @@ class MainActivity : AppCompatActivity() {
                     appBlockerService?.disableFilters()
                 }
             }
-            actionSwitch?.isChecked = mainActivityViewModel.filtersEnabled
+            actionSwitch?.isChecked = _viewModel.filtersEnabled
         } catch (e: InflateException) {
             e.localizedMessage?.let { errMsg ->
                 Logger.d(errMsg)
