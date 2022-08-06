@@ -23,11 +23,15 @@ import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 
 @Composable
-fun AllowlistScreen(allowedPackages: List<AppPackage>, modifier: Modifier = Modifier) {
+fun AllowlistScreen(
+    allowedPackages: List<AppPackage>,
+    onAddButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column {
         AllowlistSection(
             R.string.allowlist_section_header,
-            onAddButtonClicked = { /* TODO: フィルター追加画面への遷移　*/ },
+            onAddButtonClicked = onAddButtonClicked,
             modifier = modifier
         ) {
             AllowlistContent(allowedPackages, modifier)

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_app_package_list">
+    app:startDestination="@+id/navigation_allowlist">
 
     <fragment
         android:id="@+id/navigation_blocklog"
@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_blocklog" />
 
     <fragment
-        android:id="@+id/navigation_app_package_list"
-        android:name="jp.co.casl0.android.simpleappblocker.apppackagelist.AppPackageListFragment"
-        android:label="@string/title_app_package_list"
-        tools:layout="@layout/fragment_app_package_list" />
+        android:id="@+id/navigation_allowlist"
+        android:name="jp.co.casl0.android.simpleappblocker.alllowlsit.AllowlistFragment"
+        android:label="@string/title_allowlist"
+        tools:layout="@layout/fragment_allowlist" />
 
     <fragment
         android:id="@+id/navigation_notifications"

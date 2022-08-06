@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.alllowlsit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,11 +26,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAllowlistBinding
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.newrule.NewRuleActivity
 import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowlistScreen
 
 class AllowlistFragment : Fragment() {
@@ -54,7 +57,11 @@ class AllowlistFragment : Fragment() {
         binding.allowlistComposeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                AllowlistFragmentScreen(viewModel)
+                AllowlistFragmentScreen(viewModel) {
+                    Intent(context, NewRuleActivity::class.java).also {
+                        startActivity(it)
+                    }
+                }
             }
         }
         return binding.root
@@ -62,7 +69,10 @@ class AllowlistFragment : Fragment() {
 }
 
 @Composable
-fun AllowlistFragmentScreen(allowlistViewModel: AllowlistViewModel) {
+fun AllowlistFragmentScreen(
+    allowlistViewModel: AllowlistViewModel,
+    onAddButtonClicked: () -> Unit
+) {
     val allowedPackages: List<String> by allowlistViewModel.allowlist.observeAsState(
         listOf()
     )
@@ -82,5 +92,5 @@ fun AllowlistFragmentScreen(allowlistViewModel: AllowlistViewModel) {
             )
         }
     }
-    AllowlistScreen(newAllowedPackages)
+    AllowlistScreen(newAllowedPackages, onAddButtonClicked)
 }

@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_app_package_list"
+        android:id="@+id/navigation_allowlist"
         android:icon="@drawable/ic_app_package_list_black_24dp"
-        android:title="@string/title_app_package_list" />
+        android:title="@string/title_allowlist" />
     
     <item
         android:id="@+id/navigation_blocklog"
