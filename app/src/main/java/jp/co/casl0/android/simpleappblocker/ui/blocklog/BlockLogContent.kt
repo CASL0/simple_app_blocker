@@ -16,81 +16,39 @@
 
 package jp.co.casl0.android.simpleappblocker.ui.blocklog
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.model.PacketInfo
 
 @Composable
 fun BlockLogContent(
-    src: String,
-    dst: String,
-    protocol: String,
-    time: String,
-    appName: String,
+    blockedPackets: List<Pair<PacketInfo, AppPackage?>>,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.background(MaterialTheme.colors.background)
-            .padding(8.dp).width(IntrinsicSize.Max),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(vertical = 8.dp)
     ) {
-        Row(modifier = modifier.fillMaxWidth()) {
-            Text(
-                text = appName,
-                color = MaterialTheme.colors.primary,
-                fontWeight = FontWeight.Bold,
-                modifier = modifier.align(Alignment.CenterVertically)
-            )
-        }
-        Row(modifier = modifier.fillMaxWidth()) {
-            // プロトコル
-            Text(
-                text = protocol,
-                textAlign = TextAlign.Left,
-                modifier = modifier.weight(1.0f),
-                color = MaterialTheme.colors.primary,
-                fontWeight = FontWeight.Bold
-            )
-            // ブロック時刻
-            Text(
-                text = time,
-                color = MaterialTheme.colors.secondaryVariant,
-                textAlign = TextAlign.Right,
-                modifier = modifier.weight(1.0f)
-            )
-        }
-        Row { // 送信元IPアドレス
-            Text(
-                text = stringResource(R.string.block_log_src),
-                color = MaterialTheme.colors.primary
-            )
-            Spacer(modifier = modifier.width(8.dp))
-            Text(
-                text = src,
-                color = MaterialTheme.colors.primary,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        Row { // 宛先IPアドレス
-            Text(
-                text = stringResource(R.string.block_log_dst),
-                color = MaterialTheme.colors.primary
-            )
-            Spacer(modifier = modifier.width(8.dp))
-            Text(
-                text = dst,
-                color = MaterialTheme.colors.primary,
-                fontWeight = FontWeight.Bold
-            )
+        items(items = blockedPackets) { packet ->
+            Column {
+                BlockLogItem(
+                    src = packet.first.getSrcAddressAndPort(),
+                    dst = packet.first.getDstAddressAndPort(),
+                    protocol = packet.first.protocol,
+                    time = packet.first.blockTime,
+                    appName = packet.second?.appName ?: stringResource(R.string.unknown_app),
+                    modifier = modifier
+                )
+            }
         }
     }
 }

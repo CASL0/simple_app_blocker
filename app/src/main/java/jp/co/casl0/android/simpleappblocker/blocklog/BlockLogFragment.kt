@@ -20,11 +20,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentBlocklogBinding
-import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogList
+import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogContent
+import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 class BlockLogFragment : Fragment() {
@@ -46,11 +48,11 @@ class BlockLogFragment : Fragment() {
         _binding = FragmentBlocklogBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.blockLogRecyclerView.apply {
+        binding.blocklogComposeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
-                    BlockLogList(blockLogViewModel.blockPacketInfoList)
+                    BlockLogFragmentScreen(viewModel = blockLogViewModel)
                 }
             }
         }
@@ -60,5 +62,12 @@ class BlockLogFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+}
+
+@Composable
+fun BlockLogFragmentScreen(viewModel: BlockLogViewModel) {
+    BlockLogScreen {
+        BlockLogContent(blockedPackets = viewModel.blockPacketInfoList)
     }
 }

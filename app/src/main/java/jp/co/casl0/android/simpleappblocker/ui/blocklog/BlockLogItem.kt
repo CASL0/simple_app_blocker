@@ -17,20 +17,29 @@
 package jp.co.casl0.android.simpleappblocker.ui.blocklog
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
 fun BlockLogItem(
+    src: String,
+    dst: String,
+    protocol: String,
+    time: String,
+    appName: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
@@ -38,7 +47,62 @@ fun BlockLogItem(
             .height(IntrinsicSize.Max)
             .fillMaxWidth()
     ) {
-        content()
+        Column(
+            modifier = modifier
+                .padding(8.dp)
+                .width(IntrinsicSize.Max),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Row(modifier = modifier.fillMaxWidth()) {
+                Text(
+                    text = appName,
+                    color = MaterialTheme.colors.onSurface,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier.align(Alignment.CenterVertically)
+                )
+            }
+            Row(modifier = modifier.fillMaxWidth()) {
+                // プロトコル
+                Text(
+                    text = protocol,
+                    textAlign = TextAlign.Left,
+                    modifier = modifier.weight(1.0f),
+                    color = MaterialTheme.colors.onSurface,
+                    fontWeight = FontWeight.Bold
+                )
+                // ブロック時刻
+                Text(
+                    text = time,
+                    color = MaterialTheme.colors.onSurface,
+                    textAlign = TextAlign.Right,
+                    modifier = modifier.weight(1.0f)
+                )
+            }
+            Row { // 送信元IPアドレス
+                Text(
+                    text = stringResource(R.string.block_log_src),
+                    color = MaterialTheme.colors.onSurface
+                )
+                Spacer(modifier = modifier.width(8.dp))
+                Text(
+                    text = src,
+                    color = MaterialTheme.colors.onSurface,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Row { // 宛先IPアドレス
+                Text(
+                    text = stringResource(R.string.block_log_dst),
+                    color = MaterialTheme.colors.onSurface
+                )
+                Spacer(modifier = modifier.width(8.dp))
+                Text(
+                    text = dst,
+                    color = MaterialTheme.colors.onSurface,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
     }
 }
 
@@ -47,14 +111,12 @@ fun BlockLogItem(
 @Composable
 fun PreviewBlockLogItem() {
     ApplicationTheme {
-        BlockLogItem() {
-            BlockLogContent(
-                src = "1.1.1.1 (40000)",
-                dst = "2.2.2.2 (50000)",
-                protocol = "TCP",
-                time = "yyyy-MM-dd HH:mm:ss",
-                appName = "Chrome",
-            )
-        }
+        BlockLogItem(
+            src = "1.1.1.1 (40000)",
+            dst = "2.2.2.2 (50000)",
+            protocol = "TCP",
+            time = "yyyy-MM-dd HH:mm:ss",
+            appName = "Chrome",
+        )
     }
 }

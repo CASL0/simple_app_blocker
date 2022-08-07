@@ -35,23 +35,19 @@ import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogItem
 
 @Composable
 fun BlockLogList(blockedPackets: List<Pair<PacketInfo, AppPackage?>>) {
-    Surface(modifier = Modifier.padding(vertical = 8.dp)) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp)
-        ) {
-            items(items = blockedPackets) { packet ->
-                Column {
-                    BlockLogItem {
-                        BlockLogContent(
-                            src = packet.first.getSrcAddressAndPort(),
-                            dst = packet.first.getDstAddressAndPort(),
-                            protocol = packet.first.protocol,
-                            time = packet.first.blockTime,
-                            appName = packet.second?.appName ?: stringResource(R.string.unknown_app),
-                        )
-                    }
-                }
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp)
+    ) {
+        items(items = blockedPackets) { packet ->
+            Column {
+                BlockLogItem(
+                    src = packet.first.getSrcAddressAndPort(),
+                    dst = packet.first.getDstAddressAndPort(),
+                    protocol = packet.first.protocol,
+                    time = packet.first.blockTime,
+                    appName = packet.second?.appName ?: stringResource(R.string.unknown_app),
+                )
             }
         }
     }

@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="?attr/actionBarSize"
     tools:context=".blocklog.BlockLogFragment">
 
     <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/blockLogRecyclerView"
+        android:id="@+id/blocklog_compose_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
