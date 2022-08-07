@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.alllowlsit
+package jp.co.casl0.android.simpleappblocker.allowlsit
 
 import androidx.lifecycle.*
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
