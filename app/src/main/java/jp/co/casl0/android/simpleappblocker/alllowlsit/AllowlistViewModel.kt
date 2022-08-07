@@ -17,7 +17,6 @@
 package jp.co.casl0.android.simpleappblocker.alllowlsit
 
 import androidx.lifecycle.*
-import jp.co.casl0.android.simpleappblocker.apppackagelist.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import kotlinx.coroutines.launch
 

@@ -20,7 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import jp.co.casl0.android.simpleappblocker.apppackagelist.AllowlistRepository
+import jp.co.casl0.android.simpleappblocker.alllowlsit.AllowlistRepository
 
 class MainViewModel(allowlistRepository: AllowlistRepository) : ViewModel() {
     var filtersEnabled = false

@@ -22,7 +22,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
-import jp.co.casl0.android.simpleappblocker.apppackagelist.AllowlistRepository
+import jp.co.casl0.android.simpleappblocker.alllowlsit.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

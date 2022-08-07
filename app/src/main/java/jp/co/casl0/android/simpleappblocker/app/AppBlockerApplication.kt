@@ -17,8 +17,8 @@
 package jp.co.casl0.android.simpleappblocker.app
 
 import android.app.Application
+import jp.co.casl0.android.simpleappblocker.alllowlsit.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDatabase
-import jp.co.casl0.android.simpleappblocker.apppackagelist.AllowlistRepository
 
 class AppBlockerApplication : Application() {
     /**

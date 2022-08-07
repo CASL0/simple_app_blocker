@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.apppackagelist
+package jp.co.casl0.android.simpleappblocker.alllowlsit
 
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowedPackage
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDAO
