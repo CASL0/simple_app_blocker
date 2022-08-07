@@ -57,7 +57,6 @@ fun AllowlistItem(
     ) {
         Row(
             modifier = modifier
-                .background(MaterialTheme.colors.background)
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -84,7 +83,7 @@ fun AllowlistItem(
                 Text(
                     // アプリ名
                     text = appPackage.appName ?: "",
-                    color = MaterialTheme.colors.primary,
+                    color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
@@ -96,6 +95,7 @@ fun AllowlistItem(
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = "Close",
+                tint = MaterialTheme.colors.onSurface,
                 modifier = modifier
                     .clickable { onItemRemove(appPackage) }
             )

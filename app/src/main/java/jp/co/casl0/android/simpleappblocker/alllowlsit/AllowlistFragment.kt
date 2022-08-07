@@ -35,6 +35,7 @@ import jp.co.casl0.android.simpleappblocker.databinding.FragmentAllowlistBinding
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.newrule.NewRuleActivity
 import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowlistScreen
+import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 class AllowlistFragment : Fragment() {
 
@@ -58,9 +59,11 @@ class AllowlistFragment : Fragment() {
         binding.allowlistComposeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                AllowlistFragmentScreen(viewModel) {
-                    Intent(context, NewRuleActivity::class.java).also {
-                        startActivity(it)
+                ApplicationTheme {
+                    AllowlistFragmentScreen(viewModel) {
+                        Intent(context, NewRuleActivity::class.java).also {
+                            startActivity(it)
+                        }
                     }
                 }
             }

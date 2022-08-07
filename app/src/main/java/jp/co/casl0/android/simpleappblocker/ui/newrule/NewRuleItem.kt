@@ -47,9 +47,7 @@ fun NewRuleItem(
             .fillMaxWidth()
     ) {
         Row(
-            modifier = modifier
-                .background(MaterialTheme.colors.background)
-                .padding(8.dp),
+            modifier = modifier.padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image( // アイコン画像
@@ -71,7 +69,7 @@ fun NewRuleItem(
                 Text(
                     // アプリ名
                     text = appPackage.appName ?: "",
-                    color = MaterialTheme.colors.primary,
+                    color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(

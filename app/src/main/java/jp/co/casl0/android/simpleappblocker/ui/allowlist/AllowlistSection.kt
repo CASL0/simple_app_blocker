@@ -43,11 +43,11 @@ fun AllowlistSection(
         FloatingActionButton(onClick = onAddButtonClicked) {
             Icon(Icons.Filled.Add, contentDescription = "add")
         }
-    }) {
+    }, backgroundColor = MaterialTheme.colors.background) {
         Column(modifier = modifier.padding(horizontal = 8.dp)) {
             Text(
                 stringResource(title),
-                color = MaterialTheme.colors.onSurface,
+                color = MaterialTheme.colors.onBackground,
                 style = MaterialTheme.typography.h6,
                 modifier = modifier.paddingFromBaseline(top = 40.dp, bottom = 8.dp)
             )
