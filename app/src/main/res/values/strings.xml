@@ -19,6 +19,8 @@
     <string name="show_more">Show more</string>
     <string name="licenses_header">オープンソースライセンス</string>
     <string name="title_others">その他</string>
+    <string name="version_header">バージョン情報</string>
+    <string name="toast_allow_app">%sの接続を許可しました</string>
 
     <!-- オープンソースライセンス -->
 
@@ -92,6 +94,4 @@
         OTHER DEALINGS IN THE SOFTWARE.\n\n
         For more information, please refer to &lt;http://unlicense.org&gt;
     </string>
-    <string name="version_header">バージョン情報</string>
-
 </resources>

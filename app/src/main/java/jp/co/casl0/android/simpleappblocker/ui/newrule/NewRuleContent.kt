@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.ui.newrule
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
@@ -38,9 +40,10 @@ fun NewRuleContent(
     installedPackages: List<AppPackage>,
     searchValue: String,
     onSearchValueChange: (newValue: String) -> Unit,
-    onListItemClicked: (appPackage: AppPackage) -> Unit,
+    onListItemClicked: (context: Context, appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -67,7 +70,12 @@ fun NewRuleContent(
             ) { installedPackage ->
                 NewRuleItem(
                     installedPackage,
-                    modifier = modifier.clickable { onListItemClicked(installedPackage) })
+                    modifier = modifier.clickable {
+                        onListItemClicked(
+                            context,
+                            installedPackage
+                        )
+                    })
             }
         }
     }

@@ -17,11 +17,13 @@
 package jp.co.casl0.android.simpleappblocker.newrule
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
+import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.allowlsit.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import kotlinx.coroutines.Dispatchers
@@ -81,7 +83,7 @@ class NewRuleViewModel(private val allowlistRepository: AllowlistRepository) : V
     /**
      * 許可アプリを変更する関数
      */
-    val createNewRule: (AppPackage) -> Unit = { appPackage: AppPackage ->
+    val createNewRule: (Context, AppPackage) -> Unit = { context, appPackage: AppPackage ->
         viewModelScope.launch {
             val currentList = allowlist.first()
             if (!currentList.contains(appPackage.packageName)) {
@@ -91,6 +93,11 @@ class NewRuleViewModel(private val allowlistRepository: AllowlistRepository) : V
                 )
             }
         }
+        Toast.makeText(
+            context,
+            String.format(context.getString(R.string.toast_allow_app), appPackage.appName),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
 
