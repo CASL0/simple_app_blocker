@@ -31,7 +31,7 @@ fun AllowlistScreen(
 ) {
     Column {
         AllowlistSection(
-            R.string.allowlist_section_header,
+            R.string.title_allowlist,
             onAddButtonClicked = onAddButtonClicked,
             modifier = modifier
         ) {

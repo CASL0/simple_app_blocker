@@ -61,7 +61,7 @@ fun AllowlistSection(
 @Composable
 fun PreviewAllowlistSection() {
     ApplicationTheme {
-        AllowlistSection(R.string.allowlist_section_header, {}) {
+        AllowlistSection(R.string.title_allowlist, {}) {
         }
     }
 }

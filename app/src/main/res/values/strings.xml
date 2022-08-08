@@ -6,13 +6,12 @@
     <string name="filters_disabled">フィルターが無効です!</string>
     <string name="filters_enabled">フィルターが有効です!</string>
     <string name="title_blocklog">ブロックログ</string>
-    <string name="title_allowlist">許可したアプリ一覧</string>
+    <string name="title_allowlist">許可しているアプリ</string>
     <string name="blocklog_label_src_address">送信元</string>
     <string name="blocklog_label_dst_address">宛先</string>
     <string name="block_log_src">src</string>
     <string name="block_log_dst">dst</string>
     <string name="unknown_app">不明なアプリ</string>
-    <string name="allowlist_section_header">許可したアプリ一覧</string>
     <string name="default_icon_img_url">https://developer.android.com/images/brand/Android_Robot.png</string>
     <string name="new_rule_title">接続を許可する</string>
     <string name="search_placeholder">検索</string>
