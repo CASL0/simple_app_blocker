@@ -14,7 +14,7 @@
     <string name="unknown_app">不明なアプリ</string>
     <string name="allowlist_section_header">許可したアプリ一覧</string>
     <string name="default_icon_img_url">https://developer.android.com/images/brand/Android_Robot.png</string>
-    <string name="new_rule_title">ブロック規則の追加</string>
+    <string name="new_rule_title">接続を許可する</string>
     <string name="search_placeholder">検索</string>
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
