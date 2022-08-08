@@ -16,4 +16,82 @@
     <string name="default_icon_img_url">https://developer.android.com/images/brand/Android_Robot.png</string>
     <string name="new_rule_title">ブロック規則の追加</string>
     <string name="search_placeholder">検索</string>
+    <string name="show_less">Show less</string>
+    <string name="show_more">Show more</string>
+    <string name="licenses_header">オープンソースライセンス</string>
+    <string name="title_others">その他</string>
+
+    <!-- オープンソースライセンス -->
+
+    <string name="accompanist_library_name">Accompanist</string>
+    <string name="accompanist_license">
+        Copyright 2020 The Android Open Source Project\n\n
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at\n\n
+        https://www.apache.org/licenses/LICENSE-2.0\n\n
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    </string>
+    <string name="coil_library_name">Coil</string>
+    <string name="coil_license">
+        Copyright 2022 Coil Contributors\n\n
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at\n\n
+        https://www.apache.org/licenses/LICENSE-2.0
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+    </string>
+
+    <string name="eventbus_library_name">EventBus</string>
+    <string name="eventbus_license">EventBus binaries and source code can be used according to the Apache License, Version 2.0:\n\n
+    Copyright © 2012-2016 Markus Junginger, greenrobot (http://greenrobot.org)\n\n
+    Licensed under the Apache License, Version 2.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at\n\n
+    http://www.apache.org/licenses/LICENSE-2.0\n\n
+    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</string>
+
+    <string name="logger_library_name">Logger</string>
+    <string name="logger_license">Copyright 2018 Orhan Obut\n\n
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at\n\n
+    http://www.apache.org/licenses/LICENSE-2.0\n\n
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    </string>
+
+    <string name="pcapplusplus_library_name">PcapPlusPlus</string>
+    <string name="pcapplusplus_license">
+        This is free and unencumbered software released into the public domain.\n\n
+        Anyone is free to copy, modify, publish, use, compile, sell, or
+        distribute this software, either in source code form or as a compiled
+        binary, for any purpose, commercial or non-commercial, and by any
+        means.\n\n
+        In jurisdictions that recognize copyright laws, the author or authors
+        of this software dedicate any and all copyright interest in the
+        software to the public domain. We make this dedication for the benefit
+        of the public at large and to the detriment of our heirs and
+        successors. We intend this dedication to be an overt act of
+        relinquishment in perpetuity of all present and future rights to this
+        software under copyright law.\n\n
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+        IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+        OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+        ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+        OTHER DEALINGS IN THE SOFTWARE.\n\n
+        For more information, please refer to &lt;http://unlicense.org&gt;
+    </string>
+
 </resources>

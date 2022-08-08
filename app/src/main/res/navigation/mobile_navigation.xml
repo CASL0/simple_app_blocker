@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_allowlist" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="jp.co.casl0.android.simpleappblocker.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_others"
+        android:name="jp.co.casl0.android.simpleappblocker.others.OthersFragment"
+        android:label="@string/title_others"
+        tools:layout="@layout/fragment_others" />
 </navigation>
