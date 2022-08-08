@@ -17,15 +17,26 @@
 package jp.co.casl0.android.simpleappblocker.ui.others
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import jp.co.casl0.android.simpleappblocker.BuildConfig
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.ui.others.licenses.LicensesList
 
 @Composable
 fun OthersScreen(modifier: Modifier = Modifier) {
     Column {
+        OthersItem(itemHeader = R.string.version_header, modifier = modifier) {
+            // バージョン情報
+            Text(
+                text = "v${BuildConfig.VERSION_NAME}",
+                fontWeight = FontWeight.Bold
+            )
+        }
         OthersItem(itemHeader = R.string.licenses_header, modifier = modifier) {
+            // オープンソースライセンス
             LicensesList(modifier = modifier)
         }
     }
