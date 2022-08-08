@@ -41,7 +41,10 @@ class NewRuleActivity : AppCompatActivity() {
         supportActionBar?.hide()
         setContent {
             ApplicationTheme {
-                NewRuleActivityScreen(viewModel) { finish() }
+                NewRuleActivityScreen(viewModel) {
+                    finish()
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                }
             }
         }
     }

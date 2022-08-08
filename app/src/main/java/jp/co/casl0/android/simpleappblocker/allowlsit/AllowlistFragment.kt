@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.allowlsit
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -60,7 +61,14 @@ class AllowlistFragment : Fragment() {
                 ApplicationTheme {
                     AllowlistFragmentScreen(viewModel) {
                         Intent(context, NewRuleActivity::class.java).also {
-                            startActivity(it)
+                            startActivity(
+                                it,
+                                ActivityOptions.makeCustomAnimation(
+                                    requireContext(),
+                                    android.R.anim.fade_in,
+                                    android.R.anim.fade_out
+                                ).toBundle()
+                            )
                         }
                     }
                 }
