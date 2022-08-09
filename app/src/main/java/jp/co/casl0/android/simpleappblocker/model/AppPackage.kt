@@ -19,8 +19,8 @@ package jp.co.casl0.android.simpleappblocker.model
 import android.graphics.drawable.Drawable
 
 data class AppPackage(
-    val icon: Drawable?,
-    val appName: String?,
-    val packageName: String?,
+    val icon: Drawable,
+    val appName: String,
+    val packageName: String,
     var isAllowed: Boolean = false
 )

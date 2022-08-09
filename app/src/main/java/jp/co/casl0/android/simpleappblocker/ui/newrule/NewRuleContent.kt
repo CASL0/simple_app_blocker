@@ -66,7 +66,7 @@ fun NewRuleContent(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(items = installedPackages,
-                key = { installedPackage -> installedPackage.packageName!! }
+                key = { installedPackage -> installedPackage.packageName }
             ) { installedPackage ->
                 NewRuleItem(
                     installedPackage,

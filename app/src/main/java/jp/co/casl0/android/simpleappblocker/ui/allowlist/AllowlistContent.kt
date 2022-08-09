@@ -39,7 +39,7 @@ fun AllowlistContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(items = allowedPackages,
-            key = { allowedPackage -> allowedPackage.packageName!! }
+            key = { allowedPackage -> allowedPackage.packageName }
         ) { allowedPackage ->
             AllowlistItem(allowedPackage, onItemRemove, modifier = modifier)
         }

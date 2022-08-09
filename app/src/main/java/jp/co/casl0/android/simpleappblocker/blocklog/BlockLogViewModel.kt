@@ -75,13 +75,10 @@ class BlockLogViewModel(context: Context?) : ViewModel() {
                     appInfo.packageName,
                 )
             } catch (e: PackageManager.NameNotFoundException) {
-                val errMsg = e.localizedMessage
-                if (errMsg != null) Logger.d(errMsg)
-                AppPackage(
-                    null,
-                    errMsg,
-                    null,
-                )
+                e.localizedMessage?.let {
+                    Logger.d(it)
+                }
+                null
             }
             return appPackage
         }

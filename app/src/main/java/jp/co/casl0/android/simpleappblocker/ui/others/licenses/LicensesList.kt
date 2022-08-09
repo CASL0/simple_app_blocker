@@ -32,7 +32,6 @@ fun LicensesList(modifier: Modifier = Modifier) {
     ) {
         val licenses = listOf(
             Pair(R.string.accompanist_library_name, R.string.accompanist_license),
-            Pair(R.string.coil_library_name, R.string.coil_license),
             Pair(R.string.eventbus_library_name, R.string.eventbus_license),
             Pair(R.string.logger_library_name, R.string.logger_license),
             Pair(R.string.pcapplusplus_library_name, R.string.pcapplusplus_license),

@@ -18,7 +18,6 @@ package jp.co.casl0.android.simpleappblocker.ui.allowlist
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -33,13 +32,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
 import com.google.accompanist.drawablepainter.DrawablePainter
-import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
@@ -61,15 +57,7 @@ fun AllowlistItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image( // アイコン画像
-                painter =
-                if (appPackage.icon != null) {
-                    DrawablePainter(appPackage.icon)
-                } else {
-                    // デフォルトでドロイド君
-                    rememberImagePainter(
-                        data = stringResource(R.string.default_icon_img_url)
-                    )
-                },
+                painter = DrawablePainter(appPackage.icon),
                 contentDescription = "icon",
                 modifier = modifier
                     .clip(CircleShape)
@@ -82,13 +70,13 @@ fun AllowlistItem(
             ) {
                 Text(
                     // アプリ名
-                    text = appPackage.appName ?: "",
+                    text = appPackage.appName,
                     color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     // パッケージ名
-                    text = appPackage.packageName ?: "",
+                    text = appPackage.packageName,
                     color = MaterialTheme.colors.onSurface,
                 )
             }

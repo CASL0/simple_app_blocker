@@ -88,8 +88,8 @@ class NewRuleViewModel(private val allowlistRepository: AllowlistRepository) : V
             val currentList = allowlist.first()
             if (!currentList.contains(appPackage.packageName)) {
                 allowlistRepository.insertAllowedPackage(
-                    appPackage.packageName!!,
-                    appPackage.appName!!
+                    appPackage.packageName,
+                    appPackage.appName
                 )
             }
         }

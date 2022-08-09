@@ -31,9 +31,7 @@ class AllowlistViewModel(private val allowlistRepository: AllowlistRepository) :
      */
     val disallowPackage: (AppPackage) -> Unit = { appPackage: AppPackage ->
         viewModelScope.launch {
-            appPackage.packageName?.let {
-                allowlistRepository.disallowPackage(it)
-            }
+            allowlistRepository.disallowPackage(appPackage.packageName)
         }
     }
 }
