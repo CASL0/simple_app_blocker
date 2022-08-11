@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-assumenosideeffects public class com.orhanobut.logger.Logger {
+    public static *** v(...);
+    public static *** d(...);
+    public static *** i(...);
+    public static *** w(...);
+    public static *** e(...);
+}
