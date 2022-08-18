@@ -32,7 +32,7 @@ import androidx.lifecycle.ViewModelProvider
 import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAllowlistBinding
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
-import jp.co.casl0.android.simpleappblocker.newrule.NewRuleActivity
+import jp.co.casl0.android.simpleappblocker.newrule.NewRuleDialog
 import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowlistScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
@@ -60,16 +60,7 @@ class AllowlistFragment : Fragment() {
             setContent {
                 ApplicationTheme {
                     AllowlistFragmentScreen(viewModel) {
-                        Intent(context, NewRuleActivity::class.java).also {
-                            startActivity(
-                                it,
-                                ActivityOptions.makeCustomAnimation(
-                                    requireContext(),
-                                    android.R.anim.fade_in,
-                                    android.R.anim.fade_out
-                                ).toBundle()
-                            )
-                        }
+                        NewRuleDialog.newInstance().show(childFragmentManager, "NewRuleDialog")
                     }
                 }
             }
