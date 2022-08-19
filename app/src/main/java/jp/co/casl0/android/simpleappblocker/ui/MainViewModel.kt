@@ -16,10 +16,8 @@
 
 package jp.co.casl0.android.simpleappblocker.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import jp.co.casl0.android.simpleappblocker.allowlsit.AllowlistRepository
 
 class MainViewModel(allowlistRepository: AllowlistRepository) : ViewModel() {
@@ -28,7 +26,7 @@ class MainViewModel(allowlistRepository: AllowlistRepository) : ViewModel() {
     /**
      * 許可リスト
      */
-    val allowlist: LiveData<List<String>> = allowlistRepository.allowlist.asLiveData()
+    val allowlist = allowlistRepository.allowlist
 
 }
 

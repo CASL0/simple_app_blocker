@@ -33,8 +33,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -108,11 +110,13 @@ class MainActivity : AppCompatActivity() {
                 MainViewModelFactory((applicationContext as AppBlockerApplication).repository)
             ).get(MainViewModel::class.java)
 
-        _viewModel.allowlist.observe(this) { newAllowlist ->
-            appBlockerService?.run {
-                if (enabled) {
-                    // 既に適用中のみフィルターを更新する
-                    updateFilters(newAllowlist)
+        lifecycleScope.launch {
+            _viewModel.allowlist.collect { newAllowlist ->
+                appBlockerService?.run {
+                    if (enabled) {
+                        // 既に適用中のみフィルターを更新する
+                        updateFilters(newAllowlist)
+                    }
                 }
             }
         }

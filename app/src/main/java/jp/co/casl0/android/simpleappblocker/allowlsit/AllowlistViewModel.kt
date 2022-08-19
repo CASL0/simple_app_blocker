@@ -24,7 +24,7 @@ class AllowlistViewModel(private val allowlistRepository: AllowlistRepository) :
     /**
      * 許可リスト
      */
-    val allowlist: LiveData<List<String>> = allowlistRepository.allowlist.asLiveData()
+    val allowlist = allowlistRepository.allowlist
 
     /**
      * 指定のパッケージをブロックに変更する

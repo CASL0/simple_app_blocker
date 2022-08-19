@@ -16,15 +16,13 @@
 
 package jp.co.casl0.android.simpleappblocker.allowlsit
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
@@ -74,7 +72,7 @@ fun AllowlistFragmentScreen(
     allowlistViewModel: AllowlistViewModel,
     onAddButtonClicked: () -> Unit
 ) {
-    val allowedPackages: List<String> by allowlistViewModel.allowlist.observeAsState(
+    val allowedPackages: List<String> by allowlistViewModel.allowlist.collectAsState(
         listOf()
     )
     val pm = LocalContext.current.packageManager

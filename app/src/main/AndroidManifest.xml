@@ -22,9 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleAppBlocker">
         <activity
-            android:name=".newrule.NewRuleActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.MainActivity"
             android:exported="true"
             android:launchMode="singleInstance">
