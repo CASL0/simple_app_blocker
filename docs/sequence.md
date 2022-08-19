@@ -1,32 +1,45 @@
 # Simple App Blocker シーケンス図
+
 Simple App Blocker のシーケンス図です。
 
 ## 許可アプリ更新
+
 ```plantuml
 @startuml
 autoactivate on
 actor ユーザー as user
-participant AppPackageListFragment
-participant AppPackageListViewModel
+participant AllowlistFragment
+participant NewRuleDialog
+participant NewRuleViewModel
 participant AllowlistRepository
-participant AppBlockerService
 participant AllowlistDAO
 database Room
-user -> AppPackageListFragment : 許可アプリ更新
-AppPackageListFragment -> AppPackageListViewModel : changeFiltersRule()
-AppPackageListViewModel --> AllowlistRepository : insertAllowedPackage()
+participant MainActivity
+participant AppBlockerService
+
+user -> AllowlistFragment : [+]クリック
+AllowlistFragment -> NewRuleDialog : show()
+NewRuleDialog -> NewRuleViewModel : loadInstalledPackages()
+return
+return
+user -> NewRuleDialog : 許可したいアプリをタップ
+NewRuleDialog -> NewRuleViewModel : createNewRule()
+NewRuleViewModel --> AllowlistRepository : insertAllowedPackage()
 note right : Dispatchers.IOで実行
 AllowlistRepository --> AllowlistDAO : insertAllowedPackages()
 AllowlistDAO --> Room : 許可アプリをInsert
+
 == Roomの更新 ==
-AppPackageListViewModel <-- Room : Flowに更新値をemit
-AppPackageListFragment <-- AppPackageListViewModel : LiveData.onChanged
-AppPackageListFragment -> AppBlockerService : updateFilters()
+
+Room --> MainActivity : Flowの更新をcollect
+MainActivity -> AppBlockerService : updateFilters()
+note right : 更新後の規則を適用
 return
 @enduml
 ```
 
 ## アプリブロック
+
 ```plantuml
 @startuml
 autoactivate on
@@ -45,9 +58,11 @@ AppBlockerConnection --> EventBus : ブロックしたパケット情報をpost
 == EventBusのブロードキャスト ==
 EventBus --> BlockLogViewModel : EventBusから通知
 BlockLogViewModel -> BlockLogViewModel : onPacketBlocked()
-BlockLogViewModel -> BlockLogViewModel : blockPacketInfoList.postValue()
+BlockLogViewModel -> BlockLogViewModel : blockPacketInfoListの更新
 return
-BlockLogViewModel --> BlockLogFragment : LiveData.onChanged()
+BlockLogViewModel --> BlockLogFragment : Stateの更新
+BlockLogFragment -> BlockLogFragment : recompose
 note right : ブロックしたアプリ一覧更新
+return
 @enduml
 ```
