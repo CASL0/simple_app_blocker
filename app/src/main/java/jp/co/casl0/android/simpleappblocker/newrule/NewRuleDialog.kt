@@ -61,6 +61,7 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
                 requireDialog().findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
                     ?.let {
                         val bsb = BottomSheetBehavior.from(it)
+                        bsb.isDraggable = false
                         if (bsb.state == BottomSheetBehavior.STATE_COLLAPSED) bsb.state =
                             getDefaultState()
                     }
