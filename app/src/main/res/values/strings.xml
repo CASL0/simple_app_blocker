@@ -21,6 +21,8 @@
     <string name="title_others">その他</string>
     <string name="version_header">バージョン情報</string>
     <string name="toast_allow_app">%sの接続を許可しました</string>
+    <string name="update_downloaded_message">更新がダウンロードされました。</string>
+    <string name="restart_for_update">更新する</string>
 
     <!-- オープンソースライセンス -->
 

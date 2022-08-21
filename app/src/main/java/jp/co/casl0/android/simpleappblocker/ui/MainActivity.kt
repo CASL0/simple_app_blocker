@@ -29,17 +29,25 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.InflateException
 import android.view.Menu
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.common.IntentSenderForResultStarter
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.ActivityResult
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
@@ -52,9 +60,31 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var _viewModel: MainViewModel
     var appBlockerService: AppBlockerService? = null
+    private lateinit var appUpdateManager: AppUpdateManager
+
+    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+        when (state.installStatus()) {
+            InstallStatus.DOWNLOADED -> {
+                popupSnackbarForCompleteUpdate()
+            }
+        }
+    }
+
+    private val updateFlowResultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartIntentSenderForResult(),
+        ) { result ->
+            when (result.resultCode) {
+                RESULT_OK -> Logger.d("update ok")
+                RESULT_CANCELED -> Logger.d("update canceled")
+                ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> Logger.d("update failed")
+            }
+        }
+
     private val vpnPrepare =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -100,6 +130,9 @@ class MainActivity : AppCompatActivity() {
         )
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.registerListener(installStateUpdatedListener)
+        checkAppUpdate()
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
@@ -125,6 +158,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         appBlockerService?.disableFilters()
+        appUpdateManager.unregisterListener(installStateUpdatedListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -167,6 +201,61 @@ class MainActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+    }
+
+    private fun checkAppUpdate() {
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            ) {
+                // Flexibleアップデートを実行
+
+                val starter =
+                    IntentSenderForResultStarter { intent, _, fillInIntent, flagsMask, flagsValues, _, _ ->
+                        val request = IntentSenderRequest.Builder(intent)
+                            .setFillInIntent(fillInIntent)
+                            .setFlags(flagsValues, flagsMask)
+                            .build()
+
+                        updateFlowResultLauncher.launch(request)
+                    }
+
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.FLEXIBLE,
+                    starter,
+                    1,
+                )
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // アップデートがダウンロード済みで未インストールの場合に、更新を促す
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                    popupSnackbarForCompleteUpdate()
+                }
+            }
+    }
+
+    private fun popupSnackbarForCompleteUpdate() {
+        Snackbar.make(
+            binding.root,
+            getString(R.string.update_downloaded_message),
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            setAction(getString(R.string.restart_for_update)) {
+                // アプリを再起動し更新を適用する
+                appUpdateManager.completeUpdate()
+            }
+            show()
+        }
     }
 
     private fun setActionBarTextColor(actionBar: ActionBar?, color: Int) {
