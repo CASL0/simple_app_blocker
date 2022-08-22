@@ -28,9 +28,21 @@
 - org.greenrobot:eventbus 3.3.1
 
 ### ビルド
+**Windows**
+```cmd
+git clone https://github.com/CASL0/simple_app_blocker.git
+cd simple_app_blocker
+bootstrap.bat
+gradlew.bat build
+```
 
-- 本リポジトリをクローンした後、[bootstrap.bat](/bootstrap.bat)を実行してください。
-- cmd を起動し、`gradlew.bat build`を実行してください。
+**macOS**
+```bash
+git clone https://github.com/CASL0/simple_app_blocker.git
+cd simple_app_blocker
+sh bootstrap.sh
+./gradlew build
+```
 
 ## ドキュメント
 
