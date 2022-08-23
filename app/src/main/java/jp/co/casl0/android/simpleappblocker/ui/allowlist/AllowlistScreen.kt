@@ -19,7 +19,6 @@ package jp.co.casl0.android.simpleappblocker.ui.allowlist
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 
 @Composable
@@ -31,7 +30,6 @@ fun AllowlistScreen(
 ) {
     Column {
         AllowlistSection(
-            R.string.title_allowlist,
             onAddButtonClicked = onAddButtonClicked,
             modifier = modifier
         ) {

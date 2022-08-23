@@ -17,24 +17,16 @@
 package jp.co.casl0.android.simpleappblocker.ui.allowlist
 
 import android.content.res.Configuration
-import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
 fun AllowlistSection(
-    @StringRes title: Int,
     onAddButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
@@ -44,15 +36,7 @@ fun AllowlistSection(
             Icon(Icons.Filled.Add, contentDescription = "add")
         }
     }, backgroundColor = MaterialTheme.colors.background) {
-        Column(modifier = modifier.padding(horizontal = 8.dp)) {
-            Text(
-                stringResource(title),
-                color = MaterialTheme.colors.onBackground,
-                style = MaterialTheme.typography.h6,
-                modifier = modifier.paddingFromBaseline(top = 40.dp, bottom = 8.dp)
-            )
-            content()
-        }
+        content()
     }
 }
 
@@ -61,7 +45,7 @@ fun AllowlistSection(
 @Composable
 fun PreviewAllowlistSection() {
     ApplicationTheme {
-        AllowlistSection(R.string.title_allowlist, {}) {
+        AllowlistSection({}) {
         }
     }
 }
