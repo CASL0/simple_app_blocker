@@ -44,39 +44,36 @@ fun NewRuleContent(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+    val scrollState = rememberLazyListState()
+    LazyColumn(
+        state = scrollState,
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        OutlinedTextField(
-            value = searchValue,
-            onValueChange = onSearchValueChange,
-            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
-            singleLine = true,
-            label = { Text(stringResource(R.string.search_placeholder)) },
-            modifier = modifier
-                .fillMaxWidth()
-        )
-        val scrollState = rememberLazyListState()
-        LazyColumn(
-            state = scrollState,
-            contentPadding = PaddingValues(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            items(items = installedPackages,
-                key = { installedPackage -> installedPackage.packageName }
-            ) { installedPackage ->
-                NewRuleItem(
-                    installedPackage,
-                    modifier = modifier.clickable {
-                        onListItemClicked(
-                            context,
-                            installedPackage
-                        )
-                    })
-            }
+        item {
+            OutlinedTextField(
+                value = searchValue,
+                onValueChange = onSearchValueChange,
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
+                singleLine = true,
+                label = { Text(stringResource(R.string.search_placeholder)) },
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+            )
+        }
+        items(items = installedPackages,
+            key = { installedPackage -> installedPackage.packageName }
+        ) { installedPackage ->
+            NewRuleItem(
+                installedPackage,
+                modifier = modifier.clickable {
+                    onListItemClicked(
+                        context,
+                        installedPackage
+                    )
+                })
         }
     }
 }
