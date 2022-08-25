@@ -62,7 +62,7 @@ class NewRuleViewModel(private val allowlistRepository: AllowlistRepository) : V
      * インストール済みパッケージを読み込む関数
      */
     suspend fun loadInstalledPackages(context: Context?) =
-        withContext(Dispatchers.Main) {
+        withContext(Dispatchers.IO) {
             context?.packageManager?.also { pm ->
                 pm.getInstalledApplications(0).forEach { appInfo ->
                     val notInList =

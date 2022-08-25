@@ -21,18 +21,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleContent
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleScreen
@@ -57,7 +60,6 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
         ).get(NewRuleViewModel::class.java)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loadInstalledPackages(requireContext())
                 requireDialog().findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
                     ?.let {
                         val bsb = BottomSheetBehavior.from(it)
@@ -65,6 +67,7 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
                         if (bsb.state == BottomSheetBehavior.STATE_COLLAPSED) bsb.state =
                             getDefaultState()
                     }
+                viewModel.loadInstalledPackages(requireContext())
             }
         }
 
@@ -90,11 +93,22 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
         it.appName.contains(searchValue, ignoreCase = true)
     }
     NewRuleScreen(onClose = onClose) {
-        NewRuleContent(
-            installedPackages,
-            searchValue,
-            viewModel.onSearchValueChange,
-            viewModel.createNewRule
-        )
+        if (installedPackages.isEmpty()) {
+            // インストール済みアプリをロード中はプログレス表示
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            NewRuleContent(
+                installedPackages,
+                searchValue,
+                viewModel.onSearchValueChange,
+                viewModel.createNewRule
+            )
+        }
     }
 }
