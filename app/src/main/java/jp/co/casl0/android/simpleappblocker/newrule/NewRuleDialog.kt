@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -37,6 +38,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
+import jp.co.casl0.android.simpleappblocker.ui.newrule.LocalButtonClickHandler
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleContent
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
@@ -103,12 +105,13 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
                 CircularProgressIndicator()
             }
         } else {
-            NewRuleContent(
-                installedPackages,
-                searchValue,
-                viewModel.onSearchValueChange,
-                viewModel.createNewRule
-            )
+            CompositionLocalProvider(LocalButtonClickHandler provides viewModel.createNewRule) {
+                NewRuleContent(
+                    installedPackages,
+                    searchValue,
+                    viewModel.onSearchValueChange,
+                )
+            }
         }
     }
 }

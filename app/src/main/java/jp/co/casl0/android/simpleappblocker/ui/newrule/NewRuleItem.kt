@@ -19,13 +19,14 @@ package jp.co.casl0.android.simpleappblocker.ui.newrule
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LibraryAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.DrawablePainter
@@ -43,7 +44,7 @@ fun NewRuleItem(
             .fillMaxWidth()
     ) {
         Row(
-            modifier = modifier.padding(8.dp),
+            modifier = modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image( // アイコン画像
@@ -53,7 +54,11 @@ fun NewRuleItem(
                     .clip(CircleShape)
                     .size(50.dp)
             )
-            Column(modifier = modifier.padding(start = 8.dp)) {
+            Column(
+                modifier = modifier
+                    .padding(start = 8.dp)
+                    .weight(1f)
+            ) {
                 Text(
                     // アプリ名
                     text = appPackage.appName,
@@ -64,6 +69,20 @@ fun NewRuleItem(
                     // パッケージ名
                     text = appPackage.packageName,
                     color = MaterialTheme.colors.onSurface,
+                )
+            }
+            val allowAppPackage = LocalButtonClickHandler.current
+            val context = LocalContext.current
+            IconButton(
+                onClick = { allowAppPackage(context, appPackage) },
+                modifier = modifier
+                    .padding(12.dp)
+                    .size(24.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.LibraryAdd,
+                    contentDescription = "Allow",
+                    tint = MaterialTheme.colors.secondary
                 )
             }
         }
