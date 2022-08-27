@@ -17,6 +17,8 @@
 package jp.co.casl0.android.simpleappblocker.ui.others
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +29,8 @@ import jp.co.casl0.android.simpleappblocker.ui.others.licenses.LicensesList
 
 @Composable
 fun OthersScreen(modifier: Modifier = Modifier) {
-    Column {
+    val scrollState = rememberScrollState()
+    Column(modifier = modifier.verticalScroll(scrollState)) {
         OthersItem(itemHeader = R.string.version_header, modifier = modifier) {
             // バージョン情報
             Text(

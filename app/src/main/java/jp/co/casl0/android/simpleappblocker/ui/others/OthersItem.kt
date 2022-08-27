@@ -23,8 +23,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
@@ -51,7 +49,6 @@ fun OthersItem(
         Column(
             modifier = modifier
                 .padding(start = 16.dp)
-                .verticalScroll(rememberScrollState())
                 .animateContentSize(
                     animationSpec = spring(
                         dampingRatio = Spring.DampingRatioMediumBouncy,
