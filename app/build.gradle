@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "jp.co.casl0.android.simpleappblocker"
         minSdk 29
-        targetSdk 31
+        targetSdk 33
         versionCode 3
         versionName "1.0.2"
         ndk {

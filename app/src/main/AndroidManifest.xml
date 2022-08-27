@@ -3,6 +3,7 @@
     package="jp.co.casl0.android.simpleappblocker">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <queries>
         <intent>

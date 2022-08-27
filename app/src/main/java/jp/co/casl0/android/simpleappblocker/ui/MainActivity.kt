@@ -16,10 +16,12 @@
 
 package jp.co.casl0.android.simpleappblocker.ui
 
+import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
@@ -29,11 +31,14 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.InflateException
 import android.view.Menu
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -55,6 +60,7 @@ import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
+import jp.co.casl0.android.simpleappblocker.utilities.PermissionRationaleDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -97,6 +103,47 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    /**
+     * 通知権限のリクエスト時のコールバック
+     */
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Logger.d("notification permission granted")
+        } else {
+            Logger.d("notification permission not granted")
+        }
+    }
+
+    /**
+     * ランタイムパーミッションをリクエストする
+     */
+    private fun requestPermission(
+        permission: String,
+        @StringRes dialogMessage: Int,
+        permissionLauncher: ActivityResultLauncher<String>
+    ) {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                Logger.d("permission granted: $permission")
+            }
+            shouldShowRequestPermissionRationale(permission) -> {
+                PermissionRationaleDialog.newInstance(
+                    dialogMessage,
+                    R.string.permission_rationale_positive_label,
+                    R.string.permission_rationale_negative_label
+                ).show(supportFragmentManager, PermissionRationaleDialog::class.simpleName)
+            }
+            else -> {
+                permissionLauncher.launch(permission)
+            }
+        }
+    }
+
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as AppBlockerService.AppBlockerBinder
@@ -137,6 +184,15 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
         configureVpnService()
+
+        // 通知の権限をリクエストする
+        if (Build.VERSION.SDK_INT >= 33) {
+            requestPermission(
+                Manifest.permission.POST_NOTIFICATIONS,
+                R.string.permission_rationale_message,
+                notificationPermissionLauncher
+            )
+        }
         _viewModel =
             ViewModelProvider(
                 this,
