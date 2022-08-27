@@ -90,12 +90,8 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
 
 @Composable
 fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
-    val searchValue = viewModel.searchValue
-    val installedPackages = viewModel.installedPackages.filter {
-        it.appName.contains(searchValue, ignoreCase = true)
-    }
     NewRuleScreen(onClose = onClose) {
-        if (installedPackages.isEmpty()) {
+        if (viewModel.installedPackages.isEmpty()) {
             // インストール済みアプリをロード中はプログレス表示
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -105,6 +101,10 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
                 CircularProgressIndicator()
             }
         } else {
+            val searchValue = viewModel.searchValue
+            val installedPackages = viewModel.installedPackages.filter {
+                it.appName.contains(searchValue, ignoreCase = true)
+            }
             CompositionLocalProvider(LocalButtonClickHandler provides viewModel.createNewRule) {
                 NewRuleContent(
                     installedPackages,
