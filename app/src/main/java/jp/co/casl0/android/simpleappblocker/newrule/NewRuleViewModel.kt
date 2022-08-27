@@ -17,6 +17,8 @@
 package jp.co.casl0.android.simpleappblocker.newrule
 
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -64,7 +66,12 @@ class NewRuleViewModel(private val allowlistRepository: AllowlistRepository) : V
     suspend fun loadInstalledPackages(context: Context?) =
         withContext(Dispatchers.IO) {
             context?.packageManager?.also { pm ->
-                pm.getInstalledApplications(0).forEach { appInfo ->
+                val installedApplications = if (Build.VERSION.SDK_INT >= 33) {
+                    pm.getInstalledApplications(PackageManager.ApplicationInfoFlags.of(0))
+                } else {
+                    pm.getInstalledApplications(0)
+                }
+                installedApplications.forEach { appInfo ->
                     val notInList =
                         installedPackages.find { it.packageName == appInfo.packageName } == null
                     if (notInList) {

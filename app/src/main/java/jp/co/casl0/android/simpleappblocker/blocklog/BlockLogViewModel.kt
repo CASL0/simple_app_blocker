@@ -18,6 +18,7 @@ package jp.co.casl0.android.simpleappblocker.blocklog
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -68,7 +69,14 @@ class BlockLogViewModel(context: Context?) : ViewModel() {
     private fun lookupAppPackage(uid: Int): AppPackage? {
         packageManager?.getNameForUid(uid)?.also { packageName ->
             val appPackage = try {
-                val appInfo = packageManager.getPackageInfo(packageName, 0).applicationInfo
+                val appInfo = if (Build.VERSION.SDK_INT >= 33) {
+                    packageManager.getPackageInfo(
+                        packageName,
+                        PackageManager.PackageInfoFlags.of(0)
+                    ).applicationInfo
+                } else {
+                    packageManager.getPackageInfo(packageName, 0).applicationInfo
+                }
                 AppPackage(
                     appInfo.loadIcon(packageManager),
                     appInfo.loadLabel(packageManager).toString(),

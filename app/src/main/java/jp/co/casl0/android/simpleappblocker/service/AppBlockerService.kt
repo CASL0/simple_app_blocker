@@ -88,7 +88,6 @@ class AppBlockerService : VpnService() {
             try {
                 // 遮断対象外のアプリは除外しシステムネットワークを使用するようにする
                 Logger.d(allowedAppPackage)
-                packageManager.getPackageInfo(allowedAppPackage, 0)
                 localTunnelBuilder?.addDisallowedApplication(allowedAppPackage)
             } catch (e: PackageManager.NameNotFoundException) {
                 Logger.d("Package not available")
