@@ -24,9 +24,8 @@
     <string name="update_downloaded_message">更新がダウンロードされました。</string>
     <string name="restart_for_update">更新する</string>
     <string name="empty_allowlist">許可しているアプリがありません。</string>
-    <string name="permission_rationale_message">通知の権限がありません。「設定」アプリを開き通知を許可しますか？</string>
-    <string name="permission_rationale_positive_label">はい</string>
-    <string name="permission_rationale_negative_label">いいえ</string>
+    <string name="notification_permission_rationale_message">通知の権限がありません。「設定」アプリを開き通知を許可することができます。</string>
+    <string name="notification_permission_action_label">設定</string>
 
     <!-- オープンソースライセンス -->
 

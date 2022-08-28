@@ -22,10 +22,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -60,7 +62,6 @@ import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
-import jp.co.casl0.android.simpleappblocker.utilities.PermissionRationaleDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -121,7 +122,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun requestPermission(
         permission: String,
-        @StringRes dialogMessage: Int,
+        @StringRes message: Int,
         permissionLauncher: ActivityResultLauncher<String>
     ) {
         when {
@@ -132,11 +133,7 @@ class MainActivity : AppCompatActivity() {
                 Logger.d("permission granted: $permission")
             }
             shouldShowRequestPermissionRationale(permission) -> {
-                PermissionRationaleDialog.newInstance(
-                    dialogMessage,
-                    R.string.permission_rationale_positive_label,
-                    R.string.permission_rationale_negative_label
-                ).show(supportFragmentManager, PermissionRationaleDialog::class.simpleName)
+                popupSnackbarForGrantNotificationPermission(message)
             }
             else -> {
                 permissionLauncher.launch(permission)
@@ -189,7 +186,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 33) {
             requestPermission(
                 Manifest.permission.POST_NOTIFICATIONS,
-                R.string.permission_rationale_message,
+                R.string.notification_permission_rationale_message,
                 notificationPermissionLauncher
             )
         }
@@ -300,6 +297,9 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    /**
+     * アップデートの適用のためのスナックバーを表示する
+     */
     private fun popupSnackbarForCompleteUpdate() {
         Snackbar.make(
             binding.root,
@@ -311,6 +311,29 @@ class MainActivity : AppCompatActivity() {
                 appUpdateManager.completeUpdate()
             }
             show()
+        }
+    }
+
+    /**
+     * 通知権限の設定用のスナックバーを表示する
+     */
+    private fun popupSnackbarForGrantNotificationPermission(@StringRes message: Int) {
+        Snackbar.make(
+            binding.root,
+            message,
+            Snackbar.LENGTH_LONG
+        ).apply {
+            setAction(R.string.notification_permission_action_label) {
+                // 設定のアプリ情報画面へ遷移
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:$packageName")
+                ).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }.run {
+                    startActivity(this)
+                }
+            }.show()
         }
     }
 
