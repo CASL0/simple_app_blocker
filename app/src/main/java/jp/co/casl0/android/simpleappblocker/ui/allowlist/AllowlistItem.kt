@@ -18,13 +18,9 @@ package jp.co.casl0.android.simpleappblocker.ui.allowlist
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
@@ -53,7 +49,7 @@ fun AllowlistItem(
     ) {
         Row(
             modifier = modifier
-                .padding(8.dp),
+                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image( // アイコン画像
@@ -80,13 +76,18 @@ fun AllowlistItem(
                     color = MaterialTheme.colors.onSurface,
                 )
             }
-            Icon(
-                imageVector = Icons.Default.Close,
-                contentDescription = "Close",
-                tint = MaterialTheme.colors.onSurface,
+            IconButton(
+                onClick = { onItemRemove(appPackage) },
                 modifier = modifier
-                    .clickable { onItemRemove(appPackage) }
-            )
+                    .padding(12.dp)
+                    .size(24.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Close",
+                    tint = MaterialTheme.colors.onSurface,
+                )
+            }
         }
     }
 }
