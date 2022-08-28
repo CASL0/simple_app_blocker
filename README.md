@@ -15,17 +15,18 @@
 
 ### 開発環境
 
-- Android Gradle Plugin 7.1.3
-- Gradle 7.2
+- Kotlin 1.7.10
+- Android Gradle Plugin 7.2.2
+- Gradle 7.5.1
 - JDK 11
 - NDK 21.4.7075529
 
 ### 依存ライブラリ
 
-- Accompanist 0.16.0
-- PcapPlusPlus 21.11
-- com.orhanobut:logger 2.2.0
-- org.greenrobot:eventbus 3.3.1
+- [Accompanist](https://github.com/google/accompanist) 0.16.0
+- [PcapPlusPlus](https://github.com/seladb/PcapPlusPlus) 21.11
+- [Logger](https://github.com/orhanobut/logger) 2.2.0
+- [EventBus](https://github.com/greenrobot/EventBus) 3.3.1
 
 ### ビルド
 **Windows**
