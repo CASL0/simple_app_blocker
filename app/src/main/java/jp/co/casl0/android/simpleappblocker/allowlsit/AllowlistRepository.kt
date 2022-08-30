@@ -18,11 +18,10 @@ package jp.co.casl0.android.simpleappblocker.allowlsit
 
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowedPackage
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDAO
+import jp.co.casl0.android.simpleappblocker.utilities.getNowDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Calendar
 
 class AllowlistRepository(private val allowlistDao: AllowlistDAO) {
 
@@ -39,7 +38,7 @@ class AllowlistRepository(private val allowlistDao: AllowlistDAO) {
                 AllowedPackage(
                     packageName,
                     appName,
-                    Calendar.getInstance().toFormatString("yyyy-MM-dd HH:mm:ss")
+                    getNowDateTime()
                 )
             )
         }
@@ -49,11 +48,5 @@ class AllowlistRepository(private val allowlistDao: AllowlistDAO) {
      */
     suspend fun disallowPackage(packageName: String) = withContext(Dispatchers.IO) {
         allowlistDao.deleteByPackageName(packageName)
-    }
-}
-
-fun Calendar.toFormatString(format: String): String {
-    SimpleDateFormat(format).run {
-        return format(time)
     }
 }

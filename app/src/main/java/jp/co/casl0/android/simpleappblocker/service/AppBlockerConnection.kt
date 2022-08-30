@@ -20,14 +20,13 @@ import android.os.ParcelFileDescriptor
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.PcapPlusPlusInterface
+import jp.co.casl0.android.simpleappblocker.utilities.getNowDateTime
 import kotlinx.coroutines.Runnable
 import org.greenrobot.eventbus.EventBus
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ReadOnlyBufferException
-import java.text.SimpleDateFormat
-import java.util.Calendar
 
 class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : Runnable {
     companion object {
@@ -61,7 +60,7 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
                         PcapPlusPlusInterface.getDstIpAddressNative(packet.array(), length),
                         PcapPlusPlusInterface.getDstPortNative(packet.array(), length),
                         PcapPlusPlusInterface.getProtocolAsStringNative(packet.array(), length),
-                        Calendar.getInstance().toFormatString("yyyy-MM-dd HH:mm:ss")
+                        getNowDateTime()
                     )
                 )
             }
@@ -74,11 +73,5 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
                 return
             }
         }
-    }
-}
-
-fun Calendar.toFormatString(format: String): String {
-    SimpleDateFormat(format).run {
-        return format(time)
     }
 }
