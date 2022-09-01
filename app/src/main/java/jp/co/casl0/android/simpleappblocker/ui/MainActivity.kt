@@ -62,6 +62,7 @@ import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
+import jp.co.casl0.android.simpleappblocker.utilities.popupSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -76,7 +77,16 @@ class MainActivity : AppCompatActivity() {
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
         when (state.installStatus()) {
             InstallStatus.DOWNLOADED -> {
-                popupSnackbarForCompleteUpdate()
+                // アップデート適用のためスナックバーを表示
+                popupSnackbar(
+                    view = binding.root,
+                    message = R.string.update_downloaded_message,
+                    duration = Snackbar.LENGTH_INDEFINITE,
+                    actionLabel = R.string.restart_for_update
+                ) {
+                    // アプリを再起動し更新を適用する
+                    appUpdateManager.completeUpdate()
+                }
             }
         }
     }
@@ -133,7 +143,23 @@ class MainActivity : AppCompatActivity() {
                 Logger.d("permission granted: $permission")
             }
             shouldShowRequestPermissionRationale(permission) -> {
-                popupSnackbarForGrantNotificationPermission(message)
+                // 通知権限の設定用のスナックバーを表示する
+                popupSnackbar(
+                    view = binding.root,
+                    message = message,
+                    duration = Snackbar.LENGTH_LONG,
+                    actionLabel = R.string.notification_permission_action_label,
+                ) {
+                    // 設定のアプリ情報画面へ遷移
+                    Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:$packageName")
+                    ).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }.run {
+                        startActivity(this)
+                    }
+                }
             }
             else -> {
                 permissionLauncher.launch(permission)
@@ -292,49 +318,18 @@ class MainActivity : AppCompatActivity() {
             .appUpdateInfo
             .addOnSuccessListener { appUpdateInfo ->
                 if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    popupSnackbarForCompleteUpdate()
+                    // アップデート適用のためスナックバーを表示
+                    popupSnackbar(
+                        view = binding.root,
+                        message = R.string.update_downloaded_message,
+                        duration = Snackbar.LENGTH_INDEFINITE,
+                        actionLabel = R.string.restart_for_update
+                    ) {
+                        // アプリを再起動し更新を適用する
+                        appUpdateManager.completeUpdate()
+                    }
                 }
             }
-    }
-
-    /**
-     * アップデートの適用のためのスナックバーを表示する
-     */
-    private fun popupSnackbarForCompleteUpdate() {
-        Snackbar.make(
-            binding.root,
-            getString(R.string.update_downloaded_message),
-            Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            setAction(getString(R.string.restart_for_update)) {
-                // アプリを再起動し更新を適用する
-                appUpdateManager.completeUpdate()
-            }
-            show()
-        }
-    }
-
-    /**
-     * 通知権限の設定用のスナックバーを表示する
-     */
-    private fun popupSnackbarForGrantNotificationPermission(@StringRes message: Int) {
-        Snackbar.make(
-            binding.root,
-            message,
-            Snackbar.LENGTH_LONG
-        ).apply {
-            setAction(R.string.notification_permission_action_label) {
-                // 設定のアプリ情報画面へ遷移
-                Intent(
-                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.parse("package:$packageName")
-                ).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }.run {
-                    startActivity(this)
-                }
-            }.show()
-        }
     }
 
     private fun setActionBarTextColor(actionBar: ActionBar?, color: Int) {
