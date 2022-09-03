@@ -16,6 +16,8 @@
 
 package jp.co.casl0.android.simpleappblocker.allowlsit
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -78,18 +80,22 @@ fun AllowlistFragmentScreen(
     val pm = LocalContext.current.packageManager
     val newAllowedPackages: MutableList<AppPackage> = mutableListOf()
     allowedPackages.forEach { allowedPackageName ->
-        pm.getPackageInfo(
-            allowedPackageName,
-            0
-        ).applicationInfo.let { appInfo ->
-            newAllowedPackages.add(
-                AppPackage(
-                    appInfo.loadIcon(pm),
-                    appInfo.loadLabel(pm).toString(),
-                    appInfo.packageName,
-                )
-            )
+        val appInfo = if (Build.VERSION.SDK_INT >= 33) {
+            pm.getPackageInfo(
+                allowedPackageName,
+                PackageManager.PackageInfoFlags.of(0)
+            ).applicationInfo
+        } else {
+            pm.getPackageInfo(allowedPackageName, 0).applicationInfo
         }
+        newAllowedPackages.add(
+            AppPackage(
+                appInfo.loadIcon(pm),
+                appInfo.loadLabel(pm).toString(),
+                appInfo.packageName,
+            )
+        )
+
     }
     AllowlistScreen(newAllowedPackages, onAddButtonClicked, allowlistViewModel.disallowPackage)
 }
