@@ -34,7 +34,7 @@ fun OthersScreen(modifier: Modifier = Modifier) {
         OthersItem(itemHeader = R.string.version_header, modifier = modifier) {
             // バージョン情報
             Text(
-                text = "v${BuildConfig.VERSION_NAME}",
+                text = BuildConfig.VERSION_NAME,
                 fontWeight = FontWeight.Bold
             )
         }

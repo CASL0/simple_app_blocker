@@ -14,7 +14,7 @@
     <string name="show_more">Show more</string>
     <string name="licenses_header">Open source licenses</string>
     <string name="title_others">More</string>
-    <string name="version_header">Version info</string>
+    <string name="version_header">App version</string>
     <string name="toast_allow_app">Allowed %s to connect the internet</string>
     <string name="update_downloaded_message">An update has just been downloaded.</string>
     <string name="restart_for_update">RESTART</string>
