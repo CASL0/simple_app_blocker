@@ -187,48 +187,56 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        appUpdateManager = AppUpdateManagerFactory.create(this)
-        appUpdateManager.registerListener(installStateUpdatedListener)
-        checkAppUpdate()
-        val navView: BottomNavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        navView.setupWithNavController(navController)
-        configureVpnService()
 
-        // 通知の権限をリクエストする
-        if (Build.VERSION.SDK_INT >= 33) {
-            requestPermission(
-                Manifest.permission.POST_NOTIFICATIONS,
-                R.string.notification_permission_rationale_message,
-                notificationPermissionLauncher
-            )
-        }
-        _viewModel =
-            ViewModelProvider(
-                this,
-                MainViewModelFactory((applicationContext as AppBlockerApplication).repository)
-            ).get(MainViewModel::class.java)
+    private fun checkAppUpdate() {
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            ) {
+                // Flexibleアップデートを実行
 
-        lifecycleScope.launch {
-            _viewModel.allowlist.collect { newAllowlist ->
-                appBlockerService?.run {
-                    if (enabled) {
-                        // 既に適用中のみフィルターを更新する
-                        updateFilters(newAllowlist)
+                val starter =
+                    IntentSenderForResultStarter { intent, _, fillInIntent, flagsMask, flagsValues, _, _ ->
+                        val request = IntentSenderRequest.Builder(intent)
+                            .setFillInIntent(fillInIntent)
+                            .setFlags(flagsValues, flagsMask)
+                            .build()
+
+                        updateFlowResultLauncher.launch(request)
                     }
-                }
+
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    AppUpdateType.FLEXIBLE,
+                    starter,
+                    1,
+                )
             }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        appBlockerService?.disableFilters()
-        appUpdateManager.unregisterListener(installStateUpdatedListener)
+    private fun setActionBarTextColor(actionBar: ActionBar?, color: Int) {
+        val title = SpannableString(actionBar?.title ?: "")
+        title.setSpan(
+            ForegroundColorSpan(color),
+            0,
+            title.length,
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+        )
+        actionBar?.title = title
+    }
+
+    private fun getColorInt(resourceId: Int): Int {
+        return if (Build.VERSION.SDK_INT >= 23) {
+            resources.getColor(resourceId, theme)
+        } else {
+            resources.getColor(resourceId)
+        }
+    }
+    
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -269,34 +277,42 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
+    // ライフサイクルメソッド
 
-    private fun checkAppUpdate() {
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
-            ) {
-                // Flexibleアップデートを実行
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateManager.registerListener(installStateUpdatedListener)
+        checkAppUpdate()
+        val navView: BottomNavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navView.setupWithNavController(navController)
+        configureVpnService()
 
-                val starter =
-                    IntentSenderForResultStarter { intent, _, fillInIntent, flagsMask, flagsValues, _, _ ->
-                        val request = IntentSenderRequest.Builder(intent)
-                            .setFillInIntent(fillInIntent)
-                            .setFlags(flagsValues, flagsMask)
-                            .build()
+        // 通知の権限をリクエストする
+        if (Build.VERSION.SDK_INT >= 33) {
+            requestPermission(
+                Manifest.permission.POST_NOTIFICATIONS,
+                R.string.notification_permission_rationale_message,
+                notificationPermissionLauncher
+            )
+        }
+        _viewModel =
+            ViewModelProvider(
+                this,
+                MainViewModelFactory((applicationContext as AppBlockerApplication).repository)
+            ).get(MainViewModel::class.java)
 
-                        updateFlowResultLauncher.launch(request)
+        lifecycleScope.launch {
+            _viewModel.allowlist.collect { newAllowlist ->
+                appBlockerService?.run {
+                    if (enabled) {
+                        // 既に適用中のみフィルターを更新する
+                        updateFilters(newAllowlist)
                     }
-
-                appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.FLEXIBLE,
-                    starter,
-                    1,
-                )
+                }
             }
         }
     }
@@ -323,22 +339,9 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    private fun setActionBarTextColor(actionBar: ActionBar?, color: Int) {
-        val title = SpannableString(actionBar?.title ?: "")
-        title.setSpan(
-            ForegroundColorSpan(color),
-            0,
-            title.length,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-        )
-        actionBar?.title = title
-    }
-
-    private fun getColorInt(resourceId: Int): Int {
-        return if (Build.VERSION.SDK_INT >= 23) {
-            resources.getColor(resourceId, theme)
-        } else {
-            resources.getColor(resourceId)
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        appBlockerService?.disableFilters()
+        appUpdateManager.unregisterListener(installStateUpdatedListener)
     }
 }
