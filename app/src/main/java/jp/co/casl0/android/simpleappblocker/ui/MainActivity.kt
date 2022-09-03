@@ -22,7 +22,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
@@ -56,6 +55,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.orhanobut.logger.Logger
+import jp.co.casl0.android.simpleappblocker.BuildConfig
 import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
@@ -148,11 +148,9 @@ class MainActivity : AppCompatActivity() {
                     duration = Snackbar.LENGTH_LONG,
                     actionLabel = R.string.notification_permission_action_label,
                 ) {
-                    // 設定のアプリ情報画面へ遷移
-                    Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:$packageName")
-                    ).apply {
+                    // 通知の設定画面へ遷移
+                    Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                        putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }.run {
                         startActivity(this)
