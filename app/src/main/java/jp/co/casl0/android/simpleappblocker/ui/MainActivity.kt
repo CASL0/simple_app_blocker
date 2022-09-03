@@ -55,9 +55,7 @@ import com.google.android.play.core.install.model.ActivityResult
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
-import com.orhanobut.logger.PrettyFormatStrategy
 import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
@@ -193,11 +191,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Logger.addLogAdapter(
-            AndroidLogAdapter(
-                PrettyFormatStrategy.newBuilder().tag(getString(R.string.app_name)).build()
-            )
-        )
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         appUpdateManager = AppUpdateManagerFactory.create(this)

@@ -17,10 +17,21 @@
 package jp.co.casl0.android.simpleappblocker.app
 
 import android.app.Application
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
+import com.orhanobut.logger.PrettyFormatStrategy
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDatabase
 
 class AppBlockerApplication : Application() {
+    init {
+        Logger.addLogAdapter(
+            AndroidLogAdapter(
+                PrettyFormatStrategy.newBuilder().tag("SimpleAppBlocker").build()
+            )
+        )
+    }
+
     /**
      * 許可アプリ操作用のデータベースインスタンス
      */
