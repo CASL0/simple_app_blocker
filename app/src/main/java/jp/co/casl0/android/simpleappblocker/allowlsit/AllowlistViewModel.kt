@@ -18,6 +18,7 @@ package jp.co.casl0.android.simpleappblocker.allowlsit
 
 import androidx.lifecycle.*
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import kotlinx.coroutines.launch
 
 class AllowlistViewModel(private val allowlistRepository: AllowlistRepository) : ViewModel() {

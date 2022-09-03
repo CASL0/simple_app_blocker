@@ -18,7 +18,7 @@ package jp.co.casl0.android.simpleappblocker.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import jp.co.casl0.android.simpleappblocker.allowlsit.AllowlistRepository
+import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 
 class MainViewModel(allowlistRepository: AllowlistRepository) : ViewModel() {
     var filtersEnabled = false
