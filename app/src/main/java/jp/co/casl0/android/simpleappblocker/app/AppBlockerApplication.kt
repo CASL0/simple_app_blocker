@@ -21,7 +21,7 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
-import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDatabase
+import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
 
 class AppBlockerApplication : Application() {
     init {

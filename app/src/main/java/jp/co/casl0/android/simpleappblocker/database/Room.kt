@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.appdatabase
+package jp.co.casl0.android.simpleappblocker.database
 
 import android.content.Context
 import androidx.room.Database

@@ -16,8 +16,8 @@
 
 package jp.co.casl0.android.simpleappblocker.repository
 
-import jp.co.casl0.android.simpleappblocker.appdatabase.AllowedPackage
-import jp.co.casl0.android.simpleappblocker.appdatabase.AllowlistDAO
+import jp.co.casl0.android.simpleappblocker.database.AllowedPackage
+import jp.co.casl0.android.simpleappblocker.database.AllowlistDAO
 import jp.co.casl0.android.simpleappblocker.utilities.getNowDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
