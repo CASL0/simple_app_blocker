@@ -20,17 +20,11 @@ import android.app.Application
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
 
 class AppBlockerApplication : Application() {
-    init {
-        Logger.addLogAdapter(
-            AndroidLogAdapter(
-                PrettyFormatStrategy.newBuilder().tag("SimpleAppBlocker").build()
-            )
-        )
-    }
 
     /**
      * 許可アプリ操作用のデータベースインスタンス
@@ -41,4 +35,13 @@ class AppBlockerApplication : Application() {
      * 許可アプリリポジトリ
      */
     val repository by lazy { AllowlistRepository(database.allowlistDao()) }
+
+    override fun onCreate() {
+        super.onCreate()
+        Logger.addLogAdapter(
+            AndroidLogAdapter(
+                PrettyFormatStrategy.newBuilder().tag(getString(R.string.app_name)).build()
+            )
+        )
+    }
 }
