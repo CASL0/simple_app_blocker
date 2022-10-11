@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/drawable/ic_app_package_list_black_24dp.xml" value="0.1895" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/drawable/ic_blocklog.xml" value="0.1885" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1895" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1895" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1895" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/layout/fragment_allowlist.xml" value="0.10235507246376811" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/layout/fragment_blocklog.xml" value="0.18125" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/layout/fragment_others.xml" value="0.21458333333333332" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/menu/options.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1835" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1835" />
+        <entry key="..\:/Users/ooshiro/Desktop/simple_app_blocker/app/src/main/res/xml/locales_config.xml" value="0.21557971014492755" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>
