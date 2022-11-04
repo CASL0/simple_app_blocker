@@ -28,32 +28,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAllowlistBinding
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.newrule.NewRuleDialog
 import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowlistScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
+@AndroidEntryPoint
 class AllowlistFragment : Fragment() {
 
     companion object {
         fun newInstance() = AllowlistFragment()
     }
 
-    private lateinit var viewModel: AllowlistViewModel
+    private val viewModel: AllowlistViewModel by viewModels()
     private lateinit var binding: FragmentAllowlistBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel =
-            ViewModelProvider(
-                this,
-                AllowlistViewModelFactory((context?.applicationContext as AppBlockerApplication).repository)
-            ).get(AllowlistViewModel::class.java)
         binding = FragmentAllowlistBinding.inflate(layoutInflater, container, false)
         binding.allowlistComposeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

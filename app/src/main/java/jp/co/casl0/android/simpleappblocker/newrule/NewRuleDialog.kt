@@ -31,19 +31,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
+import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.ui.newrule.LocalButtonClickHandler
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleContent
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 open class NewRuleDialog : BottomSheetDialogFragment() {
     companion object {
         fun newInstance(): NewRuleDialog {
@@ -51,15 +52,13 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
         }
     }
 
+    private val viewModel: NewRuleViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel = ViewModelProvider(
-            this,
-            NewRuleViewModelFactory((requireActivity().applicationContext as AppBlockerApplication).repository)
-        ).get(NewRuleViewModel::class.java)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 requireDialog().findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)

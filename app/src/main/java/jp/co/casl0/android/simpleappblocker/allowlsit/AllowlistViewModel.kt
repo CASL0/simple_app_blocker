@@ -16,12 +16,18 @@
 
 package jp.co.casl0.android.simpleappblocker.allowlsit
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AllowlistViewModel(private val allowlistRepository: AllowlistRepository) : ViewModel() {
+@HiltViewModel
+class AllowlistViewModel @Inject constructor(private val allowlistRepository: AllowlistRepository) :
+    ViewModel() {
     /**
      * 許可リスト
      */

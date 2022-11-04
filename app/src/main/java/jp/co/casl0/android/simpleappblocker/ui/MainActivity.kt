@@ -35,12 +35,12 @@ import android.view.Menu
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -55,8 +55,8 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.orhanobut.logger.Logger
+import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.BuildConfig
-import jp.co.casl0.android.simpleappblocker.app.AppBlockerApplication
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
@@ -65,10 +65,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var _viewModel: MainViewModel
+    private val _viewModel: MainViewModel by viewModels()
     var appBlockerService: AppBlockerService? = null
     private lateinit var appUpdateManager: AppUpdateManager
 
@@ -234,7 +235,7 @@ class MainActivity : AppCompatActivity() {
             resources.getColor(resourceId)
         }
     }
-    
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
     }
@@ -253,7 +254,7 @@ class MainActivity : AppCompatActivity() {
                         getColorInt(R.color.filters_enabled)
                     )
                     lifecycleScope.launch(Dispatchers.IO) {
-                        (application as? AppBlockerApplication)?.repository?.allowlist?.let {
+                        _viewModel.allowlist.let {
                             appBlockerService?.updateFilters(
                                 it.first()
                             )
@@ -299,11 +300,6 @@ class MainActivity : AppCompatActivity() {
                 notificationPermissionLauncher
             )
         }
-        _viewModel =
-            ViewModelProvider(
-                this,
-                MainViewModelFactory((applicationContext as AppBlockerApplication).repository)
-            ).get(MainViewModel::class.java)
 
         lifecycleScope.launch {
             _viewModel.allowlist.collect { newAllowlist ->

@@ -24,16 +24,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class NewRuleViewModel(private val allowlistRepository: AllowlistRepository) : ViewModel() {
+@HiltViewModel
+class NewRuleViewModel @Inject constructor(private val allowlistRepository: AllowlistRepository) :
+    ViewModel() {
 
     /**
      * 許可済みパッケージリスト

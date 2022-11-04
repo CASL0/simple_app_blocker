@@ -17,15 +17,16 @@
 package jp.co.casl0.android.simpleappblocker.repository
 
 import jp.co.casl0.android.simpleappblocker.database.AllowedPackage
-import jp.co.casl0.android.simpleappblocker.database.AllowlistDAO
+import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
 import jp.co.casl0.android.simpleappblocker.utilities.getNowDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class AllowlistRepository(private val allowlistDao: AllowlistDAO) {
+class AllowlistRepository @Inject constructor(private val allowlistDatabase: AllowlistDatabase) {
 
-    val allowlist: Flow<List<String>> = allowlistDao.getAllowedPackages()
+    val allowlist: Flow<List<String>> = allowlistDatabase.allowlistDao().getAllowedPackages()
 
     /**
      * Roomに許可アプリを追加する関数
@@ -34,7 +35,7 @@ class AllowlistRepository(private val allowlistDao: AllowlistDAO) {
      */
     suspend fun insertAllowedPackage(packageName: String, appName: String) =
         withContext(Dispatchers.IO) {
-            allowlistDao.insertAllowedPackages(
+            allowlistDatabase.allowlistDao().insertAllowedPackages(
                 AllowedPackage(
                     packageName,
                     appName,
@@ -47,6 +48,6 @@ class AllowlistRepository(private val allowlistDao: AllowlistDAO) {
      * Roomから許可アプリのレコードを削除する関数
      */
     suspend fun disallowPackage(packageName: String) = withContext(Dispatchers.IO) {
-        allowlistDao.deleteByPackageName(packageName)
+        allowlistDatabase.allowlistDao().deleteByPackageName(packageName)
     }
 }

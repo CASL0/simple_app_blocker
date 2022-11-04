@@ -20,22 +20,11 @@ import android.app.Application
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
+import dagger.hilt.android.HiltAndroidApp
 import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
-import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
 
+@HiltAndroidApp
 class AppBlockerApplication : Application() {
-
-    /**
-     * 許可アプリ操作用のデータベースインスタンス
-     */
-    val database by lazy { AllowlistDatabase.getDatabase(this) }
-
-    /**
-     * 許可アプリリポジトリ
-     */
-    val repository by lazy { AllowlistRepository(database.allowlistDao()) }
-
     override fun onCreate() {
         super.onCreate()
         Logger.addLogAdapter(

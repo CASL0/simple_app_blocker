@@ -18,9 +18,12 @@ package jp.co.casl0.android.simpleappblocker.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
+import javax.inject.Inject
 
-class MainViewModel(allowlistRepository: AllowlistRepository) : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(allowlistRepository: AllowlistRepository) : ViewModel() {
     var filtersEnabled = false
 
     /**
