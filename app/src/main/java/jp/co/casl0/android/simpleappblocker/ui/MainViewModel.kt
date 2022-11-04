@@ -17,7 +17,6 @@
 package jp.co.casl0.android.simpleappblocker.ui
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import javax.inject.Inject
@@ -33,13 +32,3 @@ class MainViewModel @Inject constructor(allowlistRepository: AllowlistRepository
 
 }
 
-class MainViewModelFactory(private val repository: AllowlistRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return MainViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

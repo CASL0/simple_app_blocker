@@ -16,9 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.database
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [AllowedPackage::class], version = 1, exportSchema = false)
@@ -28,25 +26,4 @@ abstract class AllowlistDatabase : RoomDatabase() {
      */
     abstract fun allowlistDao(): AllowlistDAO
 
-    companion object {
-        /**
-         * データベースのシングルトンインスタンス
-         */
-        private var INSTANCE: AllowlistDatabase? = null
-
-        /**
-         * データベースインスタンスを取得する関数
-         */
-        fun getDatabase(context: Context): AllowlistDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AllowlistDatabase::class.java,
-                    "app_database"
-                ).build()
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
 }

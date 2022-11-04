@@ -25,7 +25,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.casl0.android.simpleappblocker.R
@@ -111,16 +110,5 @@ class NewRuleViewModel @Inject constructor(private val allowlistRepository: Allo
             String.format(context.getString(R.string.toast_allow_app), appPackage.appName),
             Toast.LENGTH_SHORT
         ).show()
-    }
-}
-
-class NewRuleViewModelFactory(private val repository: AllowlistRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(NewRuleViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return NewRuleViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
