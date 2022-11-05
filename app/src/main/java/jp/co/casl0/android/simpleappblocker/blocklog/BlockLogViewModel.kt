@@ -21,6 +21,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.model.PacketInfo
@@ -90,5 +91,16 @@ class BlockLogViewModel(context: Context?) : ViewModel() {
             return appPackage
         }
         return null
+    }
+}
+
+class BlockLogViewModelFactory(private val context: Context?) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(BlockLogViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return BlockLogViewModel(context) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
