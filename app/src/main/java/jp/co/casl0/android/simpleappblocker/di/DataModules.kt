@@ -24,9 +24,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
+import jp.co.casl0.android.simpleappblocker.data.InstalledApplicationDataSource
 import jp.co.casl0.android.simpleappblocker.data.local.AllowlistLocalDataSource
+import jp.co.casl0.android.simpleappblocker.data.local.InstalledApplicationLocalDataSource
 import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
+import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
@@ -41,6 +44,15 @@ object RepositoryModule {
     ): AllowlistRepository {
         return AllowlistRepository(allowlistDataSource, defaultDispatcher)
     }
+
+    @Singleton
+    @Provides
+    fun provideInstalledApplicationRepository(
+        installedApplicationDataSource: InstalledApplicationDataSource,
+        @IoDispatcher defaultDispatcher: CoroutineDispatcher
+    ): InstalledApplicationRepository {
+        return InstalledApplicationRepository(installedApplicationDataSource, defaultDispatcher)
+    }
 }
 
 @Module
@@ -50,6 +62,12 @@ object DataSourceModule {
     @Provides
     fun provideAllowlistLocalDataSource(database: AllowlistDatabase): AllowlistDataSource {
         return AllowlistLocalDataSource(database)
+    }
+
+    @Singleton
+    @Provides
+    fun provideInstalledApplicationLocalDataSource(@ApplicationContext context: Context): InstalledApplicationDataSource {
+        return InstalledApplicationLocalDataSource(context)
     }
 }
 
