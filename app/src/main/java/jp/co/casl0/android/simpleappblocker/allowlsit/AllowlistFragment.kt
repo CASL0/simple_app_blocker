@@ -70,7 +70,7 @@ fun AllowlistFragmentScreen(
     allowlistViewModel: AllowlistViewModel,
     onAddButtonClicked: () -> Unit
 ) {
-    val allowedPackages: List<String> by allowlistViewModel.allowlist.collectAsState(
+    val allowedPackages: List<CharSequence> by allowlistViewModel.allowlist.collectAsState(
         listOf()
     )
     val pm = LocalContext.current.packageManager
@@ -78,11 +78,11 @@ fun AllowlistFragmentScreen(
     allowedPackages.forEach { allowedPackageName ->
         val appInfo = if (Build.VERSION.SDK_INT >= 33) {
             pm.getPackageInfo(
-                allowedPackageName,
+                allowedPackageName.toString(),
                 PackageManager.PackageInfoFlags.of(0)
             ).applicationInfo
         } else {
-            pm.getPackageInfo(allowedPackageName, 0).applicationInfo
+            pm.getPackageInfo(allowedPackageName.toString(), 0).applicationInfo
         }
         newAllowedPackages.add(
             AppPackage(
