@@ -89,6 +89,7 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
 
 @Composable
 fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
+    val uiState = viewModel.uiState.collectAsState()
     val installedApplications = viewModel.installedApplications.collectAsState(listOf()).value
     NewRuleScreen(onClose = onClose) {
         if (installedApplications.isEmpty()) {
@@ -101,7 +102,7 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
                 CircularProgressIndicator()
             }
         } else {
-            val searchValue = viewModel.searchValue
+            val searchValue = uiState.value.searchValue
             val installedPackages = installedApplications.filter {
                 it.appName.contains(searchValue, ignoreCase = true)
             }
@@ -109,7 +110,7 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
                 NewRuleContent(
                     installedPackages,
                     searchValue,
-                    viewModel.onSearchValueChange,
+                    viewModel::onSearchValueChange,
                 )
             }
         }

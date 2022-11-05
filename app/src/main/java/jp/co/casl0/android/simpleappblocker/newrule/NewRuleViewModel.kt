@@ -18,9 +18,6 @@ package jp.co.casl0.android.simpleappblocker.newrule
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,9 +25,23 @@ import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+sealed interface UiState {
+    val searchValue: String
+
+    data class NewRuleUiState(
+        /**
+         * 検索ボックスの入力値
+         */
+        override val searchValue: String = ""
+    ) : UiState
+}
 
 @HiltViewModel
 class NewRuleViewModel @Inject constructor(
@@ -43,6 +54,9 @@ class NewRuleViewModel @Inject constructor(
         refreshInstalledApplications()
     }
 
+    private val _uiState = MutableStateFlow(UiState.NewRuleUiState())
+    val uiState: StateFlow<UiState.NewRuleUiState> get() = _uiState
+
     /**
      * 許可済みパッケージリスト
      */
@@ -54,16 +68,10 @@ class NewRuleViewModel @Inject constructor(
     val installedApplications = installedApplicationRepository.installedApplications
 
     /**
-     * 検索ボックスの入力値
-     */
-    private var _searchValue by mutableStateOf("")
-    val searchValue get() = _searchValue
-
-    /**
      * 検索ボックスの入力値変更のイベントハンドラ
      */
-    val onSearchValueChange = { newValue: String ->
-        _searchValue = newValue
+    fun onSearchValueChange(newValue: String) {
+        _uiState.update { it.copy(searchValue = newValue) }
     }
 
     /**
