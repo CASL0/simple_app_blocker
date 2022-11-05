@@ -70,5 +70,5 @@ fun AllowlistFragmentScreen(
     val allowedPackages: List<AppPackage> by allowlistViewModel.allowlist.collectAsState(
         listOf()
     )
-    AllowlistScreen(allowedPackages, onAddButtonClicked, allowlistViewModel.disallowPackage)
+    AllowlistScreen(allowedPackages, onAddButtonClicked, allowlistViewModel::disallowPackage)
 }

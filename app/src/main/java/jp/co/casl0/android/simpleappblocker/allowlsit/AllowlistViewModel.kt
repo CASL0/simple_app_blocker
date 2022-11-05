@@ -61,7 +61,7 @@ class AllowlistViewModel @Inject constructor(
     /**
      * 指定のパッケージをブロックに変更する
      */
-    val disallowPackage: (AppPackage) -> Unit = { appPackage: AppPackage ->
+    fun disallowPackage(appPackage: AppPackage) {
         viewModelScope.launch {
             allowlistRepository.disallowPackage(appPackage.packageName)
         }
