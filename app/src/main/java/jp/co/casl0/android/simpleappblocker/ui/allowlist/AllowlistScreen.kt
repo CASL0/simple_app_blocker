@@ -16,7 +16,13 @@
 
 package jp.co.casl0.android.simpleappblocker.ui.allowlist
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
@@ -28,12 +34,11 @@ fun AllowlistScreen(
     onItemRemove: (appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column {
-        AllowlistSection(
-            onAddButtonClicked = onAddButtonClicked,
-            modifier = modifier
-        ) {
-            AllowlistContent(allowedPackages, onItemRemove, modifier)
+    Scaffold(floatingActionButton = {
+        FloatingActionButton(onClick = onAddButtonClicked) {
+            Icon(Icons.Filled.Add, contentDescription = "add")
         }
+    }, backgroundColor = MaterialTheme.colors.background, modifier = modifier) {
+        AllowlistContent(allowedPackages, onItemRemove, Modifier.padding(it))
     }
 }
