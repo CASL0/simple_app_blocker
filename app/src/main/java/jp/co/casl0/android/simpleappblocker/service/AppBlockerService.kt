@@ -27,8 +27,8 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.ui.MainActivity
 import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.ui.MainActivity
 import java.util.concurrent.atomic.AtomicReference
 
 
@@ -64,7 +64,7 @@ class AppBlockerService : VpnService() {
      * フィルターを更新する関数
      * @param allowedAppPackages 通信許可したいアプリパッケージ名のリスト
      */
-    fun updateFilters(allowedAppPackages: List<String>) {
+    fun updateFilters(allowedAppPackages: List<CharSequence>) {
         updateForegroundService(getString(R.string.filters_enabled))
         startConnection(allowedAppPackages)
         enabled = true
@@ -82,13 +82,13 @@ class AppBlockerService : VpnService() {
     /**
      * 遮断用のタスクを開始する関数
      */
-    private fun startConnection(allowedAppPackages: List<String>) {
+    private fun startConnection(allowedAppPackages: List<CharSequence>) {
         val localTunnelBuilder = getLocalTunnelBuilder()
         allowedAppPackages.forEach { allowedAppPackage ->
             try {
                 // 遮断対象外のアプリは除外しシステムネットワークを使用するようにする
                 Logger.d(allowedAppPackage)
-                localTunnelBuilder?.addDisallowedApplication(allowedAppPackage)
+                localTunnelBuilder?.addDisallowedApplication(allowedAppPackage.toString())
             } catch (e: PackageManager.NameNotFoundException) {
                 Logger.d("Package not available")
             }

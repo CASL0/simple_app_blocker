@@ -16,17 +16,23 @@
 
 package jp.co.casl0.android.simpleappblocker.repository
 
-import jp.co.casl0.android.simpleappblocker.database.AllowedPackage
-import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
-import jp.co.casl0.android.simpleappblocker.utilities.getNowDateTime
+import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
+import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class AllowlistRepository @Inject constructor(private val allowlistDatabase: AllowlistDatabase) {
+class AllowlistRepository @Inject constructor(private val allowlistDataSource: AllowlistDataSource) {
 
-    val allowlist: Flow<List<String>> = allowlistDatabase.allowlistDao().getAllowedPackages()
+    val allowlist: Flow<List<CharSequence>> =
+        allowlistDataSource.getAllowlistStream().map { allowedPackages ->
+            allowedPackages.map {
+                it.packageName
+            }
+        }.flowOn(Dispatchers.IO)
 
     /**
      * Roomに許可アプリを追加する関数
@@ -35,11 +41,9 @@ class AllowlistRepository @Inject constructor(private val allowlistDatabase: All
      */
     suspend fun insertAllowedPackage(packageName: String, appName: String) =
         withContext(Dispatchers.IO) {
-            allowlistDatabase.allowlistDao().insertAllowedPackages(
-                AllowedPackage(
-                    packageName,
-                    appName,
-                    getNowDateTime()
+            allowlistDataSource.insertPackage(
+                DomainAllowedPackage(
+                    packageName, appName
                 )
             )
         }
@@ -48,6 +52,6 @@ class AllowlistRepository @Inject constructor(private val allowlistDatabase: All
      * Roomから許可アプリのレコードを削除する関数
      */
     suspend fun disallowPackage(packageName: String) = withContext(Dispatchers.IO) {
-        allowlistDatabase.allowlistDao().deleteByPackageName(packageName)
+        allowlistDataSource.removePackage(packageName)
     }
 }

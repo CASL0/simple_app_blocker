@@ -23,6 +23,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
+import jp.co.casl0.android.simpleappblocker.data.local.AllowlistLocalDataSource
 import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import javax.inject.Singleton
@@ -33,9 +35,19 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideAllowlistRepository(
-        allowlistDatabase: AllowlistDatabase
+        allowlistDataSource: AllowlistDataSource
     ): AllowlistRepository {
-        return AllowlistRepository(allowlistDatabase)
+        return AllowlistRepository(allowlistDataSource)
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DataSourceModule {
+    @Singleton
+    @Provides
+    fun provideAllowlistLocalDataSource(database: AllowlistDatabase): AllowlistDataSource {
+        return AllowlistLocalDataSource(database)
     }
 }
 
