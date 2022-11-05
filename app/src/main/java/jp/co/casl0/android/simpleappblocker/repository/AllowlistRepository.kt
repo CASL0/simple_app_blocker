@@ -18,6 +18,7 @@ package jp.co.casl0.android.simpleappblocker.repository
 
 import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -25,14 +26,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class AllowlistRepository @Inject constructor(private val allowlistDataSource: AllowlistDataSource) {
+class AllowlistRepository @Inject constructor(
+    private val allowlistDataSource: AllowlistDataSource,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+) {
 
     val allowlist: Flow<List<CharSequence>> =
         allowlistDataSource.getAllowlistStream().map { allowedPackages ->
             allowedPackages.map {
                 it.packageName
             }
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(defaultDispatcher)
 
     /**
      * Roomに許可アプリを追加する関数
@@ -40,7 +44,7 @@ class AllowlistRepository @Inject constructor(private val allowlistDataSource: A
      * @param appName アプリ名
      */
     suspend fun insertAllowedPackage(packageName: String, appName: String) =
-        withContext(Dispatchers.IO) {
+        withContext(defaultDispatcher) {
             allowlistDataSource.insertPackage(
                 DomainAllowedPackage(
                     packageName, appName
@@ -51,7 +55,7 @@ class AllowlistRepository @Inject constructor(private val allowlistDataSource: A
     /**
      * Roomから許可アプリのレコードを削除する関数
      */
-    suspend fun disallowPackage(packageName: String) = withContext(Dispatchers.IO) {
+    suspend fun disallowPackage(packageName: String) = withContext(defaultDispatcher) {
         allowlistDataSource.removePackage(packageName)
     }
 }

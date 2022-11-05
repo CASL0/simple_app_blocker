@@ -27,6 +27,7 @@ import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.data.local.AllowlistLocalDataSource
 import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -35,9 +36,10 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideAllowlistRepository(
-        allowlistDataSource: AllowlistDataSource
+        allowlistDataSource: AllowlistDataSource,
+        @IoDispatcher defaultDispatcher: CoroutineDispatcher
     ): AllowlistRepository {
-        return AllowlistRepository(allowlistDataSource)
+        return AllowlistRepository(allowlistDataSource, defaultDispatcher)
     }
 }
 
