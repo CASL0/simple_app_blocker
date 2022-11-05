@@ -16,20 +16,16 @@
 
 package jp.co.casl0.android.simpleappblocker.database
 
-import androidx.room.Insert
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AllowlistDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllowedPackages(vararg packages: AllowedPackage)
+    suspend fun insertAllowedPackages(vararg packages: AllowedPackage)
 
     @Delete
-    fun deleteAllowedPackages(vararg packages: AllowedPackage)
+    suspend fun deleteAllowedPackages(vararg packages: AllowedPackage)
 
     @Query("SELECT package_name FROM allowlist")
     fun getAllowedPackages(): Flow<List<String>>
@@ -38,5 +34,5 @@ interface AllowlistDAO {
     fun getAllowlist(): Flow<List<AllowedPackage>>
 
     @Query("DELETE FROM allowlist WHERE package_name=:packageName")
-    fun deleteByPackageName(packageName: String)
+    suspend fun deleteByPackageName(packageName: String)
 }
