@@ -12,6 +12,9 @@ buildscript {
         activity_compose_version = '1.6.1'
         in_app_update_version = '2.0.0'
         hilt_version = '2.42'
+        accompanist_appcompat_theme_version = '0.23.0'
+        accompanist_drawablepainter_version = '0.25.1'
+        accompanist_swiperefresh_version = '0.27.0'
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
