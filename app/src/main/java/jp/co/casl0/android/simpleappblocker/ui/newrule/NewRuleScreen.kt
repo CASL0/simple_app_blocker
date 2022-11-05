@@ -16,20 +16,31 @@
 
 package jp.co.casl0.android.simpleappblocker.ui.newrule
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import jp.co.casl0.android.simpleappblocker.R
 
 @Composable
 fun NewRuleScreen(
     onClose: () -> Unit,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Scaffold(topBar = {
         NewRuleTopBar(title = R.string.new_rule_title, onClose = onClose)
-    }) {
-        content()
+    }, modifier = modifier) {
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+            onRefresh = onRefresh,
+            modifier = Modifier.padding(it)
+        ) {
+            content()
+        }
     }
 }

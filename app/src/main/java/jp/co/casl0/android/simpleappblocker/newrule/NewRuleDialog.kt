@@ -21,15 +21,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.viewModels
@@ -91,28 +85,21 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
 fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
     val installedApplications = viewModel.installedApplications.collectAsState(listOf()).value
-    NewRuleScreen(onClose = onClose) {
-        if (installedApplications.isEmpty()) {
-            // インストール済みアプリをロード中はプログレス表示
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            val searchValue = uiState.value.searchValue
-            val installedPackages = installedApplications.filter {
-                it.appName.contains(searchValue, ignoreCase = true)
-            }
-            CompositionLocalProvider(LocalButtonClickHandler provides viewModel.createNewRule) {
-                NewRuleContent(
-                    installedPackages,
-                    searchValue,
-                    viewModel::onSearchValueChange,
-                )
-            }
+    NewRuleScreen(
+        isRefreshing = uiState.value.isRefreshing,
+        onRefresh = viewModel::refreshInstalledApplications,
+        onClose = onClose
+    ) {
+        val searchValue = uiState.value.searchValue
+        val installedPackages = installedApplications.filter {
+            it.appName.contains(searchValue, ignoreCase = true)
+        }
+        CompositionLocalProvider(LocalButtonClickHandler provides viewModel.createNewRule) {
+            NewRuleContent(
+                installedPackages,
+                searchValue,
+                viewModel::onSearchValueChange,
+            )
         }
     }
 }

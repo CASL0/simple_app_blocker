@@ -20,6 +20,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
@@ -34,12 +35,14 @@ import javax.inject.Inject
 
 sealed interface UiState {
     val searchValue: String
+    val isRefreshing: Boolean
 
     data class NewRuleUiState(
         /**
          * 検索ボックスの入力値
          */
-        override val searchValue: String = ""
+        override val searchValue: String = "",
+        override val isRefreshing: Boolean = false,
     ) : UiState
 }
 
@@ -50,10 +53,9 @@ class NewRuleViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    init {
-        refreshInstalledApplications()
-    }
-
+    /**
+     * UI状態
+     */
     private val _uiState = MutableStateFlow(UiState.NewRuleUiState())
     val uiState: StateFlow<UiState.NewRuleUiState> get() = _uiState
 
@@ -67,6 +69,11 @@ class NewRuleViewModel @Inject constructor(
      */
     val installedApplications = installedApplicationRepository.installedApplications
 
+
+    init {
+        refreshInstalledApplications()
+    }
+
     /**
      * 検索ボックスの入力値変更のイベントハンドラ
      */
@@ -77,9 +84,12 @@ class NewRuleViewModel @Inject constructor(
     /**
      * インストール済みパッケージを読み込む関数
      */
-    private fun refreshInstalledApplications() {
+    fun refreshInstalledApplications() {
+        Logger.d("refresh installed applications")
         viewModelScope.launch {
+            _uiState.update { it.copy(isRefreshing = true) }
             installedApplicationRepository.refresh()
+            _uiState.update { it.copy(isRefreshing = false) }
         }
     }
 
