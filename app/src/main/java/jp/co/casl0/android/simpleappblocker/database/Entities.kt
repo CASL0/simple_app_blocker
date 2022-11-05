@@ -19,6 +19,7 @@ package jp.co.casl0.android.simpleappblocker.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
 
 @Entity(tableName = "allowlist")
 data class AllowedPackage(
@@ -26,3 +27,15 @@ data class AllowedPackage(
     @ColumnInfo(name = "app_name") val appName: String,
     @ColumnInfo(name = "added_date") val addedTime: String
 )
+
+/**
+ * データベースエンティティからドメインモデルへ変換
+ */
+fun List<AllowedPackage>.asDomainModel(): List<DomainAllowedPackage> {
+    return map {
+        DomainAllowedPackage(
+            packageName = it.packageName,
+            appName = it.appName
+        )
+    }
+}
