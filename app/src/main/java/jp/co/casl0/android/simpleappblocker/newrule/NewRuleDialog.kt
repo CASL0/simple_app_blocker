@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -68,7 +69,6 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
                         if (bsb.state == BottomSheetBehavior.STATE_COLLAPSED) bsb.state =
                             getDefaultState()
                     }
-                viewModel.loadInstalledPackages(requireContext())
             }
         }
 
@@ -89,8 +89,9 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
 
 @Composable
 fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
+    val installedApplications = viewModel.installedApplications.collectAsState(listOf()).value
     NewRuleScreen(onClose = onClose) {
-        if (viewModel.installedPackages.isEmpty()) {
+        if (installedApplications.isEmpty()) {
             // インストール済みアプリをロード中はプログレス表示
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -101,7 +102,7 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
             }
         } else {
             val searchValue = viewModel.searchValue
-            val installedPackages = viewModel.installedPackages.filter {
+            val installedPackages = installedApplications.filter {
                 it.appName.contains(searchValue, ignoreCase = true)
             }
             CompositionLocalProvider(LocalButtonClickHandler provides viewModel.createNewRule) {

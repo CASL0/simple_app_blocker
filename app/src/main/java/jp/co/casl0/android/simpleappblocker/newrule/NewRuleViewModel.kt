@@ -17,11 +17,8 @@
 package jp.co.casl0.android.simpleappblocker.newrule
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.widget.Toast
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -30,15 +27,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
-import kotlinx.coroutines.Dispatchers
+import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class NewRuleViewModel @Inject constructor(private val allowlistRepository: AllowlistRepository) :
+class NewRuleViewModel @Inject constructor(
+    private val allowlistRepository: AllowlistRepository,
+    private val installedApplicationRepository: InstalledApplicationRepository
+) :
     ViewModel() {
+
+    init {
+        refreshInstalledApplications()
+    }
 
     /**
      * 許可済みパッケージリスト
@@ -48,9 +51,7 @@ class NewRuleViewModel @Inject constructor(private val allowlistRepository: Allo
     /**
      * インストール済みパッケージ一覧
      */
-    private val _installedPackages = mutableStateListOf<AppPackage>()
-    val installedPackages: List<AppPackage>
-        get() = _installedPackages
+    val installedApplications = installedApplicationRepository.installedApplications
 
     /**
      * 検索ボックスの入力値
@@ -68,29 +69,11 @@ class NewRuleViewModel @Inject constructor(private val allowlistRepository: Allo
     /**
      * インストール済みパッケージを読み込む関数
      */
-    suspend fun loadInstalledPackages(context: Context?) =
-        withContext(Dispatchers.IO) {
-            context?.packageManager?.also { pm ->
-                val installedApplications = if (Build.VERSION.SDK_INT >= 33) {
-                    pm.getInstalledApplications(PackageManager.ApplicationInfoFlags.of(0))
-                } else {
-                    pm.getInstalledApplications(0)
-                }
-                installedApplications.forEach { appInfo ->
-                    val notInList =
-                        installedPackages.find { it.packageName == appInfo.packageName } == null
-                    if (notInList) {
-                        _installedPackages.add(
-                            AppPackage(
-                                appInfo.loadIcon(pm),
-                                appInfo.loadLabel(pm).toString(),
-                                appInfo.packageName,
-                            )
-                        )
-                    }
-                }
-            }
+    private fun refreshInstalledApplications() {
+        viewModelScope.launch {
+            installedApplicationRepository.refresh()
         }
+    }
 
     /**
      * 許可アプリを変更する関数
