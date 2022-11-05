@@ -16,8 +16,6 @@
 
 package jp.co.casl0.android.simpleappblocker.allowlsit
 
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +23,6 @@ import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -70,28 +67,8 @@ fun AllowlistFragmentScreen(
     allowlistViewModel: AllowlistViewModel,
     onAddButtonClicked: () -> Unit
 ) {
-    val allowedPackages: List<CharSequence> by allowlistViewModel.allowlist.collectAsState(
+    val allowedPackages: List<AppPackage> by allowlistViewModel.allowlist.collectAsState(
         listOf()
     )
-    val pm = LocalContext.current.packageManager
-    val newAllowedPackages: MutableList<AppPackage> = mutableListOf()
-    allowedPackages.forEach { allowedPackageName ->
-        val appInfo = if (Build.VERSION.SDK_INT >= 33) {
-            pm.getPackageInfo(
-                allowedPackageName.toString(),
-                PackageManager.PackageInfoFlags.of(0)
-            ).applicationInfo
-        } else {
-            pm.getPackageInfo(allowedPackageName.toString(), 0).applicationInfo
-        }
-        newAllowedPackages.add(
-            AppPackage(
-                appInfo.loadIcon(pm),
-                appInfo.loadLabel(pm).toString(),
-                appInfo.packageName,
-            )
-        )
-
-    }
-    AllowlistScreen(newAllowedPackages, onAddButtonClicked, allowlistViewModel.disallowPackage)
+    AllowlistScreen(allowedPackages, onAddButtonClicked, allowlistViewModel.disallowPackage)
 }
