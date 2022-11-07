@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.utilities
+package jp.co.casl0.android.simpleappblocker.utils
 
 import android.Manifest
 import android.content.Context
@@ -26,7 +26,6 @@ import android.os.Process.INVALID_UID
 import android.system.OsConstants
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.model.PacketInfo
-import java.lang.IllegalArgumentException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.UnknownHostException

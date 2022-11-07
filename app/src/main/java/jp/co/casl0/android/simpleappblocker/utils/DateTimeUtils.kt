@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.utilities
+package jp.co.casl0.android.simpleappblocker.utils
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

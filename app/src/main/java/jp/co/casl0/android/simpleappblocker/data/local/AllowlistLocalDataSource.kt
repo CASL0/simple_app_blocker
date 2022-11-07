@@ -21,7 +21,7 @@ import jp.co.casl0.android.simpleappblocker.database.AllowedPackage
 import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
 import jp.co.casl0.android.simpleappblocker.database.asDomainModel
 import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
-import jp.co.casl0.android.simpleappblocker.utilities.getNowDateTime
+import jp.co.casl0.android.simpleappblocker.utils.getNowDateTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

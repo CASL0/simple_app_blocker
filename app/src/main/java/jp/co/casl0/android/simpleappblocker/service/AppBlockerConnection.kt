@@ -18,9 +18,9 @@ package jp.co.casl0.android.simpleappblocker.service
 
 import android.os.ParcelFileDescriptor
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.PcapPlusPlusInterface
-import jp.co.casl0.android.simpleappblocker.utilities.getNowDateTime
+import jp.co.casl0.android.simpleappblocker.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.utils.getNowDateTime
 import kotlinx.coroutines.Runnable
 import org.greenrobot.eventbus.EventBus
 import java.io.FileInputStream

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.utilities
+package jp.co.casl0.android.simpleappblocker.utils
 
 import android.view.View
 import androidx.annotation.NonNull

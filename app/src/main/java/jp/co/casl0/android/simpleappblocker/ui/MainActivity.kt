@@ -60,7 +60,7 @@ import jp.co.casl0.android.simpleappblocker.BuildConfig
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
-import jp.co.casl0.android.simpleappblocker.utilities.popupSnackbar
+import jp.co.casl0.android.simpleappblocker.utils.popupSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

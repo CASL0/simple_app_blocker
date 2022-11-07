@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.model.PacketInfo
-import jp.co.casl0.android.simpleappblocker.utilities.NetworkConnectivity
+import jp.co.casl0.android.simpleappblocker.utils.NetworkConnectivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
