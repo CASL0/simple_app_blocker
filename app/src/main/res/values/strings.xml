@@ -21,6 +21,8 @@
     <string name="empty_allowlist">No allowed apps found.</string>
     <string name="notification_permission_rationale_message">You can turn on notifications in system settings. </string>
     <string name="notification_permission_action_label">SETTINGS</string>
+    <string name="notification_channel_id">filters_channel</string>
+    <string name="notification_channel_name">Filters</string>
 
     <!-- オープンソースライセンス -->
 

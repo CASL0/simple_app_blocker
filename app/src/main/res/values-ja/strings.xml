@@ -22,6 +22,8 @@
     <string name="empty_allowlist">許可しているアプリがありません。</string>
     <string name="notification_permission_rationale_message">「設定」アプリを開き通知を許可することができます。</string>
     <string name="notification_permission_action_label">設定</string>
+    <string name="notification_channel_id">filters_channel</string>
+    <string name="notification_channel_name">フィルター</string>
 
     <!-- オープンソースライセンス -->
 

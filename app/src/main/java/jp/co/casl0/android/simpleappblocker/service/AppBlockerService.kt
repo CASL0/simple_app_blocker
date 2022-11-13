@@ -16,30 +16,23 @@
 
 package jp.co.casl0.android.simpleappblocker.service
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.VpnService
 import android.os.Binder
-import android.os.Build
 import android.os.IBinder
-import androidx.core.app.NotificationCompat
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.ui.MainActivity
+import jp.co.casl0.android.simpleappblocker.utils.NOTIFICATION_ID
+import jp.co.casl0.android.simpleappblocker.utils.createNotificationChannel
+import jp.co.casl0.android.simpleappblocker.utils.getNotificationBuilder
 import java.util.concurrent.atomic.AtomicReference
 
 
 class AppBlockerService : VpnService() {
     inner class AppBlockerBinder : Binder() {
         fun getService(): AppBlockerService = this@AppBlockerService
-    }
-
-    companion object {
-        private const val NOTIFICATION_CHANNEL_ID = "jp.co.casl0.android.simpleappblocker.channelid"
-        private const val NOTIFICATION_ID = 100
     }
 
     private val binder = AppBlockerBinder()
@@ -121,8 +114,7 @@ class AppBlockerService : VpnService() {
                 .addRoute("0.0.0.0", 0)
                 .addRoute("::", 0)
         } catch (e: IllegalArgumentException) {
-            val errMsg = e.localizedMessage
-            if (errMsg != null) Logger.d(errMsg)
+            e.localizedMessage?.let { Logger.d(it) }
             null
         }
     }
@@ -131,53 +123,14 @@ class AppBlockerService : VpnService() {
      * フォアグラウンドサービスを通知する関数
      * @param message 通知に表示するメッセージ
      */
-    private fun updateForegroundService(message: String) {
+    private fun updateForegroundService(message: CharSequence) {
         Logger.d("updateForegroundService: $message")
-        createNotificationChannel()
+        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).run {
+            createNotificationChannel(
+                getString(R.string.notification_channel_id),
+                getString(R.string.notification_channel_name)
+            )
+        }
         startForeground(NOTIFICATION_ID, getNotificationBuilder(message).build())
-    }
-
-    /**
-     * 通知チャネルを作成する関数(APIレベル26以上)
-     */
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT > 26) {
-            val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                getString(R.string.app_name),
-                NotificationManager.IMPORTANCE_LOW
-            )
-            (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).also {
-                it.createNotificationChannel(notificationChannel)
-            }
-        }
-    }
-
-    /**
-     * フォアグラウンドサービスの通知Builderを取得する関数
-     */
-    private fun getNotificationBuilder(message: String): NotificationCompat.Builder =
-        NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    this,
-                    NOTIFICATION_ID,
-                    Intent(this, MainActivity::class.java),
-                    getPendingIntentFlag()
-                )
-            )
-
-    /**
-     * 通知に指定するPendingIntentのフラグを取得する関数
-     */
-    private fun getPendingIntentFlag(): Int {
-        var pendingIntentFlag = PendingIntent.FLAG_UPDATE_CURRENT
-        if (Build.VERSION.SDK_INT >= 23) {
-            pendingIntentFlag = pendingIntentFlag or PendingIntent.FLAG_IMMUTABLE
-        }
-        return pendingIntentFlag
     }
 }
