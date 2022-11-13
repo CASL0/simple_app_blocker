@@ -39,17 +39,19 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
         while (true) {
             val length: Int = try {
                 fis.read(packet.array())
-            } catch (e: ReadOnlyBufferException) {
-                val errMsg = e.localizedMessage
-                if (errMsg != null) Logger.d(errMsg)
-                0
-            } catch (e: UnsupportedOperationException) {
-                val errMsg = e.localizedMessage
-                if (errMsg != null) Logger.d(errMsg)
-                0
-            } catch (e: IOException) {
-                val errMsg = e.localizedMessage
-                if (errMsg != null) Logger.d(errMsg)
+            } catch (e: Exception) {
+                when (e) {
+                    is ReadOnlyBufferException, is UnsupportedOperationException -> {
+                        Logger.d("ByteBuffer.array failed")
+                    }
+                    is IOException -> {
+                        Logger.d("FileInputStream.read failed")
+                    }
+                    else -> {
+                        Logger.d("unexpected failure")
+                    }
+                }
+                e.localizedMessage?.let { Logger.d(it) }
                 0
             }
             if (length > 0) {
