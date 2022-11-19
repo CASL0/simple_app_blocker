@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
             }
         }
 
-    private val vpnPrepare =
+    private val prepareVpnServiceLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 requestNotificationPermission()
@@ -114,10 +114,10 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
         }
     }
 
-    private fun configureVpnService() {
+    private fun prepareVpnService() {
         val vpnPrepareIntent = VpnService.prepare(this)
         if (vpnPrepareIntent != null) {
-            vpnPrepare.launch(vpnPrepareIntent)
+            prepareVpnServiceLauncher.launch(vpnPrepareIntent)
         } else {
             // 既にVPN同意済み
             Logger.d("VpnService already agreed")
@@ -246,8 +246,6 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
             }
         }
 
-        configureVpnService()
-
         lifecycleScope.launch {
             _viewModel.allowlist.collect { newAllowlist ->
                 appBlockerService?.run {
@@ -258,6 +256,11 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        prepareVpnService()
     }
 
     override fun onDestroy() {
