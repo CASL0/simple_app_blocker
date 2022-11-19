@@ -107,6 +107,16 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as AppBlockerService.AppBlockerBinder
             appBlockerService = binder.getService()
+            lifecycleScope.launch {
+                _viewModel.allowlist.collect { newAllowlist ->
+                    appBlockerService?.run {
+                        if (enabled) {
+                            // 既に適用中のみフィルターを更新する
+                            updateFilters(newAllowlist)
+                        }
+                    }
+                }
+            }
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -242,17 +252,6 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
                     }
                 } else if (it is Result.Error) {
                     Logger.d("checkForUpdateAvailability failed")
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            _viewModel.allowlist.collect { newAllowlist ->
-                appBlockerService?.run {
-                    if (enabled) {
-                        // 既に適用中のみフィルターを更新する
-                        updateFilters(newAllowlist)
-                    }
                 }
             }
         }
