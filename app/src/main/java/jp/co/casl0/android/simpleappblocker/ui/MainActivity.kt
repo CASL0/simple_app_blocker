@@ -21,25 +21,20 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.content.pm.PackageManager
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.provider.Settings
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.InflateException
 import android.view.Menu
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -52,13 +47,13 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.casl0.android.simpleappblocker.BuildConfig
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
 import jp.co.casl0.android.simpleappblocker.utils.AppUpdateController
 import jp.co.casl0.android.simpleappblocker.utils.Result
 import jp.co.casl0.android.simpleappblocker.utils.popupSnackbar
+import jp.co.casl0.android.simpleappblocker.utils.requestPermission
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -85,6 +80,7 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
     private val vpnPrepare =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
+                requestNotificationPermission()
                 Intent(this, AppBlockerService::class.java).also {
                     bindService(it, connection, Context.BIND_AUTO_CREATE)
                 }
@@ -107,44 +103,6 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
         }
     }
 
-    /**
-     * ランタイムパーミッションをリクエストする
-     */
-    private fun requestPermission(
-        permission: String,
-        @StringRes message: Int,
-        permissionLauncher: ActivityResultLauncher<String>
-    ) {
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
-                permission
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                Logger.d("permission granted: $permission")
-            }
-            shouldShowRequestPermissionRationale(permission) -> {
-                // 通知権限の設定用のスナックバーを表示する
-                popupSnackbar(
-                    view = binding.root,
-                    message = message,
-                    duration = Snackbar.LENGTH_LONG,
-                    actionLabel = R.string.notification_permission_action_label,
-                ) {
-                    // 通知の設定画面へ遷移
-                    Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                        putExtra(Settings.EXTRA_APP_PACKAGE, BuildConfig.APPLICATION_ID)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }.run {
-                        startActivity(this)
-                    }
-                }
-            }
-            else -> {
-                permissionLauncher.launch(permission)
-            }
-        }
-    }
-
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as AppBlockerService.AppBlockerBinder
@@ -163,9 +121,22 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
         } else {
             // 既にVPN同意済み
             Logger.d("VpnService already agreed")
+            requestNotificationPermission()
             Intent(this, AppBlockerService::class.java).also {
                 bindService(it, connection, Context.BIND_AUTO_CREATE)
             }
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            // 通知の権限をリクエストする
+            // 通知が必須というわけではないので、一度でも拒否した場合はリクエストしない
+            requestPermission(
+                Manifest.permission.POST_NOTIFICATIONS,
+                null,
+                notificationPermissionLauncher
+            )
         }
     }
 
@@ -249,7 +220,6 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
     }
 
     // ライフサイクルメソッド
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -277,15 +247,6 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
         }
 
         configureVpnService()
-
-        // 通知の権限をリクエストする
-        if (Build.VERSION.SDK_INT >= 33) {
-            requestPermission(
-                Manifest.permission.POST_NOTIFICATIONS,
-                R.string.notification_permission_rationale_message,
-                notificationPermissionLauncher
-            )
-        }
 
         lifecycleScope.launch {
             _viewModel.allowlist.collect { newAllowlist ->
