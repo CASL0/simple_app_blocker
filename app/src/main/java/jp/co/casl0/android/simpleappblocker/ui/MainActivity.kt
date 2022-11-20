@@ -131,7 +131,6 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
         } else {
             // 既にVPN同意済み
             Logger.d("VpnService already agreed")
-            requestNotificationPermission()
             Intent(this, AppBlockerService::class.java).also {
                 bindService(it, connection, Context.BIND_AUTO_CREATE)
             }
