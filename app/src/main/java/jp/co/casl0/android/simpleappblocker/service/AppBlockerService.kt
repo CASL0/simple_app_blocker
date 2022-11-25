@@ -19,21 +19,34 @@ package jp.co.casl0.android.simpleappblocker.service
 import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.net.VpnService
 import android.os.Binder
 import android.os.IBinder
 import com.orhanobut.logger.Logger
+import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.model.DomainBlockedPacket
+import jp.co.casl0.android.simpleappblocker.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.repository.BlockedPacketsRepository
 import jp.co.casl0.android.simpleappblocker.utils.NOTIFICATION_ID
 import jp.co.casl0.android.simpleappblocker.utils.createNotificationChannel
 import jp.co.casl0.android.simpleappblocker.utils.getNotificationBuilder
+import jp.co.casl0.android.simpleappblocker.utils.retrieveUid
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
-
-class AppBlockerService : VpnService() {
+@AndroidEntryPoint
+class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListener {
     inner class AppBlockerBinder : Binder() {
         fun getService(): AppBlockerService = this@AppBlockerService
     }
+
+    @Inject
+    lateinit var repository: BlockedPacketsRepository
 
     private val binder = AppBlockerBinder()
     private val connectingThread = AtomicReference<Thread>()
@@ -88,7 +101,9 @@ class AppBlockerService : VpnService() {
         }
         val tunnelInterface = localTunnelBuilder?.establish()
         if (tunnelInterface != null) {
-            val thread = Thread(AppBlockerConnection(tunnelInterface), "AppBlockerThread")
+            val thread = Thread(AppBlockerConnection(tunnelInterface).apply {
+                setOnBlockPacketListener(this@AppBlockerService)
+            }, "AppBlockerThread")
             setConnectingThread(thread)
             thread.start()
         }
@@ -132,5 +147,29 @@ class AppBlockerService : VpnService() {
             )
         }
         startForeground(NOTIFICATION_ID, getNotificationBuilder(message).build())
+    }
+
+    // AppBlockerConnection.OnBlockPacketListener
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun onBlockPacket(packetInfo: PacketInfo) {
+        val connectivityManager =
+            applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val packageManager = applicationContext.packageManager
+        val uid = connectivityManager.retrieveUid(packetInfo)
+        packageManager.getNameForUid(uid)?.let { packageName ->
+            GlobalScope.launch {
+                repository.insertBlockedPacket(
+                    DomainBlockedPacket(
+                        packageName = packageName,
+                        srcAddress = packetInfo.srcAddress,
+                        srcPort = packetInfo.srcPort,
+                        dstAddress = packetInfo.dstAddress,
+                        dstPort = packetInfo.dstPort,
+                        protocol = packetInfo.protocol,
+                        blockedAt = packetInfo.blockTime,
+                    )
+                )
+            }
+        }
     }
 }

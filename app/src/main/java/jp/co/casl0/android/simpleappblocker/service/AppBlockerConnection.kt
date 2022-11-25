@@ -22,7 +22,6 @@ import jp.co.casl0.android.simpleappblocker.PcapPlusPlusInterface
 import jp.co.casl0.android.simpleappblocker.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.utils.getNowDateTime
 import kotlinx.coroutines.Runnable
-import org.greenrobot.eventbus.EventBus
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -31,6 +30,16 @@ import java.nio.ReadOnlyBufferException
 class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : Runnable {
     companion object {
         private const val MAX_PACKET_SIZE = Short.MAX_VALUE.toInt()
+    }
+
+    interface OnBlockPacketListener {
+        fun onBlockPacket(packetInfo: PacketInfo)
+    }
+
+    private var _listener: OnBlockPacketListener? = null
+
+    fun setOnBlockPacketListener(onBlockPacketListener: OnBlockPacketListener) {
+        _listener = onBlockPacketListener
     }
 
     override fun run() {
@@ -55,7 +64,7 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
                 0
             }
             if (length > 0) {
-                EventBus.getDefault().post(
+                _listener?.onBlockPacket(
                     PacketInfo(
                         PcapPlusPlusInterface.getSrcIpAddressNative(packet.array(), length),
                         PcapPlusPlusInterface.getSrcPortNative(packet.array(), length),
