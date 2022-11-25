@@ -20,6 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
+import jp.co.casl0.android.simpleappblocker.model.DomainBlockedPacket
 
 @Entity(tableName = "allowlist")
 data class AllowedPackage(
@@ -56,11 +57,30 @@ data class BlockedPacket(
 /**
  * データベースエンティティからドメインモデルへ変換
  */
+@JvmName("asDomainModelAllowedPackage")
 fun List<AllowedPackage>.asDomainModel(): List<DomainAllowedPackage> {
     return map {
         DomainAllowedPackage(
             packageName = it.packageName,
             appName = it.appName
+        )
+    }
+}
+
+/**
+ * ブロックログのデータベースエンティティからドメインモデルへ変換
+ */
+@JvmName("asDomainBlockedPacket")
+fun List<BlockedPacket>.asDomainModel(): List<DomainBlockedPacket> {
+    return map {
+        DomainBlockedPacket(
+            packageName = it.packageName,
+            srcAddress = it.srcAddress,
+            srcPort = it.srcPort,
+            dstAddress = it.dstAddress,
+            dstPort = it.dstPort,
+            protocol = it.protocol,
+            blockedAt = it.blockedAt,
         )
     }
 }
