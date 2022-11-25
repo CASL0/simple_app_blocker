@@ -36,3 +36,13 @@ interface AllowlistDAO {
     @Query("DELETE FROM allowlist WHERE package_name=:packageName")
     suspend fun deleteByPackageName(packageName: String)
 }
+
+
+@Dao
+interface BlockedPacketsDAO {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBlockedPacket(blockedPacket: BlockedPacket)
+
+    @Query("SELECT * FROM blocked_packets")
+    fun getBlockedPackets(): Flow<List<BlockedPacket>>
+}

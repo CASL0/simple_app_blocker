@@ -27,7 +27,7 @@ import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.data.InstalledApplicationDataSource
 import jp.co.casl0.android.simpleappblocker.data.local.AllowlistLocalDataSource
 import jp.co.casl0.android.simpleappblocker.data.local.InstalledApplicationLocalDataSource
-import jp.co.casl0.android.simpleappblocker.database.AllowlistDatabase
+import jp.co.casl0.android.simpleappblocker.database.SimpleAppBlockerDatabase
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -60,7 +60,7 @@ object RepositoryModule {
 object DataSourceModule {
     @Singleton
     @Provides
-    fun provideAllowlistLocalDataSource(database: AllowlistDatabase): AllowlistDataSource {
+    fun provideAllowlistLocalDataSource(database: SimpleAppBlockerDatabase): AllowlistDataSource {
         return AllowlistLocalDataSource(database)
     }
 
@@ -76,11 +76,11 @@ object DataSourceModule {
 object DatabaseModule {
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): AllowlistDatabase {
+    fun provideDatabase(@ApplicationContext context: Context): SimpleAppBlockerDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
-            AllowlistDatabase::class.java,
-            "allowlist.db"
+            SimpleAppBlockerDatabase::class.java,
+            "simple_app_blocker.db"
         ).build()
     }
 }

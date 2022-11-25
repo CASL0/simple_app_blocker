@@ -19,11 +19,19 @@ package jp.co.casl0.android.simpleappblocker.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
-@Database(entities = [AllowedPackage::class], version = 1, exportSchema = false)
-abstract class AllowlistDatabase : RoomDatabase() {
+@Database(
+    entities = [AllowedPackage::class, BlockedPacket::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class SimpleAppBlockerDatabase : RoomDatabase() {
     /**
      * 許可アプリリスト操作用のDAOを取得する関数
      */
     abstract fun allowlistDao(): AllowlistDAO
 
+    /**
+     * ブロックしたパケット操作用のDAOを取得する関数
+     */
+    abstract fun blockedPacketsDao(): BlockedPacketsDAO
 }

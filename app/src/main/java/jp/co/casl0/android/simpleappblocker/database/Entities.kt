@@ -28,6 +28,31 @@ data class AllowedPackage(
     @ColumnInfo(name = "added_date") val addedTime: String
 )
 
+@Entity(tableName = "blocked_packets")
+data class BlockedPacket(
+    @PrimaryKey
+    @ColumnInfo(name = "package_name")
+    val packageName: String,
+
+    @ColumnInfo(name = "src_address")
+    val srcAddress: String,
+
+    @ColumnInfo(name = "src_port")
+    val srcPort: Int,
+
+    @ColumnInfo(name = "dst_address")
+    val dstAddress: String,
+
+    @ColumnInfo(name = "dst_port")
+    val dstPort: Int,
+
+    @ColumnInfo(name = "protocol")
+    val protocol: String,
+
+    @ColumnInfo(name = "blocked_at")
+    val blockedAt: String,
+)
+
 /**
  * データベースエンティティからドメインモデルへ変換
  */
