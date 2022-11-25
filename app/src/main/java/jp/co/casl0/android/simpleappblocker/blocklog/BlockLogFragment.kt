@@ -21,30 +21,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentBlocklogBinding
 import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogContent
 import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
+@AndroidEntryPoint
 class BlockLogFragment : Fragment() {
 
     private var _binding: FragmentBlocklogBinding? = null
     private val binding get() = _binding!!
+
+    private val _viewModel: BlockLogViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val blockLogViewModel =
-            ViewModelProvider(
-                this,
-                BlockLogViewModelFactory(context)
-            ).get(BlockLogViewModel::class.java)
-
         _binding = FragmentBlocklogBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -52,7 +51,7 @@ class BlockLogFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
-                    BlockLogFragmentScreen(viewModel = blockLogViewModel)
+                    BlockLogFragmentScreen(viewModel = _viewModel)
                 }
             }
         }
@@ -67,7 +66,8 @@ class BlockLogFragment : Fragment() {
 
 @Composable
 fun BlockLogFragmentScreen(viewModel: BlockLogViewModel) {
+    val uiState = viewModel.uiState.collectAsState()
     BlockLogScreen {
-        BlockLogContent(blockedPackets = viewModel.blockPacketInfoList)
+        BlockLogContent(blockedPackets = uiState.value.blockedApps)
     }
 }

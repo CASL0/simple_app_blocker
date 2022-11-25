@@ -23,15 +23,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
-import jp.co.casl0.android.simpleappblocker.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.blocklog.UiState
 
 @Composable
 fun BlockLogContent(
-    blockedPackets: List<Pair<PacketInfo, AppPackage?>>,
+    blockedPackets: List<UiState.BlockedApp>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -41,11 +38,7 @@ fun BlockLogContent(
         items(items = blockedPackets) { packet ->
             Column {
                 BlockLogItem(
-                    src = packet.first.getSrcAddressAndPort(),
-                    dst = packet.first.getDstAddressAndPort(),
-                    protocol = packet.first.protocol,
-                    time = packet.first.blockTime,
-                    appName = packet.second?.appName ?: stringResource(R.string.unknown_app),
+                    blockedApp = packet,
                     modifier = modifier
                 )
             }

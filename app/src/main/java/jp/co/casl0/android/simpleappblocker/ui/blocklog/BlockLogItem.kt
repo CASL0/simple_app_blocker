@@ -30,15 +30,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.blocklog.UiState
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
 fun BlockLogItem(
-    src: String,
-    dst: String,
-    protocol: String,
-    time: String,
-    appName: String,
+    blockedApp: UiState.BlockedApp,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -48,14 +45,14 @@ fun BlockLogItem(
             .fillMaxWidth()
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .padding(8.dp)
                 .width(IntrinsicSize.Max),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Row(modifier = modifier.fillMaxWidth()) {
                 Text(
-                    text = appName,
+                    text = blockedApp.appName.toString(),
                     color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
                     modifier = modifier.align(Alignment.CenterVertically)
@@ -64,7 +61,7 @@ fun BlockLogItem(
             Row(modifier = modifier.fillMaxWidth()) {
                 // プロトコル
                 Text(
-                    text = protocol,
+                    text = blockedApp.protocol.toString(),
                     textAlign = TextAlign.Left,
                     modifier = modifier.weight(1.0f),
                     color = MaterialTheme.colors.onSurface,
@@ -72,7 +69,7 @@ fun BlockLogItem(
                 )
                 // ブロック時刻
                 Text(
-                    text = time,
+                    text = blockedApp.blockedAt.toString(),
                     color = MaterialTheme.colors.onSurface,
                     textAlign = TextAlign.Right,
                     modifier = modifier.weight(1.0f)
@@ -85,7 +82,7 @@ fun BlockLogItem(
                 )
                 Spacer(modifier = modifier.width(8.dp))
                 Text(
-                    text = src,
+                    text = blockedApp.src.toString(),
                     color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold
                 )
@@ -97,7 +94,7 @@ fun BlockLogItem(
                 )
                 Spacer(modifier = modifier.width(8.dp))
                 Text(
-                    text = dst,
+                    text = blockedApp.dst.toString(),
                     color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold
                 )
@@ -112,11 +109,14 @@ fun BlockLogItem(
 fun PreviewBlockLogItem() {
     ApplicationTheme {
         BlockLogItem(
-            src = "1.1.1.1 (40000)",
-            dst = "2.2.2.2 (50000)",
-            protocol = "TCP",
-            time = "yyyy-MM-dd HH:mm:ss",
-            appName = "Chrome",
+            blockedApp = UiState.BlockedApp(
+                appName = "Chrome",
+                packageName = "com.android.vending",
+                src = "10.1.10.1 (40000)",
+                dst = "100.100.100.100 (443)",
+                protocol = "TCP",
+                blockedAt = "2000-01-01 00:00:00"
+            )
         )
     }
 }

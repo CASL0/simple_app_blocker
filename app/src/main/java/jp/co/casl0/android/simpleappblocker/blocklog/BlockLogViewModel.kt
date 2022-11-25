@@ -16,91 +16,86 @@
 
 package jp.co.casl0.android.simpleappblocker.blocklog
 
+import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
-import jp.co.casl0.android.simpleappblocker.model.PacketInfo
-import jp.co.casl0.android.simpleappblocker.utils.NetworkConnectivity
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import jp.co.casl0.android.simpleappblocker.repository.BlockedPacketsRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BlockLogViewModel(context: Context?) : ViewModel() {
-    private val packageManager = context?.packageManager
-    private val networkConnectivity = NetworkConnectivity(context)
+sealed interface UiState {
+    data class BlockedApp(
+        val appName: CharSequence,
+        val packageName: CharSequence,
+        val src: CharSequence,
+        val dst: CharSequence,
+        val protocol: CharSequence,
+        val blockedAt: CharSequence,
+    )
 
-    init {
-        EventBus.getDefault().register(this)
-    }
+    val blockedApps: List<BlockedApp>
 
-    companion object {
-        private const val MAX_NUM_PACKET_LOG = 200
-    }
-
-    private val _blockPacketInfoList = mutableStateListOf<Pair<PacketInfo, AppPackage?>>()
-    val blockPacketInfoList: List<Pair<PacketInfo, AppPackage?>>
-        get() = _blockPacketInfoList
-
-    /**
-     * パケットブロック時のイベントハンドラ
-     */
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    fun onPacketBlocked(packetInfo: PacketInfo) {
-        if (blockPacketInfoList.size >= MAX_NUM_PACKET_LOG) {
-            _blockPacketInfoList.removeFirst()
-        }
-        val uid = networkConnectivity.retrieveUid(packetInfo)
-        val packageName = lookupAppPackage(uid)
-        if (packageName != null) {
-            _blockPacketInfoList.add(Pair(packetInfo, packageName))
-        }
-    }
-
-    /**
-     * uidからアプリ情報を取得する関数
-     * @param uid アプリ情報を取得したいパッケージのuid
-     * @return 取得したアプリ情報、見つからなかった場合はnull
-     */
-    private fun lookupAppPackage(uid: Int): AppPackage? {
-        packageManager?.getNameForUid(uid)?.also { packageName ->
-            val appPackage = try {
-                val appInfo = if (Build.VERSION.SDK_INT >= 33) {
-                    packageManager.getPackageInfo(
-                        packageName,
-                        PackageManager.PackageInfoFlags.of(0)
-                    ).applicationInfo
-                } else {
-                    packageManager.getPackageInfo(packageName, 0).applicationInfo
-                }
-                AppPackage(
-                    appInfo.loadIcon(packageManager),
-                    appInfo.loadLabel(packageManager).toString(),
-                    appInfo.packageName,
-                )
-            } catch (e: PackageManager.NameNotFoundException) {
-                e.localizedMessage?.let {
-                    Logger.d(it)
-                }
-                null
-            }
-            return appPackage
-        }
-        return null
-    }
+    data class BlockLogUiState(
+        override val blockedApps: List<BlockedApp> = listOf()
+    ) : UiState
 }
 
-class BlockLogViewModelFactory(private val context: Context?) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(BlockLogViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return BlockLogViewModel(context) as T
+@HiltViewModel
+class BlockLogViewModel @Inject constructor(
+    private val blockedPacketsRepository: BlockedPacketsRepository,
+    @ApplicationContext context: Context
+) :
+    AndroidViewModel(context.applicationContext as Application) {
+
+    /**
+     * UI状態
+     */
+    private val _uiState = MutableStateFlow(UiState.BlockLogUiState())
+    val uiState: StateFlow<UiState.BlockLogUiState> get() = _uiState
+
+    init {
+        viewModelScope.launch {
+            blockedPacketsRepository.blockedPackets.collect { domainBlockedPackets ->
+                val packageManager = context.packageManager
+                val blockedPackets: List<UiState.BlockedApp?> =
+                    domainBlockedPackets.map { domainBlockedPacket ->
+                        try {
+                            val appInfo = if (Build.VERSION.SDK_INT >= 33) {
+                                packageManager.getApplicationInfo(
+                                    domainBlockedPacket.packageName.toString(),
+                                    PackageManager.ApplicationInfoFlags.of(0)
+                                )
+                            } else {
+                                packageManager.getApplicationInfo(
+                                    domainBlockedPacket.packageName.toString(),
+                                    0
+                                )
+                            }
+                            UiState.BlockedApp(
+                                appName = appInfo.loadLabel(packageManager),
+                                packageName = domainBlockedPacket.packageName,
+                                src = domainBlockedPacket.srcAddressAndPort,
+                                dst = domainBlockedPacket.dstAddressAndPort,
+                                protocol = domainBlockedPacket.protocol,
+                                blockedAt = domainBlockedPacket.blockedAt,
+                            )
+
+                        } catch (e: PackageManager.NameNotFoundException) {
+                            e.localizedMessage?.let { err -> Logger.d(err) }
+                            null
+                        }
+                    }
+                _uiState.update { it.copy(blockedApps = blockedPackets.filterNotNull()) }
+            }
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
