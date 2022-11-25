@@ -86,7 +86,6 @@ dependencies {
     implementation "com.google.accompanist:accompanist-drawablepainter:$accompanist_drawablepainter_version"
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_swiperefresh_version"
     implementation 'com.orhanobut:logger:2.2.0'
-    implementation 'org.greenrobot:eventbus:3.3.1'
 
     // in-app update
     implementation "com.google.android.play:app-update:$in_app_update_version"
