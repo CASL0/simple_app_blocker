@@ -43,13 +43,19 @@ internal fun ConnectivityManager.retrieveUid(packetInfo: PacketInfo): Int {
     val remoteSocketAddress =
         translateInetSocketAddress(packetInfo.dstAddress, packetInfo.dstPort)
     if (localSocketAddress != null && remoteSocketAddress != null) {
-        val uid = getConnectionOwnerUid(
-            protocol,
-            localSocketAddress,
-            remoteSocketAddress
-        )
-        if (uid != Process.INVALID_UID) {
-            return uid
+        try {
+            val uid = getConnectionOwnerUid(
+                protocol,
+                localSocketAddress,
+                remoteSocketAddress
+            )
+            if (uid != Process.INVALID_UID) {
+                return uid
+            }
+        } catch (e: SecurityException) {
+            e.localizedMessage?.let { Logger.d(it) }
+        } catch (e: IllegalArgumentException) {
+            e.localizedMessage?.let { Logger.d(it) }
         }
     }
     return -1
