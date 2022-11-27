@@ -15,9 +15,12 @@ buildscript {
         accompanist_appcompat_theme_version = '0.23.0'
         accompanist_drawablepainter_version = '0.25.1'
         accompanist_swiperefresh_version = '0.27.0'
+        oss_licenses_plugin_version = '0.10.5'
+        play_services_oss_licenses_version = '17.0.0'
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath "com.google.android.gms:oss-licenses-plugin:$oss_licenses_plugin_version"
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

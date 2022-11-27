@@ -16,12 +16,16 @@
 
 package jp.co.casl0.android.simpleappblocker.others
 
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentOthersBinding
 import jp.co.casl0.android.simpleappblocker.ui.others.OthersScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
@@ -43,7 +47,16 @@ class OthersFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
-                    OthersScreen(onClickOssLicenses = {/* TODO */ })
+                    OthersScreen(onClickOssLicenses = {
+                        startActivity(
+                            Intent(
+                                context,
+                                OssLicensesMenuActivity::class.java
+                            ).apply {
+                                flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
+                            }
+                        )
+                    })
                 }
             }
         }
