@@ -43,7 +43,7 @@ class OthersFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
-                    OthersScreen()
+                    OthersScreen(onClickOssLicenses = {/* TODO */ })
                 }
             }
         }

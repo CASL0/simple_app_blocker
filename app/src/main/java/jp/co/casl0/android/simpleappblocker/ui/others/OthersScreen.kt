@@ -16,31 +16,81 @@
 
 package jp.co.casl0.android.simpleappblocker.ui.others
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.BuildConfig
 import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.ui.others.licenses.LicensesList
 
 @Composable
-fun OthersScreen(modifier: Modifier = Modifier) {
+fun OthersScreen(onClickOssLicenses: () -> Unit, modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState()
     Column(modifier = modifier.verticalScroll(scrollState)) {
-        OthersItem(itemHeader = R.string.version_header, modifier = modifier) {
-            // バージョン情報
+        ListItem(
+            headerText = stringResource(id = R.string.version_header),
+            contentText = BuildConfig.VERSION_NAME,
+        )
+        LinkedItem(headerText = R.string.licenses_header, onClick = onClickOssLicenses)
+    }
+}
+
+@Composable
+private fun ListItem(
+    headerText: CharSequence,
+    contentText: CharSequence,
+    modifier: Modifier = Modifier
+) {
+    Card(modifier = modifier, shape = RoundedCornerShape(0)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(16.dp),
+        ) {
             Text(
-                text = BuildConfig.VERSION_NAME,
-                fontWeight = FontWeight.Bold
+                text = headerText.toString(),
+                modifier = Modifier.weight(1f),
+            )
+            Text(
+                text = contentText.toString(),
             )
         }
-        OthersItem(itemHeader = R.string.licenses_header, modifier = modifier) {
-            // オープンソースライセンス
-            LicensesList(modifier = modifier)
+    }
+}
+
+@Composable
+private fun LinkedItem(
+    @StringRes headerText: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth(), shape = RoundedCornerShape(0)
+    ) {
+        TextButton(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(modifier = Modifier.padding(8.dp)) {
+                Text(
+                    text = stringResource(id = headerText),
+                    color = MaterialTheme.colors.onSurface,
+                    modifier = Modifier.weight(1f)
+                )
+            }
         }
     }
 }
