@@ -16,9 +16,11 @@
 
 package jp.co.casl0.android.simpleappblocker.others
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,9 +28,11 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentOthersBinding
 import jp.co.casl0.android.simpleappblocker.ui.others.OthersScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
+import jp.co.casl0.android.simpleappblocker.utils.SOURCE_CODE_URL
 
 class OthersFragment : Fragment() {
 
@@ -56,6 +60,18 @@ class OthersFragment : Fragment() {
                                 flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
                             }
                         )
+                    }, onClickSource = {
+                        try {
+                            Intent().apply {
+                                action = Intent.ACTION_VIEW
+                                data = Uri.parse(SOURCE_CODE_URL)
+                                flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
+                            }.run {
+                                context.startActivity(this)
+                            }
+                        } catch (e: ActivityNotFoundException) {
+                            e.localizedMessage?.let { Logger.d(it) }
+                        }
                     })
                 }
             }

@@ -37,7 +37,11 @@ import jp.co.casl0.android.simpleappblocker.BuildConfig
 import jp.co.casl0.android.simpleappblocker.R
 
 @Composable
-fun OthersScreen(onClickOssLicenses: () -> Unit, modifier: Modifier = Modifier) {
+fun OthersScreen(
+    onClickOssLicenses: () -> Unit,
+    onClickSource: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val scrollState = rememberScrollState()
     Column(modifier = modifier.verticalScroll(scrollState)) {
         ListItem(
@@ -45,6 +49,7 @@ fun OthersScreen(onClickOssLicenses: () -> Unit, modifier: Modifier = Modifier) 
             contentText = BuildConfig.VERSION_NAME,
         )
         LinkedItem(headerText = R.string.licenses_header, onClick = onClickOssLicenses)
+        LinkedItem(headerText = R.string.source_code, onClick = onClickSource)
     }
 }
 
