@@ -21,15 +21,10 @@
 - JDK 11
 - NDK 21.4.7075529
 
-### 依存ライブラリ
-
-- [Accompanist](https://github.com/google/accompanist) 0.16.0
-- [PcapPlusPlus](https://github.com/seladb/PcapPlusPlus) 21.11
-- [Logger](https://github.com/orhanobut/logger) 2.2.0
-- [EventBus](https://github.com/greenrobot/EventBus) 3.3.1
-
 ### ビルド
+
 **Windows**
+
 ```cmd
 git clone https://github.com/CASL0/simple_app_blocker.git
 cd simple_app_blocker
@@ -38,6 +33,7 @@ gradlew.bat build
 ```
 
 **macOS**
+
 ```bash
 git clone https://github.com/CASL0/simple_app_blocker.git
 cd simple_app_blocker
