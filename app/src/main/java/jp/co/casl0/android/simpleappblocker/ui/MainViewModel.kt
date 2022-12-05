@@ -16,19 +16,49 @@
 
 package jp.co.casl0.android.simpleappblocker.ui
 
+import android.os.Parcelable
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
+@Parcelize
+data class MainUiState(
+    val filtersEnabled: Boolean = false
+) : Parcelable
+
 @HiltViewModel
-class MainViewModel @Inject constructor(allowlistRepository: AllowlistRepository) : ViewModel() {
-    var filtersEnabled = false
+class MainViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    allowlistRepository: AllowlistRepository
+) : ViewModel() {
+    companion object {
+        private const val KEY_UI_STATE = "ui_state"
+    }
+
+    /**
+     * UI状態
+     */
+    private val _uiState =
+        MutableStateFlow(savedStateHandle.get<MainUiState>(key = KEY_UI_STATE) ?: MainUiState())
+    val uiState: StateFlow<MainUiState> get() = _uiState
 
     /**
      * 許可リスト
      */
     val allowlist = allowlistRepository.allowlist
 
+    /**
+     * フィルターの有効・無効を切り替えます
+     */
+    fun enableFilters(enable: Boolean) {
+        _uiState.update { it.copy(filtersEnabled = enable) }
+        savedStateHandle[KEY_UI_STATE] = uiState.value
+    }
 }
 

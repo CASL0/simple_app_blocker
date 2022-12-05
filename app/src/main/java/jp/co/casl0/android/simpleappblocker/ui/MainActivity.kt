@@ -54,7 +54,6 @@ import jp.co.casl0.android.simpleappblocker.utils.AppUpdateController
 import jp.co.casl0.android.simpleappblocker.utils.Result
 import jp.co.casl0.android.simpleappblocker.utils.popupSnackbar
 import jp.co.casl0.android.simpleappblocker.utils.requestPermission
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -65,6 +64,7 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
     private val _viewModel: MainViewModel by viewModels()
     var appBlockerService: AppBlockerService? = null
     private lateinit var appUpdateManager: AppUpdateManager
+    private lateinit var _actionSwitch: SwitchCompat
 
     private val updateFlowResultLauncher =
         registerForActivityResult(
@@ -108,12 +108,17 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
             val binder = service as AppBlockerService.AppBlockerBinder
             appBlockerService = binder.getService()
             lifecycleScope.launch {
-                _viewModel.allowlist.collect { newAllowlist ->
-                    appBlockerService?.run {
-                        if (enabled) {
+                launch {
+                    _viewModel.allowlist.collect { newAllowlist ->
+                        if (_viewModel.uiState.value.filtersEnabled) {
                             // 既に適用中のみフィルターを更新する
-                            updateFilters(newAllowlist)
+                            appBlockerService?.updateFilters(newAllowlist)
                         }
+                    }
+                }
+                launch {
+                    _viewModel.uiState.collect {
+                        onFiltersEnabled(it.filtersEnabled)
                     }
                 }
             }
@@ -168,6 +173,28 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
         }
     }
 
+    /**
+     * フィルターの有効・無効切り替え時に行う処理
+     */
+    private suspend fun onFiltersEnabled(enable: Boolean) {
+        if (enable) {
+            setActionBarTextColor(
+                supportActionBar,
+                getColorInt(R.color.filters_enabled)
+            )
+            appBlockerService?.updateFilters(
+                _viewModel.allowlist.first()
+            )
+        } else {
+            setActionBarTextColor(
+                supportActionBar,
+                getColorInt(R.color.filters_disabled)
+            )
+            appBlockerService?.disableFilters()
+        }
+        _actionSwitch.isChecked = enable
+    }
+
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
     }
@@ -177,35 +204,12 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
             menuInflater.inflate(R.menu.options, menu)
 
             // アクションバーのスイッチのイベントハンドラを設定
-            val actionSwitch = menu.findItem(R.id.app_bar_switch)?.actionView as? SwitchCompat
-            actionSwitch?.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    _viewModel.filtersEnabled = true
-                    setActionBarTextColor(
-                        supportActionBar,
-                        getColorInt(R.color.filters_enabled)
-                    )
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        _viewModel.allowlist.let {
-                            appBlockerService?.updateFilters(
-                                it.first()
-                            )
-                        }
-                    }
-                } else {
-                    _viewModel.filtersEnabled = false
-                    setActionBarTextColor(
-                        supportActionBar,
-                        getColorInt(R.color.filters_disabled)
-                    )
-                    appBlockerService?.disableFilters()
-                }
+            _actionSwitch = menu.findItem(R.id.app_bar_switch)?.actionView as SwitchCompat
+            _actionSwitch.setOnCheckedChangeListener { _, isChecked ->
+                _viewModel.enableFilters(isChecked)
             }
-            actionSwitch?.isChecked = _viewModel.filtersEnabled
         } catch (e: InflateException) {
-            e.localizedMessage?.let { errMsg ->
-                Logger.d(errMsg)
-            }
+            e.localizedMessage?.let { Logger.d(it) }
         }
         return true
     }
