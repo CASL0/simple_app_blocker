@@ -50,7 +50,6 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
 
     private val binder = AppBlockerBinder()
     private val connectingThread = AtomicReference<Thread>()
-    var enabled = false
 
     override fun onCreate() {
         super.onCreate()
@@ -73,7 +72,6 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
     fun updateFilters(allowedAppPackages: List<CharSequence>) {
         updateForegroundService(getString(R.string.filters_enabled))
         startConnection(allowedAppPackages)
-        enabled = true
     }
 
     /**
@@ -82,7 +80,6 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
     fun disableFilters() {
         setConnectingThread(null)
         updateForegroundService(getString(R.string.filters_disabled))
-        enabled = false
     }
 
     /**
