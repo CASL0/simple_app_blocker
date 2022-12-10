@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
     private val _viewModel: MainViewModel by viewModels()
     var appBlockerService: AppBlockerService? = null
     private lateinit var appUpdateManager: AppUpdateManager
-    private lateinit var _actionSwitch: SwitchCompat
 
     private val updateFlowResultLauncher =
         registerForActivityResult(
@@ -192,7 +191,6 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
             )
             appBlockerService?.disableFilters()
         }
-        _actionSwitch.isChecked = enable
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -204,9 +202,9 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
             menuInflater.inflate(R.menu.options, menu)
 
             // アクションバーのスイッチのイベントハンドラを設定
-            _actionSwitch = menu.findItem(R.id.app_bar_switch)?.actionView as SwitchCompat
-            _actionSwitch.setOnCheckedChangeListener { _, isChecked ->
-                _viewModel.enableFilters(isChecked)
+            (menu.findItem(R.id.app_bar_switch)?.actionView as SwitchCompat).apply {
+                isChecked = _viewModel.uiState.value.filtersEnabled
+                setOnCheckedChangeListener { _, isChecked -> _viewModel.enableFilters(isChecked) }
             }
         } catch (e: InflateException) {
             e.localizedMessage?.let { Logger.d(it) }
