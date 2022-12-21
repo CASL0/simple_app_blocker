@@ -11,27 +11,47 @@ actor ユーザー as user
 participant AllowlistFragment
 participant NewRuleDialog
 participant NewRuleViewModel
+participant InstalledApplicationRepository
+participant InstalledApplicationDataSource
 participant AllowlistRepository
+participant AllowlistDataSource
 participant AllowlistDAO
 database Room
 participant MainActivity
 participant AppBlockerService
 
-user -> AllowlistFragment : [+]クリック
+user -> AllowlistFragment : [+]タップ
 AllowlistFragment -> NewRuleDialog : show()
-NewRuleDialog -> NewRuleViewModel : loadInstalledPackages()
-return
-return
+
+group NewRuleViewModel.init
+    NewRuleViewModel -> NewRuleViewModel : refreshInstalledApplications()
+    NewRuleViewModel --> InstalledApplicationRepository : refresh()
+    InstalledApplicationRepository --> InstalledApplicationDataSource : refreshInstalledApplications()
+    NewRuleViewModel --> InstalledApplicationRepository : collect installedApplications
+    InstalledApplicationRepository -> InstalledApplicationDataSource :  getInstalledApplicationsStream()
+    return
+    NewRuleViewModel --> AllowlistRepository : collect allowlist
+    AllowlistRepository -> AllowlistDataSource : getAllowlistStream()
+    AllowlistDataSource -> AllowlistDAO : getAllowlist
+    AllowlistDAO -> Room : SELECT * FROM allowlist
+    return
+    return
+    return
+end
+
+group NewRuleDialog.onCreateView
+    NewRuleDialog --> NewRuleViewModel : collect installedApplications
+end
 user -> NewRuleDialog : 許可したいアプリをタップ
 NewRuleDialog -> NewRuleViewModel : createNewRule()
 NewRuleViewModel --> AllowlistRepository : insertAllowedPackage()
-note right : Dispatchers.IOで実行
-AllowlistRepository --> AllowlistDAO : insertAllowedPackages()
+AllowlistRepository --> AllowlistDataSource : insertPackage()
+AllowlistDataSource --> AllowlistDAO : insertAllowedPackages()
 AllowlistDAO --> Room : 許可アプリをInsert
 
 == Roomの更新 ==
 
-Room --> MainActivity : Flowの更新をcollect
+AllowlistRepository --> MainActivity : allowlistの更新をoffer
 MainActivity -> AppBlockerService : updateFilters()
 note right : 更新後の規則を適用
 return
