@@ -64,25 +64,45 @@ return
 @startuml
 autoactivate on
 actor ユーザー as user
+participant MainActivity
+participant MainViewModel
 participant AppBlockerService
 participant AppBlockerConnection
+participant BlockedPacketsRepository
+participant BlockedPacketsDataSource
+participant BlockedPacketsDAO
+database Room
 participant BlockLogViewModel
 participant BlockLogFragment
-participant EventBus
-user -> AppBlockerService : フィルター適用
+
+user -> MainActivity : フィルター適用スイッチON
+MainActivity -> MainViewModel : enableFilters()
+MainViewModel -> MainViewModel : UI状態を更新
+return
+return
+MainActivity <-- MainViewModel : UI状態更新をoffer
+MainActivity -> MainActivity : onFiltersEnabled()
+MainActivity -> AppBlockerService : updateFilters()
+AppBlockerService -> AppBlockerService : startConnection()
 AppBlockerService --> AppBlockerConnection : run()
+return
+return
+return
+
 == アプリの通信をブロック ==
 AppBlockerConnection -> AppBlockerConnection : パケットの解析
-return
-AppBlockerConnection --> EventBus : ブロックしたパケット情報をpost
-== EventBusのブロードキャスト ==
-EventBus --> BlockLogViewModel : EventBusから通知
-BlockLogViewModel -> BlockLogViewModel : onPacketBlocked()
-BlockLogViewModel -> BlockLogViewModel : blockPacketInfoListの更新
-return
-BlockLogViewModel --> BlockLogFragment : Stateの更新
+AppBlockerService <- AppBlockerConnection : onBlockPacket()
+AppBlockerService --> BlockedPacketsRepository : insertBlockedPacket()
+BlockedPacketsRepository --> BlockedPacketsDataSource : insertBlockedPacket()
+BlockedPacketsDataSource --> BlockedPacketsDAO : insertBlockedPacket()
+BlockedPacketsDAO --> Room : ブロックしたパケット情報をInsert
+
+== Roomの更新 ==
+BlockedPacketsRepository --> BlockLogViewModel : blocked_packetsの更新をoffer
+BlockLogViewModel --> BlockLogFragment : blockedPacketsの更新をoffer
 BlockLogFragment -> BlockLogFragment : recompose
 note right : ブロックしたアプリ一覧更新
 return
+
 @enduml
 ```
