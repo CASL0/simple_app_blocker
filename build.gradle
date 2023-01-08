@@ -17,6 +17,7 @@ buildscript {
         accompanist_swiperefresh_version = '0.27.0'
         oss_licenses_plugin_version = '0.10.5'
         play_services_oss_licenses_version = '17.0.0'
+        pcapplusplus_version = '21.11'
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
@@ -27,8 +28,26 @@ plugins {
     id 'com.android.application' version '7.2.2' apply false
     id 'com.android.library' version '7.2.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+    id "de.undercouch.download" version "5.3.0"
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+task fetchLibs(type: Download) {
+    src "https://github.com/seladb/PcapPlusPlus/releases/download/v$pcapplusplus_version/pcapplusplus-$pcapplusplus_version-android.tar.gz"
+    dest new File(buildDir, 'pcapplusplus-android.tar.gz')
+}
+
+task expandLibs(dependsOn: fetchLibs, type: Copy) {
+    from tarTree(fetchLibs.dest)
+    into new File(projectDir, 'app/libs/')
+    filesMatching("**/pcapplusplus-$pcapplusplus_version-android/**/*") {
+        it.path = it.path.replace("pcapplusplus-$pcapplusplus_version-android", "pcapplusplus")
+    }
+}
+
+task setup(dependsOn: expandLibs, type: Delete) {
+    delete new File(projectDir, "app/libs/pcapplusplus-$pcapplusplus_version-android")
 }
