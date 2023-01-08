@@ -6,5 +6,9 @@
   "editor.formatOnType": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.singleAttributePerLine": true,
-  "prettier.trailingComma": "all"
+  "prettier.trailingComma": "all",
+  "files.eol": "\r\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true
 }
