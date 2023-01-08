@@ -28,7 +28,7 @@
 ```cmd
 git clone https://github.com/CASL0/simple_app_blocker.git
 cd simple_app_blocker
-bootstrap.bat
+gradlew.bat setup
 gradlew.bat build
 ```
 
@@ -37,7 +37,7 @@ gradlew.bat build
 ```bash
 git clone https://github.com/CASL0/simple_app_blocker.git
 cd simple_app_blocker
-sh bootstrap.sh
+./gradlew setup
 ./gradlew build
 ```
 
