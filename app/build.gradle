@@ -9,6 +9,8 @@ plugins {
 
 android {
     compileSdk 33
+    buildToolsVersion '33.0.1'
+    ndkVersion '21.4.7075529'
 
     defaultConfig {
         applicationId "jp.co.casl0.android.simpleappblocker"
