@@ -6,6 +6,8 @@
 
 [VpnService](https://developer.android.com/reference/android/net/VpnService)を利用し、指定のアプリ以外の通信をブロックするシンプルなユーティリティツールです。
 
+対象 OS：Android10+
+
 <a href="https://play.google.com/store/apps/details?id=jp.co.casl0.android.simpleappblocker&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img height="80" alt="Google Play で手に入れよう" src="https://play.google.com/intl/en_us/badges/static/images/badges/ja_badge_web_generic.png"/></a>
 
 ## 機能
@@ -18,30 +20,18 @@
 
 ### 開発環境
 
+Android Studio (Electric Eel 以降) をインストールしてください。
+
 - Kotlin 1.7.10
 - Android Gradle Plugin 7.4.0
 - Gradle 7.5.1
 - JDK 11
 - NDK 21.4.7075529
 
-### ビルド
-
-**Windows**
-
-```cmd
-git clone https://github.com/CASL0/simple_app_blocker.git
-cd simple_app_blocker
-gradlew.bat setup
-gradlew.bat build
-```
-
-**macOS**
+以下のコマンドを実行し、JNI から使用しているネイティブライブラリ（Pcap++）をセットアップしてください。
 
 ```bash
-git clone https://github.com/CASL0/simple_app_blocker.git
-cd simple_app_blocker
 ./gradlew setup
-./gradlew build
 ```
 
 ## ドキュメント
