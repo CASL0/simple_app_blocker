@@ -5,9 +5,8 @@ Simple App Blocker のドキュメントについて
 ## ドキュメントの形式
 
 - ドキュメントは MarkDown で作成しています。
-- ドキュメント作成には VSCode を使用しています。編集する場合は以下の拡張をインストールしてください。
-  - [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-  - [Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
+- 以下のプラグインのインストールを推奨します。
+  - [Markdown](https://plugins.jetbrains.com/plugin/7793-markdown)
 
 ## シーケンス図
 
