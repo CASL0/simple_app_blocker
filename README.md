@@ -38,6 +38,9 @@ Android Studio (Electric Eel 以降) をインストールしてください。
 
 - [docs](/docs)
 
+※ Android Studio の[Markdown](https://pleiades.io/help/idea/markdown.html)プラグインでプレビューするには、JRE を JCEF に切り替えてください。
+また、PlantUML ダイアグラムを有効にするために`Languages & Frameworks` > `Markdown`から PlantUML 拡張を有効にしてください。
+
 ## ライセンス
 
 ```
