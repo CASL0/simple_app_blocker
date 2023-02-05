@@ -26,7 +26,7 @@ Android Studio (Electric Eel 以降) をインストールしてください。
 - Android Gradle Plugin 7.4.0
 - Gradle 8.0-rc-2
 - JDK 19
-- NDK 21.4.7075529
+- NDK 25.2.9519653
 
 以下のコマンドを実行し、JNI から使用しているネイティブライブラリ（Pcap++）をセットアップしてください。
 
