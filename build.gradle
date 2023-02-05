@@ -17,7 +17,7 @@ buildscript {
         accompanist_swiperefresh_version = '0.27.0'
         oss_licenses_plugin_version = '0.10.5'
         play_services_oss_licenses_version = '17.0.0'
-        pcapplusplus_version = '21.11'
+        pcapplusplus_version = '22.11'
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
