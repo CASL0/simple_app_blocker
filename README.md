@@ -23,7 +23,7 @@
 Android Studio (Electric Eel 以降) をインストールしてください。
 
 - Kotlin 1.7.10
-- Android Gradle Plugin 7.4.0
+- Android Gradle Plugin 7.4.1
 - Gradle 8.0-rc-2
 - JDK 19
 - NDK 25.2.9519653
