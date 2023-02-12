@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.app
+package jp.co.casl0.android.simpleappblocker
 
 import android.app.Application
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 import dagger.hilt.android.HiltAndroidApp
-import jp.co.casl0.android.simpleappblocker.R
 
 @HiltAndroidApp
 class AppBlockerApplication : Application() {
