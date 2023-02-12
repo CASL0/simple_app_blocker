@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="?attr/actionBarSize"
+    android:layout_marginBottom="@dimen/m3_bottom_nav_min_height"
     tools:context=".allowlsit.AllowlistFragment">
 
     <androidx.compose.ui.platform.ComposeView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/allowlist_compose_view"/>
+        android:id="@+id/allowlist_compose_view" />
 </FrameLayout>

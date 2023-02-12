@@ -5,7 +5,7 @@
     <string name="filters_disabled">フィルターが無効です!</string>
     <string name="filters_enabled">フィルターが有効です!</string>
     <string name="title_blocklog">ブロックログ</string>
-    <string name="title_allowlist">許可しているアプリ</string>
+    <string name="title_allowlist">許可アプリ</string>
     <string name="block_log_src">src</string>
     <string name="block_log_dst">dst</string>
     <string name="unknown_app">不明なアプリ</string>
