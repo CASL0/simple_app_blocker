@@ -17,6 +17,7 @@
 package jp.co.casl0.android.simpleappblocker
 
 import android.app.Application
+import com.google.android.material.color.DynamicColors
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
@@ -31,5 +32,6 @@ class AppBlockerApplication : Application() {
                 PrettyFormatStrategy.newBuilder().tag(getString(R.string.app_name)).build()
             )
         )
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 }
