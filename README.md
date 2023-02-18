@@ -25,7 +25,7 @@ Android Studio (Electric Eel 以降) をインストールしてください。
 - Kotlin 1.7.10
 - Android Gradle Plugin 7.4.1
 - Gradle 8.0-rc-2
-- JDK 19
+- JDK 11+
 - NDK 25.2.9519653
 
 以下のコマンドを実行し、JNI から使用しているネイティブライブラリ（Pcap++）をセットアップしてください。
@@ -37,9 +37,10 @@ Android Studio (Electric Eel 以降) をインストールしてください。
 ## ドキュメント
 
 - [docs](/docs)
+- [変更履歴](CHANGELOG.md)
 
 ※ Android Studio の[Markdown](https://pleiades.io/help/idea/markdown.html)プラグインでプレビューするには、JRE を JCEF に切り替えてください。
-また、PlantUML ダイアグラムを有効にするために`Languages & Frameworks` > `Markdown`から PlantUML 拡張を有効にしてください。
+また、PlantUML ダイアグラムを有効にするために`Settings` > `Languages & Frameworks` > `Markdown`から PlantUML 拡張を有効にしてください。
 
 ## ライセンス
 
