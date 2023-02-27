@@ -17,16 +17,14 @@
 package jp.co.casl0.android.simpleappblocker.ui.newrule
 
 import androidx.annotation.StringRes
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewRuleTopBar(@StringRes title: Int, onClose: () -> Unit, modifier: Modifier = Modifier) {
     TopAppBar(

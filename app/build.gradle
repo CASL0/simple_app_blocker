@@ -39,11 +39,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_compiler_extension_version
@@ -75,7 +75,7 @@ dependencies {
     // Integration with activities
     implementation "androidx.activity:activity-compose:$activity_compose_version"
     // Compose Material Design
-    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material3:material3:$compose_material3_version"
     // Material design icons
     implementation "androidx.compose.material:material-icons-core:$compose_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"

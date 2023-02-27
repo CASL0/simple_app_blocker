@@ -18,9 +18,9 @@ package jp.co.casl0.android.simpleappblocker.ui.blocklog
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,7 +53,7 @@ fun BlockLogItem(
             Row(modifier = modifier.fillMaxWidth()) {
                 Text(
                     text = blockedApp.appName.toString(),
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                     modifier = modifier.align(Alignment.CenterVertically)
                 )
@@ -64,13 +64,13 @@ fun BlockLogItem(
                     text = blockedApp.protocol.toString(),
                     textAlign = TextAlign.Left,
                     modifier = modifier.weight(1.0f),
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
                 // ブロック時刻
                 Text(
                     text = blockedApp.blockedAt.toString(),
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Right,
                     modifier = modifier.weight(1.0f)
                 )
@@ -78,24 +78,24 @@ fun BlockLogItem(
             Row { // 送信元IPアドレス
                 Text(
                     text = stringResource(R.string.block_log_src),
-                    color = MaterialTheme.colors.onSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = modifier.width(8.dp))
                 Text(
                     text = blockedApp.src.toString(),
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             }
             Row { // 宛先IPアドレス
                 Text(
                     text = stringResource(R.string.block_log_dst),
-                    color = MaterialTheme.colors.onSurface
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = modifier.width(8.dp))
                 Text(
                     text = blockedApp.dst.toString(),
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
             }

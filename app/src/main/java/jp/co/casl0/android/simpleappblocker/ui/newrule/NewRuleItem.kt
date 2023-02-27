@@ -19,9 +19,9 @@ package jp.co.casl0.android.simpleappblocker.ui.newrule
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LibraryAdd
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +35,7 @@ import jp.co.casl0.android.simpleappblocker.model.AppPackage
 @Composable
 fun NewRuleItem(
     appPackage: AppPackage,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
@@ -62,13 +62,13 @@ fun NewRuleItem(
                 Text(
                     // アプリ名
                     text = appPackage.appName,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
                     // パッケージ名
                     text = appPackage.packageName,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
             val allowAppPackage = LocalButtonClickHandler.current
@@ -82,7 +82,7 @@ fun NewRuleItem(
                 Icon(
                     imageVector = Icons.Filled.LibraryAdd,
                     contentDescription = "Allow",
-                    tint = MaterialTheme.colors.secondary
+                    tint = MaterialTheme.colorScheme.secondary
                 )
             }
         }

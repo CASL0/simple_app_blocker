@@ -17,12 +17,12 @@
 package jp.co.casl0.android.simpleappblocker.ui.allowlist
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
@@ -32,13 +32,13 @@ fun AllowlistScreen(
     allowedPackages: List<AppPackage>,
     onAddButtonClicked: () -> Unit,
     onItemRemove: (appPackage: AppPackage) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = onAddButtonClicked) {
             Icon(Icons.Filled.Add, contentDescription = "add")
         }
-    }, backgroundColor = MaterialTheme.colors.background, modifier = modifier) {
+    }, containerColor = MaterialTheme.colorScheme.background, modifier = modifier) {
         AllowlistContent(allowedPackages, onItemRemove, Modifier.padding(it))
     }
 }
