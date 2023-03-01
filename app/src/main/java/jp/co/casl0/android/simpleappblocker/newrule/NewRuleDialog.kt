@@ -52,7 +52,7 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -87,6 +87,10 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
     val installedApplications = viewModel.installedApplications.collectAsState(listOf()).value
     NewRuleScreen(
         isRefreshing = uiState.value.isRefreshing,
+        showedSearchBox = uiState.value.showedSearchBox,
+        searchValue = uiState.value.searchValue,
+        onClickSearch = viewModel::onClickSearch,
+        onSearchValueChange = viewModel::onSearchValueChange,
         onRefresh = viewModel::refreshInstalledApplications,
         onClose = onClose
     ) {
@@ -97,8 +101,6 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
         CompositionLocalProvider(LocalButtonClickHandler provides viewModel.createNewRule) {
             NewRuleContent(
                 installedPackages,
-                searchValue,
-                viewModel::onSearchValueChange,
             )
         }
     }

@@ -28,12 +28,23 @@ import jp.co.casl0.android.simpleappblocker.R
 fun NewRuleScreen(
     onClose: () -> Unit,
     isRefreshing: Boolean,
+    showedSearchBox: Boolean,
+    searchValue: String,
+    onClickSearch: () -> Unit,
+    onSearchValueChange: (newValue: String) -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Scaffold(topBar = {
-        NewRuleTopBar(title = R.string.new_rule_title, onClose = onClose)
+        NewRuleTopBar(
+            title = R.string.new_rule_title,
+            showedSearchBox = showedSearchBox,
+            searchValue = searchValue,
+            onClickSearch = onClickSearch,
+            onSearchValueChange = onSearchValueChange,
+            onClose = onClose
+        )
     }, modifier = modifier) {
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = isRefreshing),

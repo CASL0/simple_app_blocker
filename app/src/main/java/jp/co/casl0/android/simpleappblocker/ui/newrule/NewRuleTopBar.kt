@@ -17,31 +17,133 @@
 package jp.co.casl0.android.simpleappblocker.ui.newrule
 
 import androidx.annotation.StringRes
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import jp.co.casl0.android.simpleappblocker.R
 
 @Composable
-fun NewRuleTopBar(@StringRes title: Int, onClose: () -> Unit, modifier: Modifier = Modifier) {
+fun NewRuleTopBar(
+    @StringRes title: Int,
+    showedSearchBox: Boolean,
+    searchValue: String,
+    onClickSearch: () -> Unit,
+    onSearchValueChange: (newValue: String) -> Unit,
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (showedSearchBox) {
+        SearchTopAppBar(
+            searchValue = searchValue,
+            onSearchValueChange = onSearchValueChange,
+            onClose = onClose
+        )
+    } else {
+        DefaultTopAppBar(title = title, onClickSearch = onClickSearch, onClose = onClose)
+    }
+}
+
+@Composable
+private fun DefaultTopAppBar(
+    @StringRes title: Int,
+    onClickSearch: () -> Unit,
+    onClose: () -> Unit,
+) {
+    val contentColor = contentColorFor(MaterialTheme.colors.primarySurface)
     TopAppBar(
         title = {
             Text(
                 text = stringResource(id = title),
+                color = contentColor
             )
         },
+        elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onClose) {
                 Icon(
                     Icons.Filled.Close,
                     contentDescription = "Close",
+                    tint = contentColor
+                )
+            }
+        },
+        actions = {
+            IconButton(
+                onClick = onClickSearch,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Search",
+                    tint = contentColor
                 )
             }
         }
     )
+}
+
+@Composable
+private fun SearchTopAppBar(
+    searchValue: String,
+    onSearchValueChange: (newValue: String) -> Unit,
+    onClose: () -> Unit,
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        color = Color.Transparent,
+
+        ) {
+        val backgroundColor = MaterialTheme.colors.primarySurface
+        Row {
+            IconButton(
+                onClick = onClose,
+                modifier = Modifier
+                    .height(56.dp)
+                    .background(backgroundColor)
+            ) {
+                Icon(
+                    Icons.Filled.Close,
+                    contentDescription = "Close",
+                    tint = contentColorFor(backgroundColor),
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+            TextField(
+                modifier = Modifier.fillMaxSize(),
+                shape = MaterialTheme.shapes.large,
+                value = searchValue,
+                onValueChange = onSearchValueChange,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Search
+                ),
+                placeholder = {
+                    Text(
+                        stringResource(R.string.search_placeholder),
+                    )
+                },
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = contentColorFor(backgroundColor),
+                    placeholderColor = contentColorFor(backgroundColor),
+                    cursorColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    backgroundColor = MaterialTheme.colors.primarySurface
+                )
+            )
+        }
+    }
+
 }

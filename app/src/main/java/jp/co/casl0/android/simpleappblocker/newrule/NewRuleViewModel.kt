@@ -36,37 +36,33 @@ import javax.inject.Inject
 sealed interface UiState {
     val searchValue: String
     val isRefreshing: Boolean
+    val showedSearchBox: Boolean
 
     data class NewRuleUiState(
-        /**
-         * 検索ボックスの入力値
-         */
+        /** 検索ボックスの入力値 */
         override val searchValue: String = "",
+        /** インストール済みアプリ読み込み中フラグ */
         override val isRefreshing: Boolean = false,
+        /** 検索ボックス表示フラグ */
+        override val showedSearchBox: Boolean = false,
     ) : UiState
 }
 
 @HiltViewModel
 class NewRuleViewModel @Inject constructor(
     private val allowlistRepository: AllowlistRepository,
-    private val installedApplicationRepository: InstalledApplicationRepository
+    private val installedApplicationRepository: InstalledApplicationRepository,
 ) :
     ViewModel() {
 
-    /**
-     * UI状態
-     */
+    /** UI状態 */
     private val _uiState = MutableStateFlow(UiState.NewRuleUiState())
     val uiState: StateFlow<UiState.NewRuleUiState> get() = _uiState
 
-    /**
-     * 許可済みパッケージリスト
-     */
+    /** 許可済みパッケージリスト */
     val allowlist = allowlistRepository.allowlist
 
-    /**
-     * インストール済みパッケージ一覧
-     */
+    /** インストール済みパッケージ一覧 */
     val installedApplications = installedApplicationRepository.installedApplications
 
 
@@ -74,16 +70,17 @@ class NewRuleViewModel @Inject constructor(
         refreshInstalledApplications()
     }
 
-    /**
-     * 検索ボックスの入力値変更のイベントハンドラ
-     */
+    /** 検索ボックスの入力値変更のイベントハンドラ */
     fun onSearchValueChange(newValue: String) {
         _uiState.update { it.copy(searchValue = newValue) }
     }
 
-    /**
-     * インストール済みパッケージを読み込む関数
-     */
+    /** 検索ボタンクリック時のイベントハンドラ */
+    fun onClickSearch() {
+        _uiState.update { it.copy(showedSearchBox = true) }
+    }
+
+    /** インストール済みパッケージを読み込む関数 */
     fun refreshInstalledApplications() {
         Logger.d("refresh installed applications")
         viewModelScope.launch {
@@ -93,9 +90,7 @@ class NewRuleViewModel @Inject constructor(
         }
     }
 
-    /**
-     * 許可アプリを変更する関数
-     */
+    /** 許可アプリを変更する関数 */
     val createNewRule: (Context, AppPackage) -> Unit = { context, appPackage: AppPackage ->
         viewModelScope.launch {
             val currentList = allowlist.first()
