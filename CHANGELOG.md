@@ -9,6 +9,14 @@
 - FIX
   - バグ修正
 
+## v1.1.5
+
+- [UPDATE] フィルターの適用状態をSavedStateに保存するように修正
+- [UPDATE] NDKバージョンアップ（25.2.9519653）
+- [UPDATE] PcapPlusPlusバージョンアップ（22.11）
+- [UPDATE] 許可アプリ追加画面の検索ボックスをTopAppBarに移動
+- [UPDATE] 許可ボタンはFavoriteに修正し、許可の解除も行えるように修正
+
 ## v1.1.4
 
 - [UPDATE]「その他」画面のレイアウトを修正
