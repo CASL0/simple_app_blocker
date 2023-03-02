@@ -21,12 +21,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LibraryAdd
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.DrawablePainter
@@ -35,7 +36,8 @@ import jp.co.casl0.android.simpleappblocker.model.AppPackage
 @Composable
 fun NewRuleItem(
     appPackage: AppPackage,
-    modifier: Modifier = Modifier
+    changeFilterRule: (allow: Boolean, appPackage: AppPackage) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
@@ -71,20 +73,33 @@ fun NewRuleItem(
                     color = MaterialTheme.colors.onSurface,
                 )
             }
-            val allowAppPackage = LocalButtonClickHandler.current
-            val context = LocalContext.current
-            IconButton(
-                onClick = { allowAppPackage(context, appPackage) },
-                modifier = modifier
-                    .padding(12.dp)
-                    .size(24.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.LibraryAdd,
-                    contentDescription = "Allow",
-                    tint = MaterialTheme.colors.secondary
-                )
-            }
+
+            FavoriteButton(
+                isFavorite = appPackage.isAllowed,
+                onClick = { changeFilterRule(!appPackage.isAllowed, appPackage) })
+        }
+    }
+}
+
+@Composable
+private fun FavoriteButton(
+    isFavorite: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    IconToggleButton(
+        checked = isFavorite,
+        onCheckedChange = { onClick() },
+        modifier = modifier
+    ) {
+        if (isFavorite) {
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = "favorite",
+                tint = Color.Red
+            )
+        } else {
+            Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription = "Favorite")
         }
     }
 }

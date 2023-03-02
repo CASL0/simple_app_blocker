@@ -30,6 +30,7 @@ import jp.co.casl0.android.simpleappblocker.model.AppPackage
 @Composable
 fun NewRuleContent(
     installedPackages: List<AppPackage>,
+    changeFilterRule: (allow: Boolean, appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberLazyListState()
@@ -42,7 +43,7 @@ fun NewRuleContent(
         items(items = installedPackages,
             key = { installedPackage -> installedPackage.packageName }
         ) { installedPackage ->
-            NewRuleItem(installedPackage, modifier = modifier)
+            NewRuleItem(installedPackage, changeFilterRule, modifier = modifier)
         }
     }
 }

@@ -22,7 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -33,7 +32,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.casl0.android.simpleappblocker.ui.newrule.LocalButtonClickHandler
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleContent
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
@@ -95,13 +93,12 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
         onClose = onClose
     ) {
         val searchValue = uiState.value.searchValue
-        val installedPackages = installedApplications.filter {
+        val filteredApplications = installedApplications.filter {
             it.appName.contains(searchValue, ignoreCase = true)
         }
-        CompositionLocalProvider(LocalButtonClickHandler provides viewModel.createNewRule) {
-            NewRuleContent(
-                installedPackages,
-            )
-        }
+        NewRuleContent(
+            filteredApplications,
+            viewModel::changeFilterRule
+        )
     }
 }

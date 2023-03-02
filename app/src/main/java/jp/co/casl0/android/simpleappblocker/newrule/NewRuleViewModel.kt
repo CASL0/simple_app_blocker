@@ -16,19 +16,16 @@
 
 package jp.co.casl0.android.simpleappblocker.newrule
 
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -63,7 +60,15 @@ class NewRuleViewModel @Inject constructor(
     val allowlist = allowlistRepository.allowlist
 
     /** インストール済みパッケージ一覧 */
-    val installedApplications = installedApplicationRepository.installedApplications
+    val installedApplications =
+        combine(
+            installedApplicationRepository.installedApplications,
+            allowlist
+        ) { allInstalledApps, allowlist ->
+            allInstalledApps.map {
+                it.copy(isAllowed = allowlist.contains(it.packageName))
+            }
+        }
 
 
     init {
@@ -90,21 +95,17 @@ class NewRuleViewModel @Inject constructor(
         }
     }
 
-    /** 許可アプリを変更する関数 */
-    val createNewRule: (Context, AppPackage) -> Unit = { context, appPackage: AppPackage ->
+    /** 許可・拒否を切り替える関数 */
+    fun changeFilterRule(allow: Boolean, appPackage: AppPackage) {
         viewModelScope.launch {
-            val currentList = allowlist.first()
-            if (!currentList.contains(appPackage.packageName)) {
+            if (allow) {
                 allowlistRepository.insertAllowedPackage(
                     appPackage.packageName,
                     appPackage.appName
                 )
+            } else {
+                allowlistRepository.disallowPackage(appPackage.packageName)
             }
         }
-        Toast.makeText(
-            context,
-            String.format(context.getString(R.string.toast_allow_app), appPackage.appName),
-            Toast.LENGTH_SHORT
-        ).show()
     }
 }
