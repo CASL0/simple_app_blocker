@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.ui.newrule
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -49,7 +50,9 @@ fun NewRuleScreen(
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
             onRefresh = onRefresh,
-            modifier = Modifier.padding(it)
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize()
         ) {
             content()
         }
