@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -32,13 +33,16 @@ import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 
+@Immutable
+data class AllowedPackagesList(val items: List<AppPackage>)
+
 @Composable
 fun AllowlistContent(
-    allowedPackages: List<AppPackage>,
+    allowedPackages: AllowedPackagesList,
     onItemRemove: (appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if (allowedPackages.isEmpty()) {
+    if (allowedPackages.items.isEmpty()) {
         Column(
             modifier = modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,12 +55,13 @@ fun AllowlistContent(
         LazyColumn(
             state = scrollState,
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items = allowedPackages,
+            items(
+                items = allowedPackages.items,
                 key = { allowedPackage -> allowedPackage.packageName }
             ) { allowedPackage ->
-                AllowlistItem(allowedPackage, onItemRemove, modifier = modifier)
+                AllowlistItem(allowedPackage, onItemRemove, modifier = Modifier)
             }
         }
     }

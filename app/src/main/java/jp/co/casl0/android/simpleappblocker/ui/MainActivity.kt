@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
 
     private val updateFlowResultLauncher =
         registerForActivityResult(
-            ActivityResultContracts.StartIntentSenderForResult(),
+            ActivityResultContracts.StartIntentSenderForResult()
         ) { result ->
             when (result.resultCode) {
                 RESULT_OK -> Logger.d("update ok")
@@ -89,9 +89,7 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
             }
         }
 
-    /**
-     * 通知権限のリクエスト時のコールバック
-     */
+    /** 通知権限のリクエスト時のコールバック */
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -172,9 +170,7 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
         }
     }
 
-    /**
-     * フィルターの有効・無効切り替え時に行う処理
-     */
+    /** フィルターの有効・無効切り替え時に行う処理 */
     private suspend fun onFiltersEnabled(enable: Boolean) {
         if (enable) {
             setActionBarTextColor(

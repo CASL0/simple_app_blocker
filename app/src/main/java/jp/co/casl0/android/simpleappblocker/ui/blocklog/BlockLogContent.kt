@@ -22,20 +22,24 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.blocklog.UiState
 
+@Immutable
+data class BlockedPacketsList(val items: List<UiState.BlockedApp>)
+
 @Composable
 fun BlockLogContent(
-    blockedPackets: List<UiState.BlockedApp>,
+    blockedPackets: BlockedPacketsList,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(vertical = 8.dp)
     ) {
-        items(items = blockedPackets) { packet ->
+        items(items = blockedPackets.items) { packet ->
             Column {
                 BlockLogItem(
                     blockedApp = packet,

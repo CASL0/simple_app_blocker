@@ -39,7 +39,7 @@ sealed interface UiState {
         val src: CharSequence,
         val dst: CharSequence,
         val protocol: CharSequence,
-        val blockedAt: CharSequence,
+        val blockedAt: CharSequence
     )
 
     val blockedApps: List<BlockedApp>
@@ -56,9 +56,7 @@ class BlockLogViewModel @Inject constructor(
 ) :
     AndroidViewModel(context.applicationContext as Application) {
 
-    /**
-     * UI状態
-     */
+    /** UI状態 */
     private val _uiState = MutableStateFlow(UiState.BlockLogUiState())
     val uiState: StateFlow<UiState.BlockLogUiState> get() = _uiState
 
@@ -86,9 +84,8 @@ class BlockLogViewModel @Inject constructor(
                                 src = domainBlockedPacket.srcAddressAndPort,
                                 dst = domainBlockedPacket.dstAddressAndPort,
                                 protocol = domainBlockedPacket.protocol,
-                                blockedAt = domainBlockedPacket.blockedAt,
+                                blockedAt = domainBlockedPacket.blockedAt
                             )
-
                         } catch (e: PackageManager.NameNotFoundException) {
                             e.localizedMessage?.let { err -> Logger.d(err) }
                             null

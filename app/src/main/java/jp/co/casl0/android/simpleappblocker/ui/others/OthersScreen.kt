@@ -46,7 +46,7 @@ fun OthersScreen(
     Column(modifier = modifier.verticalScroll(scrollState)) {
         ListItem(
             headerText = stringResource(id = R.string.version_header),
-            contentText = BuildConfig.VERSION_NAME,
+            contentText = BuildConfig.VERSION_NAME
         )
         LinkedItem(headerText = R.string.licenses_header, onClick = onClickOssLicenses)
         LinkedItem(headerText = R.string.source_code, onClick = onClickSource)
@@ -62,14 +62,14 @@ private fun ListItem(
     Card(modifier = modifier, shape = RoundedCornerShape(0)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(16.dp)
         ) {
             Text(
                 text = headerText.toString(),
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f)
             )
             Text(
-                text = contentText.toString(),
+                text = contentText.toString()
             )
         }
     }
@@ -82,8 +82,8 @@ private fun LinkedItem(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier
-            .fillMaxWidth(), shape = RoundedCornerShape(0)
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(0)
     ) {
         TextButton(
             onClick = onClick,

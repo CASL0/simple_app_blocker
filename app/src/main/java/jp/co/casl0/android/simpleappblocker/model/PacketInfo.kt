@@ -22,15 +22,11 @@ data class PacketInfo(
     val dstAddress: String,
     val dstPort: Int,
     val protocol: String,
-    val blockTime: String,
+    val blockTime: String
 ) {
-    /**
-     * 送信元のIP・ポートの情報を取得する関数
-     */
+    /** 送信元のIP・ポートの情報を取得する関数 */
     fun getSrcAddressAndPort(): String = "$srcAddress ($srcPort)"
 
-    /**
-     * 宛先のIP・ポートの情報を取得する関数
-     */
+    /** 宛先のIP・ポートの情報を取得する関数 */
     fun getDstAddressAndPort(): String = "$dstAddress ($dstPort)"
 }

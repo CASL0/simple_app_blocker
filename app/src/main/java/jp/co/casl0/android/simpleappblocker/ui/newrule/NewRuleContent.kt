@@ -23,27 +23,32 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 
+@Immutable
+data class InstalledPackagesList(val items: List<AppPackage>)
+
 @Composable
 fun NewRuleContent(
-    installedPackages: List<AppPackage>,
+    installedPackages: InstalledPackagesList,
     changeFilterRule: (allow: Boolean, appPackage: AppPackage) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val scrollState = rememberLazyListState()
     LazyColumn(
         state = scrollState,
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(items = installedPackages,
+        items(
+            items = installedPackages.items,
             key = { installedPackage -> installedPackage.packageName }
         ) { installedPackage ->
-            NewRuleItem(installedPackage, changeFilterRule, modifier = modifier)
+            NewRuleItem(installedPackage, changeFilterRule, modifier = Modifier)
         }
     }
 }

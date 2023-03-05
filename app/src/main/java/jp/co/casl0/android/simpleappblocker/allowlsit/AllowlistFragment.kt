@@ -30,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAllowlistBinding
 import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.newrule.NewRuleDialog
+import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowedPackagesList
 import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowlistScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
@@ -44,7 +45,8 @@ class AllowlistFragment : Fragment() {
     private lateinit var binding: FragmentAllowlistBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAllowlistBinding.inflate(layoutInflater, container, false)
@@ -70,5 +72,9 @@ fun AllowlistFragmentScreen(
     val allowedPackages: List<AppPackage> by allowlistViewModel.allowlist.collectAsState(
         listOf()
     )
-    AllowlistScreen(allowedPackages, onAddButtonClicked, allowlistViewModel::disallowPackage)
+    AllowlistScreen(
+        AllowedPackagesList(allowedPackages),
+        onAddButtonClicked,
+        allowlistViewModel::disallowPackage
+    )
 }

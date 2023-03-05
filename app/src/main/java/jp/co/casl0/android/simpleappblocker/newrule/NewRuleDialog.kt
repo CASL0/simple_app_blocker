@@ -32,6 +32,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import jp.co.casl0.android.simpleappblocker.ui.newrule.InstalledPackagesList
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleContent
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleScreen
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
@@ -50,7 +51,7 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -58,8 +59,10 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
                     ?.let {
                         val bsb = BottomSheetBehavior.from(it)
                         bsb.isDraggable = false
-                        if (bsb.state == BottomSheetBehavior.STATE_COLLAPSED) bsb.state =
-                            getDefaultState()
+                        if (bsb.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                            bsb.state =
+                                getDefaultState()
+                        }
                     }
             }
         }
@@ -97,7 +100,7 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
             it.appName.contains(searchValue, ignoreCase = true)
         }
         NewRuleContent(
-            filteredApplications,
+            InstalledPackagesList(filteredApplications),
             viewModel::changeFilterRule
         )
     }

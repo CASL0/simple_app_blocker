@@ -18,12 +18,25 @@ package jp.co.casl0.android.simpleappblocker.ui.newrule
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +53,7 @@ fun NewRuleTopBar(
     onClickSearch: () -> Unit,
     onSearchValueChange: (newValue: String) -> Unit,
     onClose: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     if (showedSearchBox) {
         SearchTopAppBar(
@@ -57,7 +70,7 @@ fun NewRuleTopBar(
 private fun DefaultTopAppBar(
     @StringRes title: Int,
     onClickSearch: () -> Unit,
-    onClose: () -> Unit,
+    onClose: () -> Unit
 ) {
     val contentColor = contentColorFor(MaterialTheme.colors.primarySurface)
     TopAppBar(
@@ -79,7 +92,7 @@ private fun DefaultTopAppBar(
         },
         actions = {
             IconButton(
-                onClick = onClickSearch,
+                onClick = onClickSearch
             ) {
                 Icon(
                     imageVector = Icons.Filled.Search,
@@ -95,15 +108,14 @@ private fun DefaultTopAppBar(
 private fun SearchTopAppBar(
     searchValue: String,
     onSearchValueChange: (newValue: String) -> Unit,
-    onClose: () -> Unit,
+    onClose: () -> Unit
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
-        color = Color.Transparent,
-
-        ) {
+        color = Color.Transparent
+    ) {
         val backgroundColor = MaterialTheme.colors.primarySurface
         Row {
             IconButton(
@@ -129,7 +141,7 @@ private fun SearchTopAppBar(
                 ),
                 placeholder = {
                     Text(
-                        stringResource(R.string.search_placeholder),
+                        stringResource(R.string.search_placeholder)
                     )
                 },
                 singleLine = true,
@@ -145,5 +157,4 @@ private fun SearchTopAppBar(
             )
         }
     }
-
 }

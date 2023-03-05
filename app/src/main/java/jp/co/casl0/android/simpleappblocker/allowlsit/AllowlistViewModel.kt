@@ -36,9 +36,7 @@ class AllowlistViewModel @Inject constructor(
     @ApplicationContext context: Context
 ) :
     AndroidViewModel(context.applicationContext as Application) {
-    /**
-     * 許可リスト
-     */
+    /** 許可リスト */
     val allowlist = allowlistRepository.allowlist.map { allowedPackages ->
         val pm = getApplication<Application>().packageManager
         allowedPackages.map {
@@ -53,14 +51,12 @@ class AllowlistViewModel @Inject constructor(
             AppPackage(
                 appInfo.loadIcon(pm),
                 appInfo.loadLabel(pm).toString(),
-                appInfo.packageName,
+                appInfo.packageName
             )
         }
     }
 
-    /**
-     * 指定のパッケージをブロックに変更する
-     */
+    /** 指定のパッケージをブロックに変更する */
     fun disallowPackage(appPackage: AppPackage) {
         viewModelScope.launch {
             allowlistRepository.disallowPackage(appPackage.packageName)

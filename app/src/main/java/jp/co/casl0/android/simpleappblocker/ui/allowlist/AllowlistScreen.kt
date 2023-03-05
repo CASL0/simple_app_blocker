@@ -29,7 +29,7 @@ import jp.co.casl0.android.simpleappblocker.model.AppPackage
 
 @Composable
 fun AllowlistScreen(
-    allowedPackages: List<AppPackage>,
+    allowedPackages: AllowedPackagesList,
     onAddButtonClicked: () -> Unit,
     onItemRemove: (appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier

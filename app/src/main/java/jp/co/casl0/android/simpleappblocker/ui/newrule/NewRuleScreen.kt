@@ -35,7 +35,7 @@ fun NewRuleScreen(
     onSearchValueChange: (newValue: String) -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Scaffold(topBar = {
         NewRuleTopBar(

@@ -16,10 +16,8 @@
 
 package jp.co.casl0.android.simpleappblocker.model
 
-/**
- * 許可リストアイテムのドメインモデル
- */
+/** 許可リストアイテムのドメインモデル */
 data class DomainAllowedPackage(
     val packageName: CharSequence,
-    val appName: CharSequence,
+    val appName: CharSequence
 )

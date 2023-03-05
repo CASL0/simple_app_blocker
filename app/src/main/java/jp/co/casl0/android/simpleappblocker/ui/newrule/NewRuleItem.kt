@@ -17,9 +17,19 @@
 package jp.co.casl0.android.simpleappblocker.ui.newrule
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -37,27 +47,27 @@ import jp.co.casl0.android.simpleappblocker.model.AppPackage
 fun NewRuleItem(
     appPackage: AppPackage,
     changeFilterRule: (allow: Boolean, appPackage: AppPackage) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier
+        modifier = Modifier
             .height(IntrinsicSize.Max)
             .fillMaxWidth()
     ) {
         Row(
-            modifier = modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image( // アイコン画像
                 painter = DrawablePainter(appPackage.icon),
                 contentDescription = "icon",
-                modifier = modifier
+                modifier = Modifier
                     .clip(CircleShape)
                     .size(50.dp)
             )
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .padding(start = 8.dp)
                     .weight(1f)
             ) {
@@ -65,18 +75,19 @@ fun NewRuleItem(
                     // アプリ名
                     text = appPackage.appName,
                     color = MaterialTheme.colors.onSurface,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     // パッケージ名
                     text = appPackage.packageName,
-                    color = MaterialTheme.colors.onSurface,
+                    color = MaterialTheme.colors.onSurface
                 )
             }
 
             FavoriteButton(
                 isFavorite = appPackage.isAllowed,
-                onClick = { changeFilterRule(!appPackage.isAllowed, appPackage) })
+                onClick = { changeFilterRule(!appPackage.isAllowed, appPackage) }
+            )
         }
     }
 }
@@ -85,7 +96,7 @@ fun NewRuleItem(
 private fun FavoriteButton(
     isFavorite: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     IconToggleButton(
         checked = isFavorite,

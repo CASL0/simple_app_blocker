@@ -67,6 +67,7 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
 
     /**
      * フィルターを更新する関数
+     *
      * @param allowedAppPackages 通信許可したいアプリパッケージ名のリスト
      */
     fun updateFilters(allowedAppPackages: List<CharSequence>) {
@@ -74,17 +75,13 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
         startConnection(allowedAppPackages)
     }
 
-    /**
-     * 遮断を停止する関数
-     */
+    /** 遮断を停止する関数 */
     fun disableFilters() {
         setConnectingThread(null)
         updateForegroundService(getString(R.string.filters_disabled))
     }
 
-    /**
-     * 遮断用のタスクを開始する関数
-     */
+    /** 遮断用のタスクを開始する関数 */
     private fun startConnection(allowedAppPackages: List<CharSequence>) {
         val localTunnelBuilder = getLocalTunnelBuilder()
         allowedAppPackages.forEach { allowedAppPackage ->
@@ -98,9 +95,12 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
         }
         val tunnelInterface = localTunnelBuilder?.establish()
         if (tunnelInterface != null) {
-            val thread = Thread(AppBlockerConnection(tunnelInterface).apply {
-                setOnBlockPacketListener(this@AppBlockerService)
-            }, "AppBlockerThread")
+            val thread = Thread(
+                AppBlockerConnection(tunnelInterface).apply {
+                    setOnBlockPacketListener(this@AppBlockerService)
+                },
+                "AppBlockerThread"
+            )
             setConnectingThread(thread)
             thread.start()
         }
@@ -108,15 +108,14 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
 
     /**
      * 元の遮断用のスレッドを停止し、新規のスレッドを保持する関数
+     *
      * @param thread 新規の遮断用スレッド
      */
     private fun setConnectingThread(thread: Thread?) {
         connectingThread.getAndSet(thread)?.interrupt()
     }
 
-    /**
-     * 遮断用の仮想NICのBuilderを取得する関数
-     */
+    /** 遮断用の仮想NICのBuilderを取得する関数 */
     private fun getLocalTunnelBuilder(): Builder? {
         return try {
             Builder()
@@ -133,6 +132,7 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
 
     /**
      * フォアグラウンドサービスを通知する関数
+     *
      * @param message 通知に表示するメッセージ
      */
     private fun updateForegroundService(message: CharSequence) {
@@ -163,7 +163,7 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
                         dstAddress = packetInfo.dstAddress,
                         dstPort = packetInfo.dstPort,
                         protocol = packetInfo.protocol,
-                        blockedAt = packetInfo.blockTime,
+                        blockedAt = packetInfo.blockTime
                     )
                 )
             }

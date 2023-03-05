@@ -43,7 +43,8 @@ class OthersFragment : Fragment() {
     private lateinit var _binding: FragmentOthersBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentOthersBinding.inflate(inflater, container, false)
@@ -51,28 +52,31 @@ class OthersFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
-                    OthersScreen(onClickOssLicenses = {
-                        startActivity(
-                            Intent(
-                                context,
-                                OssLicensesMenuActivity::class.java
-                            ).apply {
-                                flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
+                    OthersScreen(
+                        onClickOssLicenses = {
+                            startActivity(
+                                Intent(
+                                    context,
+                                    OssLicensesMenuActivity::class.java
+                                ).apply {
+                                    flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
+                                }
+                            )
+                        },
+                        onClickSource = {
+                            try {
+                                Intent().apply {
+                                    action = Intent.ACTION_VIEW
+                                    data = Uri.parse(SOURCE_CODE_URL)
+                                    flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
+                                }.run {
+                                    context.startActivity(this)
+                                }
+                            } catch (e: ActivityNotFoundException) {
+                                e.localizedMessage?.let { Logger.d(it) }
                             }
-                        )
-                    }, onClickSource = {
-                        try {
-                            Intent().apply {
-                                action = Intent.ACTION_VIEW
-                                data = Uri.parse(SOURCE_CODE_URL)
-                                flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
-                            }.run {
-                                context.startActivity(this)
-                            }
-                        } catch (e: ActivityNotFoundException) {
-                            e.localizedMessage?.let { Logger.d(it) }
                         }
-                    })
+                    )
                 }
             }
         }

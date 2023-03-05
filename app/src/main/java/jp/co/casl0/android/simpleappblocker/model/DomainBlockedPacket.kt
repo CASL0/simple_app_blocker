@@ -23,15 +23,11 @@ data class DomainBlockedPacket(
     val dstAddress: CharSequence,
     val dstPort: Int,
     val protocol: CharSequence,
-    val blockedAt: CharSequence,
+    val blockedAt: CharSequence
 ) {
-    /**
-     * 送信元のIP・ポートの情報を取得する関数
-     */
+    /** 送信元のIP・ポートの情報を取得する関数 */
     val srcAddressAndPort: CharSequence get() = "$srcAddress ($srcPort)"
 
-    /**
-     * 宛先のIP・ポートの情報を取得する関数
-     */
+    /** 宛先のIP・ポートの情報を取得する関数 */
     val dstAddressAndPort: CharSequence get() = "$dstAddress ($dstPort)"
 }

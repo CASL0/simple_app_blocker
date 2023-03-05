@@ -42,7 +42,7 @@ class InstalledApplicationLocalDataSource(@ApplicationContext private val contex
             AppPackage(
                 it.loadIcon(pm),
                 it.loadLabel(pm).toString(),
-                it.packageName,
+                it.packageName
             )
         }
         _installedApplications.update { installedApplications }

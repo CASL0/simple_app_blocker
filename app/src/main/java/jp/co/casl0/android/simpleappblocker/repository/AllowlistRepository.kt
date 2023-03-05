@@ -40,21 +40,18 @@ class AllowlistRepository @Inject constructor(
 
     /**
      * Roomに許可アプリを追加する関数
+     *
      * @param packageName パッケージ名
      * @param appName アプリ名
      */
     suspend fun insertAllowedPackage(packageName: String, appName: String) =
         withContext(defaultDispatcher) {
             allowlistDataSource.insertPackage(
-                DomainAllowedPackage(
-                    packageName, appName
-                )
+                DomainAllowedPackage(packageName, appName)
             )
         }
 
-    /**
-     * Roomから許可アプリのレコードを削除する関数
-     */
+    /** Roomから許可アプリのレコードを削除する関数 */
     suspend fun disallowPackage(packageName: String) = withContext(defaultDispatcher) {
         allowlistDataSource.removePackage(packageName)
     }

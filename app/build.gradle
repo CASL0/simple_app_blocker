@@ -5,6 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.android.gms.oss-licenses-plugin'
     id 'kotlin-parcelize'
+    id 'org.jmailen.kotlinter'
 }
 
 android {

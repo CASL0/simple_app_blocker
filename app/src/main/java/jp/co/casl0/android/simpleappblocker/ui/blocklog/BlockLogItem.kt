@@ -17,7 +17,15 @@
 package jp.co.casl0.android.simpleappblocker.ui.blocklog
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -36,11 +44,11 @@ import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 @Composable
 fun BlockLogItem(
     blockedApp: UiState.BlockedApp,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier
+        modifier = Modifier
             .height(IntrinsicSize.Max)
             .fillMaxWidth()
     ) {
@@ -50,20 +58,20 @@ fun BlockLogItem(
                 .width(IntrinsicSize.Max),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Row(modifier = modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = blockedApp.appName.toString(),
                     color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
-                    modifier = modifier.align(Alignment.CenterVertically)
+                    modifier = Modifier.align(Alignment.CenterVertically)
                 )
             }
-            Row(modifier = modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 // プロトコル
                 Text(
                     text = blockedApp.protocol.toString(),
                     textAlign = TextAlign.Left,
-                    modifier = modifier.weight(1.0f),
+                    modifier = Modifier.weight(1.0f),
                     color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold
                 )
@@ -72,7 +80,7 @@ fun BlockLogItem(
                     text = blockedApp.blockedAt.toString(),
                     color = MaterialTheme.colors.onSurface,
                     textAlign = TextAlign.Right,
-                    modifier = modifier.weight(1.0f)
+                    modifier = Modifier.weight(1.0f)
                 )
             }
             Row { // 送信元IPアドレス
@@ -80,7 +88,7 @@ fun BlockLogItem(
                     text = stringResource(R.string.block_log_src),
                     color = MaterialTheme.colors.onSurface
                 )
-                Spacer(modifier = modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = blockedApp.src.toString(),
                     color = MaterialTheme.colors.onSurface,
@@ -92,7 +100,7 @@ fun BlockLogItem(
                     text = stringResource(R.string.block_log_dst),
                     color = MaterialTheme.colors.onSurface
                 )
-                Spacer(modifier = modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = blockedApp.dst.toString(),
                     color = MaterialTheme.colors.onSurface,

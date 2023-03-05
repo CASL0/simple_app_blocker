@@ -41,24 +41,17 @@ class MainViewModel @Inject constructor(
         private const val KEY_UI_STATE = "ui_state"
     }
 
-    /**
-     * UI状態
-     */
+    /** UI状態 */
     private val _uiState =
         MutableStateFlow(savedStateHandle.get<MainUiState>(key = KEY_UI_STATE) ?: MainUiState())
     val uiState: StateFlow<MainUiState> get() = _uiState
 
-    /**
-     * 許可リスト
-     */
+    /** 許可リスト */
     val allowlist = allowlistRepository.allowlist
 
-    /**
-     * フィルターの有効・無効を切り替えます
-     */
+    /** フィルターの有効・無効を切り替えます */
     fun enableFilters(enable: Boolean) {
         _uiState.update { it.copy(filtersEnabled = enable) }
         savedStateHandle[KEY_UI_STATE] = uiState.value
     }
 }
-

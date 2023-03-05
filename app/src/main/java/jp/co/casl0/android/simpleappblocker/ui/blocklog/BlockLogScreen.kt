@@ -29,7 +29,7 @@ fun BlockLogScreen(modifier: Modifier = Modifier, content: @Composable () -> Uni
     Column(
         modifier = modifier
             .background(MaterialTheme.colors.background)
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 8.dp)
     ) {
         content()
     }

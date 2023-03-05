@@ -29,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentBlocklogBinding
 import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogContent
 import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogScreen
+import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockedPacketsList
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @AndroidEntryPoint
@@ -68,6 +69,6 @@ class BlockLogFragment : Fragment() {
 fun BlockLogFragmentScreen(viewModel: BlockLogViewModel) {
     val uiState = viewModel.uiState.collectAsState()
     BlockLogScreen {
-        BlockLogContent(blockedPackets = uiState.value.blockedApps)
+        BlockLogContent(blockedPackets = BlockedPacketsList(uiState.value.blockedApps))
     }
 }

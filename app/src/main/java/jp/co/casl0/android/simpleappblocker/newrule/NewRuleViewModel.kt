@@ -41,14 +41,14 @@ sealed interface UiState {
         /** インストール済みアプリ読み込み中フラグ */
         override val isRefreshing: Boolean = false,
         /** 検索ボックス表示フラグ */
-        override val showedSearchBox: Boolean = false,
+        override val showedSearchBox: Boolean = false
     ) : UiState
 }
 
 @HiltViewModel
 class NewRuleViewModel @Inject constructor(
     private val allowlistRepository: AllowlistRepository,
-    private val installedApplicationRepository: InstalledApplicationRepository,
+    private val installedApplicationRepository: InstalledApplicationRepository
 ) :
     ViewModel() {
 
@@ -69,7 +69,6 @@ class NewRuleViewModel @Inject constructor(
                 it.copy(isAllowed = allowlist.contains(it.packageName))
             }
         }
-
 
     init {
         refreshInstalledApplications()

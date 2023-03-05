@@ -33,9 +33,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-/**
- * アップデート情報
- */
+/** アップデート情報 */
 data class UpdateInfo(
     val updateAvailability: Int, // アップデートの有無
     val immediateAllowed: Boolean, // Immediate Update可能か
@@ -43,8 +41,8 @@ data class UpdateInfo(
     val availableVersionCode: Int, // アップデート可能なバージョンコード
     val installStatus: Int, // インストールステータス
     val packageName: CharSequence, // パッケージ名
-    val clientVersionStalenessDays: Int?, //公開後経過した日数
-    val updatePriority: Int, // 優先度
+    val clientVersionStalenessDays: Int?, // 公開後経過した日数
+    val updatePriority: Int // 優先度
 )
 
 sealed interface Result<out T> {
@@ -52,9 +50,7 @@ sealed interface Result<out T> {
     data class Error(val exception: Exception) : Result<Nothing>
 }
 
-/**
- * アプリ内アップデートのコントローラー
- */
+/** アプリ内アップデートのコントローラー */
 open class AppUpdateController(private val appUpdateManager: AppUpdateManager) :
     DefaultLifecycleObserver {
 
@@ -72,25 +68,19 @@ open class AppUpdateController(private val appUpdateManager: AppUpdateManager) :
         _appUpdateStateChangeListener = listener
     }
 
-    /**
-     * インストールステータスのリスナー
-     */
+    /** インストールステータスのリスナー */
     private var _listener = InstallStateUpdatedListener { installState ->
         _appUpdateStateChangeListener?.onAppUpdateStateChange(installState.installStatus())
     }
 
-    /**
-     * 最新の更新情報
-     */
+    /** 最新の更新情報 */
     private var _updateInfo: AppUpdateInfo? = null
 
     init {
         appUpdateManager.registerListener(_listener)
     }
 
-    /**
-     * アップデートの有無の確認
-     */
+    /** アップデートの有無の確認 */
     open fun checkForUpdateAvailability(): Flow<Result<UpdateInfo>> = callbackFlow {
         appUpdateManager.appUpdateInfo.apply {
             addOnSuccessListener {
@@ -118,9 +108,7 @@ open class AppUpdateController(private val appUpdateManager: AppUpdateManager) :
         awaitClose { cancel() }
     }
 
-    /**
-     * Flexibleアップデートを実行します
-     */
+    /** Flexibleアップデートを実行します */
     open fun startFlexibleUpdate(activityResultCallback: ActivityResultLauncher<IntentSenderRequest>) {
         _updateInfo?.let {
             val starter =
@@ -136,14 +124,12 @@ open class AppUpdateController(private val appUpdateManager: AppUpdateManager) :
                 it,
                 AppUpdateType.FLEXIBLE,
                 starter,
-                REQUEST_CODE_START_UPDATE,
+                REQUEST_CODE_START_UPDATE
             )
         }
     }
 
-    /**
-     * Immediateアップデートを実行します
-     */
+    /** Immediateアップデートを実行します */
     open fun startImmediateUpdate(activityResultCallback: ActivityResultLauncher<IntentSenderRequest>) {
         _updateInfo?.let {
             val starter =
@@ -159,7 +145,7 @@ open class AppUpdateController(private val appUpdateManager: AppUpdateManager) :
                 it,
                 AppUpdateType.IMMEDIATE,
                 starter,
-                REQUEST_CODE_START_UPDATE,
+                REQUEST_CODE_START_UPDATE
             )
         }
     }
