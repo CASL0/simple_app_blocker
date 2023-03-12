@@ -23,6 +23,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import jp.co.casl0.android.simpleappblocker.core.common.di.IoDispatcher
 import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.data.BlockedPacketsDataSource
 import jp.co.casl0.android.simpleappblocker.data.InstalledApplicationDataSource

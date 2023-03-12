@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.di
+package jp.co.casl0.android.simpleappblocker.core.common.di
 
 import dagger.Module
 import dagger.Provides
