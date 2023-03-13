@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.model
+package jp.co.casl0.android.simpleappblocker.core.model
 
 data class PacketInfo(
     val srcAddress: String,

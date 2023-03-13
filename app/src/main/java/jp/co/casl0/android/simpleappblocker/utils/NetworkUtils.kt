@@ -21,13 +21,14 @@ import android.os.Process
 import android.system.OsConstants
 import androidx.annotation.RequiresApi
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.UnknownHostException
 
 /**
  * パケット情報からuidを取得する関数
+ *
  * @param packetInfo パケット情報
  * @return 取得したuid、取得に失敗した場合は -1
  */
@@ -63,6 +64,7 @@ internal fun ConnectivityManager.retrieveUid(packetInfo: PacketInfo): Int {
 
 /**
  * IPアドレスの情報からInetSocketAddressに変換する関数
+ *
  * @param address IPアドレスの文字列
  * @param port ポート
  * @return 変換後のInetSocketAddressのインスタンス、変換できなかった場合はnull

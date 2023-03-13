@@ -19,8 +19,8 @@ package jp.co.casl0.android.simpleappblocker.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
-import jp.co.casl0.android.simpleappblocker.model.DomainBlockedPacket
+import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
+import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 
 @Entity(tableName = "allowlist")
 data class AllowedPackage(

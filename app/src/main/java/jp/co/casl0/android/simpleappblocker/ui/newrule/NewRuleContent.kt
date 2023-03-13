@@ -26,7 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 
 @Immutable
 data class InstalledPackagesList(val items: List<AppPackage>)

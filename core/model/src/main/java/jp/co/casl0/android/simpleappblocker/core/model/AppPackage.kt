@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.model
+package jp.co.casl0.android.simpleappblocker.core.model
 
-/** 許可リストアイテムのドメインモデル */
-data class DomainAllowedPackage(
-    val packageName: CharSequence,
-    val appName: CharSequence
+import android.graphics.drawable.Drawable
+
+data class AppPackage(
+    val icon: Drawable,
+    val appName: String,
+    val packageName: String,
+    var isAllowed: Boolean = false
 )

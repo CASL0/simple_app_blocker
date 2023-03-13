@@ -16,20 +16,14 @@
 
 package jp.co.casl0.android.simpleappblocker.data
 
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import kotlinx.coroutines.flow.Flow
 
-/**
- * インストール済みアプリのデータ層
- */
+/** インストール済みアプリのデータ層 */
 interface InstalledApplicationDataSource {
-    /**
-     * インストール済みアプリの一覧を更新します
-     */
+    /** インストール済みアプリの一覧を更新します */
     suspend fun refreshInstalledApplications()
 
-    /**
-     * インストール済みアプリ一覧を取得します
-     */
+    /** インストール済みアプリ一覧を取得します */
     fun getInstalledApplicationsStream(): Flow<List<AppPackage>>
 }

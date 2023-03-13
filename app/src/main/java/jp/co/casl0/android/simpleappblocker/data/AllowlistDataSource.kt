@@ -16,12 +16,10 @@
 
 package jp.co.casl0.android.simpleappblocker.data
 
-import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
+import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
 import kotlinx.coroutines.flow.Flow
 
-/**
- * 許可リストのデータ層
- */
+/** 許可リストのデータ層 */
 interface AllowlistDataSource {
     fun getAllowlistStream(): Flow<List<DomainAllowedPackage>>
     suspend fun insertPackage(allowedPackage: DomainAllowedPackage)

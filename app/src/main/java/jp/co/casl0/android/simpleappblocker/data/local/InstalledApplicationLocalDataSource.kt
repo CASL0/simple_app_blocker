@@ -20,8 +20,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
+import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.data.InstalledApplicationDataSource
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.update
 class InstalledApplicationLocalDataSource(@ApplicationContext private val context: Context) :
     InstalledApplicationDataSource {
 
-    private val _installedApplications: MutableStateFlow<List<AppPackage>> =
+    private val _installedApplications: MutableStateFlow<List<jp.co.casl0.android.simpleappblocker.core.model.AppPackage>> =
         MutableStateFlow(listOf())
 
     override suspend fun refreshInstalledApplications() {
@@ -39,7 +39,7 @@ class InstalledApplicationLocalDataSource(@ApplicationContext private val contex
         } else {
             pm.getInstalledApplications(0)
         }.map {
-            AppPackage(
+            jp.co.casl0.android.simpleappblocker.core.model.AppPackage(
                 it.loadIcon(pm),
                 it.loadLabel(pm).toString(),
                 it.packageName
@@ -48,5 +48,6 @@ class InstalledApplicationLocalDataSource(@ApplicationContext private val contex
         _installedApplications.update { installedApplications }
     }
 
-    override fun getInstalledApplicationsStream(): Flow<List<AppPackage>> = _installedApplications
+    override fun getInstalledApplicationsStream(): Flow<List<jp.co.casl0.android.simpleappblocker.core.model.AppPackage>> =
+        _installedApplications
 }

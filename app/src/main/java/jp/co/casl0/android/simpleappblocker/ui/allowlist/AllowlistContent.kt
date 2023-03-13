@@ -31,7 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 
 @Immutable
 data class AllowedPackagesList(val items: List<AppPackage>)

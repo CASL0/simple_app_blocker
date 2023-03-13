@@ -16,8 +16,8 @@
 
 package jp.co.casl0.android.simpleappblocker.repository
 
+import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 import jp.co.casl0.android.simpleappblocker.data.BlockedPacketsDataSource
-import jp.co.casl0.android.simpleappblocker.model.DomainBlockedPacket
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

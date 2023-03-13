@@ -24,7 +24,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

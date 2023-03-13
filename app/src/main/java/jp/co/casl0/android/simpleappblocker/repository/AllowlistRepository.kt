@@ -16,8 +16,8 @@
 
 package jp.co.casl0.android.simpleappblocker.repository
 
+import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
 import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
-import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -47,7 +47,10 @@ class AllowlistRepository @Inject constructor(
     suspend fun insertAllowedPackage(packageName: String, appName: String) =
         withContext(defaultDispatcher) {
             allowlistDataSource.insertPackage(
-                DomainAllowedPackage(packageName, appName)
+                DomainAllowedPackage(
+                    packageName,
+                    appName
+                )
             )
         }
 

@@ -19,7 +19,7 @@ package jp.co.casl0.android.simpleappblocker.service
 import android.os.ParcelFileDescriptor
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.PcapPlusPlusInterface
-import jp.co.casl0.android.simpleappblocker.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.utils.getNowDateTime
 import kotlinx.coroutines.Runnable
 import java.io.FileInputStream

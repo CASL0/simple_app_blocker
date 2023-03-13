@@ -26,8 +26,8 @@ import android.os.IBinder
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.model.DomainBlockedPacket
-import jp.co.casl0.android.simpleappblocker.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
+import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.repository.BlockedPacketsRepository
 import jp.co.casl0.android.simpleappblocker.utils.NOTIFICATION_ID
 import jp.co.casl0.android.simpleappblocker.utils.createNotificationChannel

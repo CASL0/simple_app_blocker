@@ -42,7 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.DrawablePainter
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @Composable
@@ -109,6 +109,11 @@ fun PreviewAllowlistItem() {
     ApplicationTheme {
         val packageName = LocalContext.current.packageName
         val icon = LocalContext.current.packageManager.getApplicationIcon(packageName)
-        AllowlistItem(AppPackage(icon, "SimpleAppBlocker", packageName), {})
+        AllowlistItem(
+            AppPackage(
+                icon,
+                "SimpleAppBlocker",
+                packageName
+            ), {})
     }
 }

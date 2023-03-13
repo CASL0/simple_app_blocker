@@ -16,12 +16,10 @@
 
 package jp.co.casl0.android.simpleappblocker.data
 
-import jp.co.casl0.android.simpleappblocker.model.DomainBlockedPacket
+import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 import kotlinx.coroutines.flow.Flow
 
-/**
- * ブロックログのデータ層
- */
+/** ブロックログのデータ層 */
 interface BlockedPacketsDataSource {
     fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>>
     suspend fun insertBlockedPacket(blockedPacket: DomainBlockedPacket)

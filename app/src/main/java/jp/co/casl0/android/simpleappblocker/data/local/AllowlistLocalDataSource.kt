@@ -16,11 +16,11 @@
 
 package jp.co.casl0.android.simpleappblocker.data.local
 
+import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
 import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.database.AllowedPackage
 import jp.co.casl0.android.simpleappblocker.database.SimpleAppBlockerDatabase
 import jp.co.casl0.android.simpleappblocker.database.asDomainModel
-import jp.co.casl0.android.simpleappblocker.model.DomainAllowedPackage
 import jp.co.casl0.android.simpleappblocker.utils.getNowDateTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -28,10 +28,10 @@ import javax.inject.Inject
 
 class AllowlistLocalDataSource @Inject constructor(private val database: SimpleAppBlockerDatabase) :
     AllowlistDataSource {
-    override fun getAllowlistStream(): Flow<List<DomainAllowedPackage>> =
+    override fun getAllowlistStream(): Flow<List<jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage>> =
         database.allowlistDao().getAllowlist().map { it.asDomainModel() }
 
-    override suspend fun insertPackage(allowedPackage: DomainAllowedPackage) {
+    override suspend fun insertPackage(allowedPackage: jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage) {
         database.allowlistDao().insertAllowedPackages(
             AllowedPackage(
                 packageName = allowedPackage.packageName.toString(),

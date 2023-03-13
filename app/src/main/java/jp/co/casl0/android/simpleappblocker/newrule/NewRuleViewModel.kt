@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.casl0.android.simpleappblocker.model.AppPackage
+import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,7 +95,10 @@ class NewRuleViewModel @Inject constructor(
     }
 
     /** 許可・拒否を切り替える関数 */
-    fun changeFilterRule(allow: Boolean, appPackage: AppPackage) {
+    fun changeFilterRule(
+        allow: Boolean,
+        appPackage: AppPackage
+    ) {
         viewModelScope.launch {
             if (allow) {
                 allowlistRepository.insertAllowedPackage(
