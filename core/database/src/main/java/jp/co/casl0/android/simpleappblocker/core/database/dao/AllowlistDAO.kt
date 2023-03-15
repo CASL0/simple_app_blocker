@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.core.database
+package jp.co.casl0.android.simpleappblocker.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import jp.co.casl0.android.simpleappblocker.core.database.model.AllowedPackage
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -39,13 +40,4 @@ interface AllowlistDAO {
 
     @Query("DELETE FROM allowlist WHERE package_name=:packageName")
     suspend fun deleteByPackageName(packageName: String)
-}
-
-@Dao
-interface BlockedPacketsDAO {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBlockedPacket(blockedPacket: BlockedPacket)
-
-    @Query("SELECT * FROM blocked_packets")
-    fun getBlockedPackets(): Flow<List<BlockedPacket>>
 }

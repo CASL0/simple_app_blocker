@@ -16,9 +16,9 @@
 
 package jp.co.casl0.android.simpleappblocker.data.local
 
-import jp.co.casl0.android.simpleappblocker.core.database.BlockedPacket
 import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
-import jp.co.casl0.android.simpleappblocker.core.database.asDomainModel
+import jp.co.casl0.android.simpleappblocker.core.database.model.BlockedPacket
+import jp.co.casl0.android.simpleappblocker.core.database.model.asDomainModel
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 import jp.co.casl0.android.simpleappblocker.data.BlockedPacketsDataSource
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +29,9 @@ class BlockedPacketsLocalDataSource @Inject constructor(private val database: Si
     BlockedPacketsDataSource {
     override fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>> =
         database.blockedPacketsDao().getBlockedPackets().map {
-            it.asDomainModel()
+            it.map { elem ->
+                elem.asDomainModel()
+            }
         }
 
     override suspend fun insertBlockedPacket(blockedPacket: DomainBlockedPacket) {

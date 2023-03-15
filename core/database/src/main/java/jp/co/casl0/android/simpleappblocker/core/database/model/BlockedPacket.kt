@@ -14,26 +14,12 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.core.database
+package jp.co.casl0.android.simpleappblocker.core.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
-
-@Entity(tableName = "allowlist")
-data class AllowedPackage(
-    @PrimaryKey
-    @ColumnInfo(name = "package_name")
-    val packageName: String,
-
-    @ColumnInfo(name = "app_name")
-    val appName: String,
-
-    @ColumnInfo(name = "added_date")
-    val addedTime: String
-)
 
 @Entity(tableName = "blocked_packets")
 data class BlockedPacket(
@@ -60,29 +46,14 @@ data class BlockedPacket(
     val blockedAt: String
 )
 
-/** データベースエンティティからドメインモデルへ変換 */
-@JvmName("asDomainModelAllowedPackage")
-fun List<AllowedPackage>.asDomainModel(): List<DomainAllowedPackage> {
-    return map {
-        DomainAllowedPackage(
-            packageName = it.packageName,
-            appName = it.appName
-        )
-    }
-}
-
-/** ブロックログのデータベースエンティティからドメインモデルへ変換 */
-@JvmName("asDomainBlockedPacket")
-fun List<BlockedPacket>.asDomainModel(): List<DomainBlockedPacket> {
-    return map {
-        DomainBlockedPacket(
-            packageName = it.packageName,
-            srcAddress = it.srcAddress,
-            srcPort = it.srcPort,
-            dstAddress = it.dstAddress,
-            dstPort = it.dstPort,
-            protocol = it.protocol,
-            blockedAt = it.blockedAt
-        )
-    }
+fun BlockedPacket.asDomainModel(): DomainBlockedPacket {
+    return DomainBlockedPacket(
+        packageName = this.packageName,
+        srcAddress = this.srcAddress,
+        srcPort = this.srcPort,
+        dstAddress = this.dstAddress,
+        dstPort = this.dstPort,
+        protocol = this.protocol,
+        blockedAt = this.blockedAt
+    )
 }
