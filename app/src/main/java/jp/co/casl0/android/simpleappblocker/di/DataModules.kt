@@ -17,7 +17,6 @@
 package jp.co.casl0.android.simpleappblocker.di
 
 import android.content.Context
-import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -87,19 +86,5 @@ object DataSourceModule {
     @Provides
     fun provideBlockedPacketsLocalDataSource(database: SimpleAppBlockerDatabase): BlockedPacketsDataSource {
         return BlockedPacketsLocalDataSource(database)
-    }
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
-    @Singleton
-    @Provides
-    fun provideDatabase(@ApplicationContext context: Context): SimpleAppBlockerDatabase {
-        return Room.databaseBuilder(
-            context.applicationContext,
-            SimpleAppBlockerDatabase::class.java,
-            "simple_app_blocker.db"
-        ).build()
     }
 }
