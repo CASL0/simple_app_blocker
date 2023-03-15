@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.database
+package jp.co.casl0.android.simpleappblocker.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -25,13 +25,9 @@ import androidx.room.RoomDatabase
     exportSchema = false
 )
 abstract class SimpleAppBlockerDatabase : RoomDatabase() {
-    /**
-     * 許可アプリリスト操作用のDAOを取得する関数
-     */
+    /** 許可アプリリスト操作用のDAOを取得する関数 */
     abstract fun allowlistDao(): AllowlistDAO
 
-    /**
-     * ブロックしたパケット操作用のDAOを取得する関数
-     */
+    /** ブロックしたパケット操作用のDAOを取得する関数 */
     abstract fun blockedPacketsDao(): BlockedPacketsDAO
 }

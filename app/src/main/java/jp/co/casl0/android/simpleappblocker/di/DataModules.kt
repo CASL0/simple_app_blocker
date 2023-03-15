@@ -24,13 +24,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jp.co.casl0.android.simpleappblocker.core.common.di.IoDispatcher
+import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
 import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.data.BlockedPacketsDataSource
 import jp.co.casl0.android.simpleappblocker.data.InstalledApplicationDataSource
 import jp.co.casl0.android.simpleappblocker.data.local.AllowlistLocalDataSource
 import jp.co.casl0.android.simpleappblocker.data.local.BlockedPacketsLocalDataSource
 import jp.co.casl0.android.simpleappblocker.data.local.InstalledApplicationLocalDataSource
-import jp.co.casl0.android.simpleappblocker.database.SimpleAppBlockerDatabase
 import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.repository.BlockedPacketsRepository
 import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
