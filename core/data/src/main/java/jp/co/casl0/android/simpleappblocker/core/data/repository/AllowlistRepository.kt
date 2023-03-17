@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.repository
+package jp.co.casl0.android.simpleappblocker.core.data.repository
 
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
-import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

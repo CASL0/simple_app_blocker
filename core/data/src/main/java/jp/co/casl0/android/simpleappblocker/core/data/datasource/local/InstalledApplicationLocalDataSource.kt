@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.data.local
+package jp.co.casl0.android.simpleappblocker.core.data.datasource.local
 
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import dagger.hilt.android.qualifiers.ApplicationContext
-import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
-import jp.co.casl0.android.simpleappblocker.data.InstalledApplicationDataSource
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.InstalledApplicationDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

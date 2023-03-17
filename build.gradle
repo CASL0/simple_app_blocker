@@ -19,6 +19,7 @@ buildscript {
         play_services_oss_licenses_version = '17.0.0'
         pcapplusplus_version = '22.11'
         twitter_compose_rule_version = '0.0.23'
+        kotlinx_coroutines_version = '1.6.4'
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"

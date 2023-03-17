@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.data
+package jp.co.casl0.android.simpleappblocker.core.data.datasource
 
-import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
+import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 import kotlinx.coroutines.flow.Flow
 
-/** 許可リストのデータ層 */
-interface AllowlistDataSource {
-    fun getAllowlistStream(): Flow<List<DomainAllowedPackage>>
-    suspend fun insertPackage(allowedPackage: DomainAllowedPackage)
-    suspend fun removePackage(packageName: CharSequence)
+/** ブロックログのデータ層 */
+interface BlockedPacketsDataSource {
+    fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>>
+    suspend fun insertBlockedPacket(blockedPacket: DomainBlockedPacket)
 }

@@ -20,9 +20,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.co.casl0.android.simpleappblocker.core.data.repository.AllowlistRepository
+import jp.co.casl0.android.simpleappblocker.core.data.repository.InstalledApplicationRepository
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
-import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
-import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.di
+package jp.co.casl0.android.simpleappblocker.core.data.di
 
 import android.content.Context
 import dagger.Module
@@ -23,16 +23,16 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jp.co.casl0.android.simpleappblocker.core.common.di.IoDispatcher
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.AllowlistDataSource
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.BlockedPacketsDataSource
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.InstalledApplicationDataSource
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.local.AllowlistLocalDataSource
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.local.BlockedPacketsLocalDataSource
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.local.InstalledApplicationLocalDataSource
+import jp.co.casl0.android.simpleappblocker.core.data.repository.AllowlistRepository
+import jp.co.casl0.android.simpleappblocker.core.data.repository.BlockedPacketsRepository
+import jp.co.casl0.android.simpleappblocker.core.data.repository.InstalledApplicationRepository
 import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
-import jp.co.casl0.android.simpleappblocker.data.AllowlistDataSource
-import jp.co.casl0.android.simpleappblocker.data.BlockedPacketsDataSource
-import jp.co.casl0.android.simpleappblocker.data.InstalledApplicationDataSource
-import jp.co.casl0.android.simpleappblocker.data.local.AllowlistLocalDataSource
-import jp.co.casl0.android.simpleappblocker.data.local.BlockedPacketsLocalDataSource
-import jp.co.casl0.android.simpleappblocker.data.local.InstalledApplicationLocalDataSource
-import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
-import jp.co.casl0.android.simpleappblocker.repository.BlockedPacketsRepository
-import jp.co.casl0.android.simpleappblocker.repository.InstalledApplicationRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 

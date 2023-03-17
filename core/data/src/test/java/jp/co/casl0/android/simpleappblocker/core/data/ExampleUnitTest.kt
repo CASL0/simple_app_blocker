@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.data
+package jp.co.casl0.android.simpleappblocker.core.data
 
-import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
-import kotlinx.coroutines.flow.Flow
+import org.junit.Test
 
-/** ブロックログのデータ層 */
-interface BlockedPacketsDataSource {
-    fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>>
-    suspend fun insertBlockedPacket(blockedPacket: DomainBlockedPacket)
+import org.junit.Assert.*
+
+/**
+ * Example local unit test, which will execute on the development machine
+ * (host).
+ *
+ * See [testing documentation](http://d.android.com/tools/testing).
+ */
+class ExampleUnitTest {
+    @Test
+    fun addition_isCorrect() {
+        assertEquals(4, 2 + 2)
+    }
 }

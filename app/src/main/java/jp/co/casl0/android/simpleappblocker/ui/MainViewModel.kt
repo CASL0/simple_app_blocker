@@ -20,7 +20,7 @@ import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.casl0.android.simpleappblocker.repository.AllowlistRepository
+import jp.co.casl0.android.simpleappblocker.core.data.repository.AllowlistRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

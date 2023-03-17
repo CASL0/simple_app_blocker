@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.repository
+package jp.co.casl0.android.simpleappblocker.core.data.repository
 
-import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
-import jp.co.casl0.android.simpleappblocker.data.BlockedPacketsDataSource
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.InstalledApplicationDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
-class BlockedPacketsRepository(
-    private val blockedPacketsDataSource: BlockedPacketsDataSource,
+/** インストール済みアプリの操作用リポジトリ */
+class InstalledApplicationRepository(
+    private val installedApplicationDataSource: InstalledApplicationDataSource,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
-    val blockedPackets: Flow<List<DomainBlockedPacket>> =
-        blockedPacketsDataSource.getBlockedPacketsStream().flowOn(defaultDispatcher)
+    /** インストール済みアプリ */
+    val installedApplications =
+        installedApplicationDataSource.getInstalledApplicationsStream().flowOn(defaultDispatcher)
 
-    suspend fun insertBlockedPacket(domainBlockedPacket: DomainBlockedPacket) =
-        withContext(defaultDispatcher) {
-            blockedPacketsDataSource.insertBlockedPacket(domainBlockedPacket)
-        }
+    /** インストール済みアプリ一覧を更新します */
+    suspend fun refresh() = withContext(defaultDispatcher) {
+        installedApplicationDataSource.refreshInstalledApplications()
+    }
 }
