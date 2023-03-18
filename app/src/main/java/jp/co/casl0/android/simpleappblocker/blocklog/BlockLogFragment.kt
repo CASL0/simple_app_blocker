@@ -26,11 +26,11 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentBlocklogBinding
 import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogContent
 import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockLogScreen
 import jp.co.casl0.android.simpleappblocker.ui.blocklog.BlockedPacketsList
-import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 
 @AndroidEntryPoint
 class BlockLogFragment : Fragment() {

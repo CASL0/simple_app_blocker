@@ -29,9 +29,9 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.orhanobut.logger.Logger
+import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentOthersBinding
 import jp.co.casl0.android.simpleappblocker.ui.others.OthersScreen
-import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 import jp.co.casl0.android.simpleappblocker.utils.SOURCE_CODE_URL
 
 class OthersFragment : Fragment() {

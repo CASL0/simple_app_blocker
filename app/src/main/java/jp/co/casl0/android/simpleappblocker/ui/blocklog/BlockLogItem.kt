@@ -39,7 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.blocklog.UiState
-import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
+import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
 
 @Composable
 fun BlockLogItem(

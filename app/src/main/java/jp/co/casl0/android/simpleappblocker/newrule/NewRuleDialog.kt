@@ -32,10 +32,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
 import jp.co.casl0.android.simpleappblocker.ui.newrule.InstalledPackagesList
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleContent
 import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleScreen
-import jp.co.casl0.android.simpleappblocker.ui.theme.ApplicationTheme
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
