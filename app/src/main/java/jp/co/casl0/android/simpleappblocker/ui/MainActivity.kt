@@ -49,9 +49,9 @@ import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
+import jp.co.casl0.android.simpleappblocker.feature.update.AppUpdateController
+import jp.co.casl0.android.simpleappblocker.feature.update.Result
 import jp.co.casl0.android.simpleappblocker.service.AppBlockerService
-import jp.co.casl0.android.simpleappblocker.utils.AppUpdateController
-import jp.co.casl0.android.simpleappblocker.utils.Result
 import jp.co.casl0.android.simpleappblocker.utils.popupSnackbar
 import jp.co.casl0.android.simpleappblocker.utils.requestPermission
 import kotlinx.coroutines.flow.first

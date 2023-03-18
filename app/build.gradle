@@ -66,6 +66,7 @@ dependencies {
     implementation project(":core:model")
     implementation project(":core:data")
     implementation project(":core:ui")
+    implementation project(":feature:update")
     implementation "androidx.core:core-ktx:$ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "com.google.android.material:material:$material_version"
@@ -98,7 +99,6 @@ dependencies {
 
     // in-app update
     implementation "com.google.android.play:app-update:$in_app_update_version"
-    implementation "com.google.android.play:app-update-ktx:$in_app_update_version"
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"

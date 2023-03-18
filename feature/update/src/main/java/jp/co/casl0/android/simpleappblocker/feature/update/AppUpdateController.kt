@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.utils
+package jp.co.casl0.android.simpleappblocker.feature.update
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
