@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_blocklog"
-        android:name="jp.co.casl0.android.simpleappblocker.blocklog.BlockLogFragment"
+        android:name="jp.co.casl0.android.simpleappblocker.feature.blocklog.fragment.BlockLogFragment"
         android:label="@string/title_blocklog"
         tools:layout="@layout/fragment_blocklog" />
 

@@ -6,8 +6,6 @@
     <string name="filters_enabled">フィルターが有効です!</string>
     <string name="title_blocklog">ブロックログ</string>
     <string name="title_allowlist">許可しているアプリ</string>
-    <string name="block_log_src">src</string>
-    <string name="block_log_dst">dst</string>
     <string name="unknown_app">不明なアプリ</string>
     <string name="new_rule_title">接続を許可する</string>
     <string name="search_placeholder">検索</string>

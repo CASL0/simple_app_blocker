@@ -5,8 +5,6 @@
     <string name="filters_enabled">Filters are enabled.</string>
     <string name="title_blocklog">Block log</string>
     <string name="title_allowlist">Allowed apps</string>
-    <string name="block_log_src">src</string>
-    <string name="block_log_dst">dst</string>
     <string name="unknown_app">UNKNOWN APP</string>
     <string name="new_rule_title">Select apps to allow</string>
     <string name="search_placeholder">Search</string>

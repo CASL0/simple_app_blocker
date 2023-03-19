@@ -38,7 +38,6 @@ dependencies {
     implementation project(":core:database")
     implementation project(":core:common")
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"

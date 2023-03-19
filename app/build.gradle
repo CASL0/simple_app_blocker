@@ -53,6 +53,7 @@ dependencies {
     implementation project(":core:pcapplusplus")
     implementation project(":feature:update")
     implementation project(":feature:about")
+    implementation project(":feature:blocklog")
     implementation "androidx.core:core-ktx:$ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "com.google.android.material:material:$material_version"
