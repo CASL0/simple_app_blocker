@@ -30,29 +30,29 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
-import jp.co.casl0.android.simpleappblocker.feature.about.databinding.FragmentOthersBinding
-import jp.co.casl0.android.simpleappblocker.feature.about.ui.OthersScreen
+import jp.co.casl0.android.simpleappblocker.feature.about.databinding.FragmentAboutBinding
+import jp.co.casl0.android.simpleappblocker.feature.about.ui.AboutScreen
 import jp.co.casl0.android.simpleappblocker.feature.about.utils.SOURCE_CODE_URL
 
-class OthersFragment : Fragment() {
+class AboutFragment : Fragment() {
 
     companion object {
-        fun newInstance() = OthersFragment()
+        fun newInstance() = AboutFragment()
     }
 
-    private lateinit var _binding: FragmentOthersBinding
+    private lateinit var _binding: FragmentAboutBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentOthersBinding.inflate(inflater, container, false)
+        _binding = FragmentAboutBinding.inflate(inflater, container, false)
         _binding.othersComposeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
-                    OthersScreen(
+                    AboutScreen(
                         onClickOssLicenses = {
                             startActivity(
                                 Intent(

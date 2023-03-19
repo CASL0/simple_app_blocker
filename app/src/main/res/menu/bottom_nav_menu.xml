@@ -5,14 +5,14 @@
         android:id="@+id/navigation_allowlist"
         android:icon="@drawable/ic_app_package_list_black_24dp"
         android:title="@string/title_allowlist" />
-    
+
     <item
         android:id="@+id/navigation_blocklog"
         android:icon="@drawable/ic_baseline_app_blocking_24"
         android:title="@string/title_blocklog" />
 
     <item
-        android:id="@+id/navigation_others"
+        android:id="@+id/navigation_about"
         android:icon="@drawable/ic_baseline_more_horiz_24"
         android:title="@string/title_others" />
 

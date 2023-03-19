@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="?attr/actionBarSize"
-    tools:context=".fragment.OthersFragment">
+    tools:context=".fragment.AboutFragment">
 
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/others_compose_view"

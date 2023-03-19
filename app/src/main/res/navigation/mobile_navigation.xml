@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_allowlist" />
 
     <fragment
-        android:id="@+id/navigation_others"
-        android:name="jp.co.casl0.android.simpleappblocker.feature.about.fragment.OthersFragment"
+        android:id="@+id/navigation_about"
+        android:name="jp.co.casl0.android.simpleappblocker.feature.about.fragment.AboutFragment"
         android:label="@string/title_others"
-        tools:layout="@layout/fragment_others" />
+        tools:layout="@layout/fragment_about" />
 </navigation>

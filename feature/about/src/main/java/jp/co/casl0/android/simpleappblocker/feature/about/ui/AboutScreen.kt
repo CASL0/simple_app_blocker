@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.feature.about.R
 
 @Composable
-fun OthersScreen(
+fun AboutScreen(
     onClickOssLicenses: () -> Unit,
     onClickSource: () -> Unit,
     modifier: Modifier = Modifier
