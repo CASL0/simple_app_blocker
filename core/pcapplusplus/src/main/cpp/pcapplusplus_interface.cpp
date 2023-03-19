@@ -38,14 +38,17 @@ const char *TAG = "PcapPlusPlusNativeInterface";
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
 
 static pcpp::Packet rawPacketBytesToPacket(const uint8_t *packetBytes, int packetLength);
+
 static std::string getTlsServerName(const pcpp::Packet &packet);
+
 static std::string getHttpHostName(const pcpp::Packet &packet);
 
 JNIEXPORT jstring JNICALL
-Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getSrcIpAddressNative(JNIEnv *env,
-                                                                                      jobject thiz,
-                                                                                      jbyteArray packet,
-                                                                                      jint packetLength) {
+Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getSrcIpAddressNative(
+        JNIEnv *env,
+        jobject thiz,
+        jbyteArray packet,
+        jint packetLength) {
     const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
     auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
                                                packetLength);
@@ -61,10 +64,11 @@ Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getSrcIpAddressN
 }
 
 JNIEXPORT jstring JNICALL
-Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getDstIpAddressNative(JNIEnv *env,
-                                                                                      jobject thiz,
-                                                                                      jbyteArray packet,
-                                                                                      jint packetLength) {
+Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getDstIpAddressNative(
+        JNIEnv *env,
+        jobject thiz,
+        jbyteArray packet,
+        jint packetLength) {
     const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
     auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
                                                packetLength);
@@ -80,10 +84,11 @@ Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getDstIpAddressN
 }
 
 JNIEXPORT jint JNICALL
-Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getSrcPortNative(JNIEnv *env,
-                                                                                 jobject thiz,
-                                                                                 jbyteArray packet,
-                                                                                 jint packetLength) {
+Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getSrcPortNative(
+        JNIEnv *env,
+        jobject thiz,
+        jbyteArray packet,
+        jint packetLength) {
     const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
     auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
                                                packetLength);
@@ -98,10 +103,11 @@ Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getSrcPortNative
 }
 
 JNIEXPORT jint JNICALL
-Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getDstPortNative(JNIEnv *env,
-                                                                                 jobject thiz,
-                                                                                 jbyteArray packet,
-                                                                                 jint packetLength) {
+Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getDstPortNative(
+        JNIEnv *env,
+        jobject thiz,
+        jbyteArray packet,
+        jint packetLength) {
     const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
     auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
                                                packetLength);
@@ -116,10 +122,11 @@ Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getDstPortNative
 }
 
 JNIEXPORT jstring JNICALL
-Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getServerNameNative(JNIEnv *env,
-                                                                                    jobject thiz,
-                                                                                    jbyteArray packet,
-                                                                                    jint packetLength) {
+Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getServerNameNative(
+        JNIEnv *env,
+        jobject thiz,
+        jbyteArray packet,
+        jint packetLength) {
     const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
     auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
                                                packetLength);
@@ -138,7 +145,7 @@ Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getServerNameNat
 }
 
 JNIEXPORT jstring JNICALL
-Java_jp_co_casl0_android_simpleappblocker_PcapPlusPlusInterface_getProtocolAsStringNative(
+Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getProtocolAsStringNative(
         JNIEnv *env,
         jobject thiz,
         jbyteArray packet,

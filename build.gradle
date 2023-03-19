@@ -47,12 +47,12 @@ task fetchLibs(type: Download) {
 
 task expandLibs(dependsOn: fetchLibs, type: Copy) {
     from tarTree(fetchLibs.dest)
-    into new File(projectDir, 'app/libs/')
+    into new File(projectDir, 'core/pcapplusplus/libs/')
     filesMatching("**/pcapplusplus-$pcapplusplus_version-android/**/*") {
         it.path = it.path.replace("pcapplusplus-$pcapplusplus_version-android", "pcapplusplus")
     }
 }
 
 task setup(dependsOn: expandLibs, type: Delete) {
-    delete new File(projectDir, "app/libs/pcapplusplus-$pcapplusplus_version-android")
+    delete new File(projectDir, "core/pcapplusplus/libs/pcapplusplus-$pcapplusplus_version-android")
 }

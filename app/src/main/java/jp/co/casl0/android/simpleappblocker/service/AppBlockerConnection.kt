@@ -18,8 +18,8 @@ package jp.co.casl0.android.simpleappblocker.service
 
 import android.os.ParcelFileDescriptor
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.PcapPlusPlusInterface
 import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.PcapPlusPlusInterface
 import jp.co.casl0.android.simpleappblocker.utils.getNowDateTime
 import kotlinx.coroutines.Runnable
 import java.io.FileInputStream
@@ -66,11 +66,26 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
             if (length > 0) {
                 _listener?.onBlockPacket(
                     PacketInfo(
-                        PcapPlusPlusInterface.getSrcIpAddressNative(packet.array(), length),
-                        PcapPlusPlusInterface.getSrcPortNative(packet.array(), length),
-                        PcapPlusPlusInterface.getDstIpAddressNative(packet.array(), length),
-                        PcapPlusPlusInterface.getDstPortNative(packet.array(), length),
-                        PcapPlusPlusInterface.getProtocolAsStringNative(packet.array(), length),
+                        PcapPlusPlusInterface.getSrcIpAddressNative(
+                            packet.array(),
+                            length
+                        ),
+                        PcapPlusPlusInterface.getSrcPortNative(
+                            packet.array(),
+                            length
+                        ),
+                        PcapPlusPlusInterface.getDstIpAddressNative(
+                            packet.array(),
+                            length
+                        ),
+                        PcapPlusPlusInterface.getDstPortNative(
+                            packet.array(),
+                            length
+                        ),
+                        PcapPlusPlusInterface.getProtocolAsStringNative(
+                            packet.array(),
+                            length
+                        ),
                         getNowDateTime()
                     )
                 )
