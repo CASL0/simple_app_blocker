@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.others
+package jp.co.casl0.android.simpleappblocker.feature.about.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
@@ -33,8 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.BuildConfig
-import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.feature.about.R
 
 @Composable
 fun OthersScreen(
@@ -46,7 +45,7 @@ fun OthersScreen(
     Column(modifier = modifier.verticalScroll(scrollState)) {
         ListItem(
             headerText = stringResource(id = R.string.version_header),
-            contentText = BuildConfig.VERSION_NAME
+            contentText = "1.1.5" // TODO: FIX ME
         )
         LinkedItem(headerText = R.string.licenses_header, onClick = onClickOssLicenses)
         LinkedItem(headerText = R.string.source_code, onClick = onClickSource)

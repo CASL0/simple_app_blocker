@@ -67,6 +67,7 @@ dependencies {
     implementation project(":core:data")
     implementation project(":core:ui")
     implementation project(":feature:update")
+    implementation project(":feature:about")
     implementation "androidx.core:core-ktx:$ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "com.google.android.material:material:$material_version"
@@ -95,13 +96,11 @@ dependencies {
     implementation "com.google.accompanist:accompanist-appcompat-theme:$accompanist_appcompat_theme_version"
     implementation "com.google.accompanist:accompanist-drawablepainter:$accompanist_drawablepainter_version"
     implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_swiperefresh_version"
-    implementation 'com.orhanobut:logger:2.2.0'
+    implementation "com.orhanobut:logger:$logger_version"
 
     // in-app update
     implementation "com.google.android.play:app-update:$in_app_update_version"
 
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
-
-    implementation "com.google.android.gms:play-services-oss-licenses:$play_services_oss_licenses_version"
 }

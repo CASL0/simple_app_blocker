@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_others"
-        android:name="jp.co.casl0.android.simpleappblocker.others.OthersFragment"
+        android:name="jp.co.casl0.android.simpleappblocker.feature.about.fragment.OthersFragment"
         android:label="@string/title_others"
         tools:layout="@layout/fragment_others" />
 </navigation>

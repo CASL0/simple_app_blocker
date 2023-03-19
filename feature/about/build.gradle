@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'jp.co.casl0.android.simpleappblocker.feature.about'
+    compileSdk 33
+    buildToolsVersion '33.0.1'
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 33
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler_extension_version
+    }
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
+}
+
+dependencies {
+    implementation project(":core:ui")
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "com.orhanobut:logger:$logger_version"
+    implementation "com.google.android.gms:play-services-oss-licenses:$play_services_oss_licenses_version"
+}

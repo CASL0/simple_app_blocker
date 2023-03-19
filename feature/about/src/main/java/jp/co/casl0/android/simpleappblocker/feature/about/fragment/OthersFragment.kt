@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.others
+package jp.co.casl0.android.simpleappblocker.feature.about.fragment
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -30,9 +30,9 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
-import jp.co.casl0.android.simpleappblocker.databinding.FragmentOthersBinding
-import jp.co.casl0.android.simpleappblocker.ui.others.OthersScreen
-import jp.co.casl0.android.simpleappblocker.utils.SOURCE_CODE_URL
+import jp.co.casl0.android.simpleappblocker.feature.about.databinding.FragmentOthersBinding
+import jp.co.casl0.android.simpleappblocker.feature.about.ui.OthersScreen
+import jp.co.casl0.android.simpleappblocker.feature.about.utils.SOURCE_CODE_URL
 
 class OthersFragment : Fragment() {
 

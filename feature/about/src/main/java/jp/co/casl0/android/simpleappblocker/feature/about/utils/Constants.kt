@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.utils
+package jp.co.casl0.android.simpleappblocker.feature.about.utils
 
 internal const val SOURCE_CODE_URL = "https://github.com/CASL0/simple_app_blocker"

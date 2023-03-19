@@ -12,9 +12,7 @@
     <string name="search_placeholder">Search</string>
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
-    <string name="licenses_header">Open source licenses</string>
     <string name="title_others">More</string>
-    <string name="version_header">App version</string>
     <string name="toast_allow_app">Allowed %s to connect the internet</string>
     <string name="update_downloaded_message">An update has just been downloaded.</string>
     <string name="restart_for_update">RESTART</string>
@@ -23,5 +21,4 @@
     <string name="notification_permission_action_label">SETTINGS</string>
     <string name="notification_channel_id">filters_channel</string>
     <string name="notification_channel_name">Filters</string>
-    <string name="source_code">Source code</string>
 </resources>

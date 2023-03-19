@@ -13,9 +13,7 @@
     <string name="search_placeholder">検索</string>
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
-    <string name="licenses_header">オープンソースライセンス</string>
     <string name="title_others">その他</string>
-    <string name="version_header">アプリバージョン</string>
     <string name="toast_allow_app">%sの接続を許可しました</string>
     <string name="update_downloaded_message">更新がダウンロードされました。</string>
     <string name="restart_for_update">更新する</string>
@@ -24,5 +22,4 @@
     <string name="notification_permission_action_label">設定</string>
     <string name="notification_channel_id">filters_channel</string>
     <string name="notification_channel_name">フィルター</string>
-    <string name="source_code">ソースコード</string>
 </resources>
