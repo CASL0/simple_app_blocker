@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.utils
+package jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -23,14 +23,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.ui.MainActivity
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.R
 
 internal const val NOTIFICATION_ID = 100
 
-/**
- * 通知のインスタンスビルダー
- */
+/** 通知のインスタンスビルダー */
 internal fun Context.getNotificationBuilder(messageBody: CharSequence) =
     NotificationCompat.Builder(this, this.getString(R.string.notification_channel_id))
         .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -40,14 +37,17 @@ internal fun Context.getNotificationBuilder(messageBody: CharSequence) =
             PendingIntent.getActivity(
                 this,
                 NOTIFICATION_ID,
-                Intent(this, MainActivity::class.java),
+                Intent().apply {
+                    setClassName(
+                        "jp.co.casl0.android.simpleappblocker",
+                        "jp.co.casl0.android.simpleappblocker.ui.MainActivity"
+                    )
+                },
                 getPendingIntentFlag()
             )
         )
 
-/**
- * 通知に指定するPendingIntentのフラグを取得する関数
- */
+/** 通知に指定するPendingIntentのフラグを取得する関数 */
 private fun getPendingIntentFlag(): Int {
     return if (Build.VERSION.SDK_INT >= 23) {
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
@@ -56,9 +56,7 @@ private fun getPendingIntentFlag(): Int {
     }
 }
 
-/**
- * 通知チャネルを作成します
- */
+/** 通知チャネルを作成します */
 internal fun NotificationManager.createNotificationChannel(
     channelId: CharSequence,
     channelName: CharSequence

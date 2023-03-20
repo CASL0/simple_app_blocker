@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.service
+package jp.co.casl0.android.simpleappblocker.feature.packet_filtering
 
 import android.app.NotificationManager
 import android.content.Intent
@@ -25,14 +25,14 @@ import android.os.Binder
 import android.os.IBinder
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
-import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.core.data.repository.BlockedPacketsRepository
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
-import jp.co.casl0.android.simpleappblocker.utils.NOTIFICATION_ID
-import jp.co.casl0.android.simpleappblocker.utils.createNotificationChannel
-import jp.co.casl0.android.simpleappblocker.utils.getNotificationBuilder
-import jp.co.casl0.android.simpleappblocker.utils.retrieveUid
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.NOTIFICATION_ID
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.VPN_SERVICE_SESSION
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.createNotificationChannel
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.getNotificationBuilder
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.retrieveUid
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -119,7 +119,7 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
     private fun getLocalTunnelBuilder(): Builder? {
         return try {
             Builder()
-                .setSession(getString(R.string.app_name))
+                .setSession(VPN_SERVICE_SESSION)
                 .addAddress("10.1.10.1", 32)
                 .addAddress("fd00:1:fd00:1:fd00:1:fd00:1", 128)
                 .addRoute("0.0.0.0", 0)

@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">SimpleAppBlocker</string>
     <string name="app_bar_switch_title">ENABLE FILTERS</string>
-    <string name="filters_disabled">Filters are disabled.</string>
-    <string name="filters_enabled">Filters are enabled.</string>
     <string name="title_blocklog">Block log</string>
     <string name="title_allowlist">Allowed apps</string>
     <string name="unknown_app">UNKNOWN APP</string>
@@ -17,6 +15,4 @@
     <string name="empty_allowlist">No allowed apps found.</string>
     <string name="notification_permission_rationale_message">You can turn on notifications in system settings. </string>
     <string name="notification_permission_action_label">SETTINGS</string>
-    <string name="notification_channel_id">filters_channel</string>
-    <string name="notification_channel_name">Filters</string>
 </resources>

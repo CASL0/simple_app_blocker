@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.service
+package jp.co.casl0.android.simpleappblocker.feature.packet_filtering
 
 import android.os.ParcelFileDescriptor
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.PcapPlusPlusInterface
-import jp.co.casl0.android.simpleappblocker.utils.getNowDateTime
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.formatter
 import kotlinx.coroutines.Runnable
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ReadOnlyBufferException
+import java.time.LocalDateTime
 
-class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : Runnable {
+internal class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : Runnable {
     companion object {
         private const val MAX_PACKET_SIZE = Short.MAX_VALUE.toInt()
     }
@@ -86,7 +87,7 @@ class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : 
                             packet.array(),
                             length
                         ),
-                        getNowDateTime()
+                        LocalDateTime.now().format(formatter)
                     )
                 )
             }

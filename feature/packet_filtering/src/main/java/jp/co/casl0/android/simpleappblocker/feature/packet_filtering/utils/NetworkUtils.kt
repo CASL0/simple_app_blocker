@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.utils
+package jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils
 
 import android.net.ConnectivityManager
 import android.os.Process
