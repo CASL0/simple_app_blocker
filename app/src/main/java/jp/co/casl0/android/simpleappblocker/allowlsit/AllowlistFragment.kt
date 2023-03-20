@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.allowlsit
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +31,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
 import jp.co.casl0.android.simpleappblocker.databinding.FragmentAllowlistBinding
-import jp.co.casl0.android.simpleappblocker.newrule.NewRuleDialog
 import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowedPackagesList
 import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowlistScreen
 
@@ -41,8 +41,21 @@ class AllowlistFragment : Fragment() {
         fun newInstance() = AllowlistFragment()
     }
 
+    interface OnRuleChangeListener {
+        fun onClickChangeButton()
+    }
+
     private val viewModel: AllowlistViewModel by viewModels()
     private lateinit var binding: FragmentAllowlistBinding
+    private var listener: OnRuleChangeListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as? OnRuleChangeListener
+        if (listener == null) {
+            throw ClassCastException("$context must implement OnRuleChangeListener")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +68,7 @@ class AllowlistFragment : Fragment() {
             setContent {
                 ApplicationTheme {
                     AllowlistFragmentScreen(viewModel) {
-                        NewRuleDialog.newInstance().show(childFragmentManager, "NewRuleDialog")
+                        listener?.onClickChangeButton()
                     }
                 }
             }

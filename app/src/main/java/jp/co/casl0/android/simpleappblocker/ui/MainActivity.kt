@@ -48,17 +48,20 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.allowlsit.AllowlistFragment
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.AppBlockerService
 import jp.co.casl0.android.simpleappblocker.feature.update.AppUpdateController
 import jp.co.casl0.android.simpleappblocker.feature.update.Result
+import jp.co.casl0.android.simpleappblocker.newrule.NewRuleDialog
 import jp.co.casl0.android.simpleappblocker.utils.popupSnackbar
 import jp.co.casl0.android.simpleappblocker.utils.requestPermission
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateChangeListener {
+class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateChangeListener,
+    AllowlistFragment.OnRuleChangeListener {
 
     private lateinit var binding: ActivityMainBinding
     private val _viewModel: MainViewModel by viewModels()
@@ -224,6 +227,11 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
                 }
             }
         }
+    }
+
+    // AllowlistFragment.onRuleChangeListener
+    override fun onClickChangeButton() {
+        NewRuleDialog.newInstance().show(supportFragmentManager, "NewRuleDialog")
     }
 
     // ライフサイクルメソッド
