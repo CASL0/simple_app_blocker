@@ -36,21 +36,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_extension_version
-    }
     buildFeatures {
         viewBinding true
-        compose true
     }
 }
 
 dependencies {
-    implementation project(":core:common")
     implementation project(":core:model")
     implementation project(":core:data")
-    implementation project(":core:ui")
-    implementation project(":core:pcapplusplus")
     implementation project(":feature:update")
     implementation project(":feature:about")
     implementation project(":feature:blocklog")
@@ -59,37 +52,11 @@ dependencies {
     implementation project(":feature:allowlist")
     implementation "androidx.core:core-ktx:$ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$material_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_ktx_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_ktx_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_ktx_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_ktx_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    // Integration with activities
-    implementation "androidx.activity:activity-compose:$activity_compose_version"
-    // Compose Material Design
-    implementation "androidx.compose.material:material:$compose_version"
-    // Material design icons
-    implementation "androidx.compose.material:material-icons-core:$compose_version"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    // Animations
-    implementation "androidx.compose.animation:animation:$compose_version"
-    // Tooling support (Previews, etc.)
-    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-    // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
-    // accompanist
-    implementation "com.google.accompanist:accompanist-appcompat-theme:$accompanist_appcompat_theme_version"
-    implementation "com.google.accompanist:accompanist-drawablepainter:$accompanist_drawablepainter_version"
-    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_swiperefresh_version"
     implementation "com.orhanobut:logger:$logger_version"
-
-    // in-app update
     implementation "com.google.android.play:app-update:$in_app_update_version"
-
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 }

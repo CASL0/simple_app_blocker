@@ -5,8 +5,6 @@
     <string name="title_blocklog">ブロックログ</string>
     <string name="title_allowlist">許可しているアプリ</string>
     <string name="unknown_app">不明なアプリ</string>
-    <string name="show_less">Show less</string>
-    <string name="show_more">Show more</string>
     <string name="title_others">その他</string>
     <string name="toast_allow_app">%sの接続を許可しました</string>
     <string name="update_downloaded_message">更新がダウンロードされました。</string>
