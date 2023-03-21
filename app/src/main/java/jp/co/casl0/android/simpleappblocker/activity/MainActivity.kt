@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui
+package jp.co.casl0.android.simpleappblocker.activity
 
 import android.Manifest
 import android.content.ComponentName
@@ -56,6 +56,7 @@ import jp.co.casl0.android.simpleappblocker.feature.update.AppUpdateController
 import jp.co.casl0.android.simpleappblocker.feature.update.Result
 import jp.co.casl0.android.simpleappblocker.utils.popupSnackbar
 import jp.co.casl0.android.simpleappblocker.utils.requestPermission
+import jp.co.casl0.android.simpleappblocker.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 

@@ -40,7 +40,7 @@ internal fun Context.getNotificationBuilder(messageBody: CharSequence) =
                 Intent().apply {
                     setClassName(
                         "jp.co.casl0.android.simpleappblocker",
-                        "jp.co.casl0.android.simpleappblocker.ui.MainActivity"
+                        "jp.co.casl0.android.simpleappblocker.activity.MainActivity"
                     )
                 },
                 getPendingIntentFlag()
