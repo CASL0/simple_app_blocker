@@ -11,7 +11,6 @@
     <string name="toast_allow_app">%sの接続を許可しました</string>
     <string name="update_downloaded_message">更新がダウンロードされました。</string>
     <string name="restart_for_update">更新する</string>
-    <string name="empty_allowlist">許可しているアプリがありません。</string>
     <string name="notification_permission_rationale_message">「設定」アプリを開き通知を許可することができます。</string>
     <string name="notification_permission_action_label">設定</string>
 </resources>

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.allowlsit
+package jp.co.casl0.android.simpleappblocker.feature.allowlist.fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -30,9 +30,10 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
-import jp.co.casl0.android.simpleappblocker.databinding.FragmentAllowlistBinding
-import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowedPackagesList
-import jp.co.casl0.android.simpleappblocker.ui.allowlist.AllowlistScreen
+import jp.co.casl0.android.simpleappblocker.feature.allowlist.databinding.FragmentAllowlistBinding
+import jp.co.casl0.android.simpleappblocker.feature.allowlist.ui.AllowedPackagesList
+import jp.co.casl0.android.simpleappblocker.feature.allowlist.ui.AllowlistScreen
+import jp.co.casl0.android.simpleappblocker.feature.allowlist.viewmodel.AllowlistViewModel
 
 @AndroidEntryPoint
 class AllowlistFragment : Fragment() {

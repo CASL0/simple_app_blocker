@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.allowlsit
+package jp.co.casl0.android.simpleappblocker.feature.allowlist.viewmodel
 
 import android.app.Application
 import android.content.Context

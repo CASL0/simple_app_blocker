@@ -48,8 +48,8 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.R
-import jp.co.casl0.android.simpleappblocker.allowlsit.AllowlistFragment
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
+import jp.co.casl0.android.simpleappblocker.feature.allowlist.fragment.AllowlistFragment
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.AppBlockerService
 import jp.co.casl0.android.simpleappblocker.feature.rule_change.dialog.RuleChangeDialog
 import jp.co.casl0.android.simpleappblocker.feature.update.AppUpdateController

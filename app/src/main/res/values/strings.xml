@@ -10,7 +10,6 @@
     <string name="toast_allow_app">Allowed %s to connect the internet</string>
     <string name="update_downloaded_message">An update has just been downloaded.</string>
     <string name="restart_for_update">RESTART</string>
-    <string name="empty_allowlist">No allowed apps found.</string>
     <string name="notification_permission_rationale_message">You can turn on notifications in system settings. </string>
     <string name="notification_permission_action_label">SETTINGS</string>
 </resources>

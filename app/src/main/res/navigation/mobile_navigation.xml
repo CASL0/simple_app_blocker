@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_allowlist"
-        android:name="jp.co.casl0.android.simpleappblocker.allowlsit.AllowlistFragment"
+        android:name="jp.co.casl0.android.simpleappblocker.feature.allowlist.fragment.AllowlistFragment"
         android:label="@string/title_allowlist"
         tools:layout="@layout/fragment_allowlist" />
 
