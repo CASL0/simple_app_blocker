@@ -9,13 +9,13 @@ plugins {
 }
 
 android {
-    compileSdk 33
-    buildToolsVersion '33.0.1'
+    compileSdk libs.versions.compileSdk.get().toInteger()
+    buildToolsVersion libs.versions.buildTools.get()
 
     defaultConfig {
         applicationId "jp.co.casl0.android.simpleappblocker"
         minSdk 29
-        targetSdk 33
+        targetSdk libs.versions.targetSdk.get().toInteger()
         versionCode 9
         versionName "1.1.5"
     }

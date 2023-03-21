@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'jp.co.casl0.android.simpleappblocker.feature.about'
-    compileSdk 33
-    buildToolsVersion '33.0.1'
+    compileSdk libs.versions.compileSdk.get().toInteger()
+    buildToolsVersion libs.versions.buildTools.get()
 
     defaultConfig {
         minSdk 23
-        targetSdk 33
+        targetSdk libs.versions.targetSdk.get().toInteger()
     }
 
     buildTypes {
