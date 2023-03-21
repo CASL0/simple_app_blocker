@@ -35,9 +35,9 @@ android {
 
 dependencies {
     implementation project(":core:model")
-    implementation "androidx.room:room-ktx:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation libs.androidx.room.ktx
+    annotationProcessor libs.androidx.room.compiler
+    kapt libs.androidx.room.compiler
+    implementation libs.com.google.dagger.hilt.android
+    kapt libs.com.google.dagger.hilt.compiler
 }

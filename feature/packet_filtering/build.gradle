@@ -37,8 +37,8 @@ dependencies {
     implementation project(":core:pcapplusplus")
     implementation project(":core:model")
     implementation project(":core:data")
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
-    implementation "com.orhanobut:logger:$logger_version"
+    implementation libs.org.jetbrains.kotlinx.coroutines.android
+    implementation libs.com.google.dagger.hilt.android
+    kapt libs.com.google.dagger.hilt.compiler
+    implementation libs.com.orhanobut.logger
 }

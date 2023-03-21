@@ -32,7 +32,7 @@ android {
         jvmTarget = '1.8'
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_extension_version
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.extension.get()
     }
     buildFeatures {
         viewBinding true
@@ -44,10 +44,10 @@ dependencies {
     implementation project(":core:ui")
     implementation project(":core:data")
     implementation project(":core:model")
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_ktx_version"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "com.google.accompanist:accompanist-drawablepainter:$accompanist_drawablepainter_version"
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.com.google.dagger.hilt.android
+    kapt libs.com.google.dagger.hilt.compiler
+    implementation libs.androidx.compose.material
+    implementation libs.androidx.compose.ui.tooling
+    implementation libs.com.google.accompanist.drawablepainter
 }

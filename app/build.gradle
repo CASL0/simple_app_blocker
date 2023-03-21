@@ -50,13 +50,13 @@ dependencies {
     implementation project(":feature:packet_filtering")
     implementation project(":feature:rule_change")
     implementation project(":feature:allowlist")
-    implementation "androidx.core:core-ktx:$ktx_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_ktx_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_ktx_version"
-    implementation "com.orhanobut:logger:$logger_version"
-    implementation "com.google.android.play:app-update:$in_app_update_version"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.navigation.ui.ktx
+    implementation libs.com.orhanobut.logger
+    implementation libs.com.google.android.play.app.update
+    implementation libs.com.google.dagger.hilt.android
+    kapt libs.com.google.dagger.hilt.compiler
 }

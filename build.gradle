@@ -1,39 +1,16 @@
 buildscript {
-    ext {
-        ktx_version = '1.9.0'
-        appcompat_version = '1.6.1'
-        material_version = '1.8.0'
-        constraintlayout_version = '2.1.4'
-        lifecycle_ktx_version = '2.5.1'
-        navigation_ktx_version = '2.5.3'
-        room_version = '2.5.0'
-        compose_version = '1.3.1'
-        compose_compiler_extension_version = '1.3.0'
-        activity_compose_version = '1.6.1'
-        in_app_update_version = '2.0.1'
-        hilt_version = '2.44.2'
-        accompanist_appcompat_theme_version = '0.23.0'
-        accompanist_drawablepainter_version = '0.25.1'
-        accompanist_swiperefresh_version = '0.27.0'
-        oss_licenses_plugin_version = '0.10.5'
-        play_services_oss_licenses_version = '17.0.0'
-        pcapplusplus_version = '22.11'
-        twitter_compose_rule_version = '0.0.23'
-        kotlinx_coroutines_version = '1.6.4'
-        logger_version = '2.2.0'
-    }
     dependencies {
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        classpath "com.google.android.gms:oss-licenses-plugin:$oss_licenses_plugin_version"
-        classpath "com.twitter.compose.rules:ktlint:$twitter_compose_rule_version"
+        classpath libs.com.google.dagger.hilt.android.gradle.plugin
+        classpath libs.com.google.android.gms.oss.licenses.plugin
+        classpath libs.com.twitter.compose.rules.ktlint
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id 'com.android.application' version '7.4.2' apply false
-    id 'com.android.library' version '7.4.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
-    id "de.undercouch.download" version "5.3.0"
-    id 'org.jmailen.kotlinter' version "3.13.0" apply false
+    alias(libs.plugins.com.android.application) apply false
+    alias(libs.plugins.com.android.library) apply false
+    alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.de.undercouch.download)
+    alias(libs.plugins.org.jmailen.kotlinter) apply false
 }
 
 task clean(type: Delete) {
@@ -41,18 +18,21 @@ task clean(type: Delete) {
 }
 
 task fetchLibs(type: Download) {
-    src "https://github.com/seladb/PcapPlusPlus/releases/download/v$pcapplusplus_version/pcapplusplus-$pcapplusplus_version-android.tar.gz"
+    def version = libs.versions.pcapplusplus.get()
+    src "https://github.com/seladb/PcapPlusPlus/releases/download/v$version/pcapplusplus-$version-android.tar.gz"
     dest new File(buildDir, 'pcapplusplus-android.tar.gz')
 }
 
 task expandLibs(dependsOn: fetchLibs, type: Copy) {
+    def version = libs.versions.pcapplusplus.get()
     from tarTree(fetchLibs.dest)
     into new File(projectDir, 'core/pcapplusplus/libs/')
-    filesMatching("**/pcapplusplus-$pcapplusplus_version-android/**/*") {
-        it.path = it.path.replace("pcapplusplus-$pcapplusplus_version-android", "pcapplusplus")
+    filesMatching("**/pcapplusplus-$version-android/**/*") {
+        it.path = it.path.replace("pcapplusplus-$version-android", "pcapplusplus")
     }
 }
 
 task setup(dependsOn: expandLibs, type: Delete) {
-    delete new File(projectDir, "core/pcapplusplus/libs/pcapplusplus-$pcapplusplus_version-android")
+    def version = libs.versions.pcapplusplus.get()
+    delete new File(projectDir, "core/pcapplusplus/libs/pcapplusplus-$version-android")
 }

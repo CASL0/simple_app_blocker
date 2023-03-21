@@ -32,7 +32,7 @@ android {
         jvmTarget = '1.8'
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_extension_version
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.extension.get()
     }
     buildFeatures {
         compose true
@@ -43,13 +43,13 @@ dependencies {
     implementation project(":core:ui")
     implementation project(":core:model")
     implementation project(":core:data")
-    implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_ktx_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_ktx_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "com.google.accompanist:accompanist-drawablepainter:$accompanist_drawablepainter_version"
-    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_swiperefresh_version"
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
-    implementation "com.orhanobut:logger:$logger_version"
+    implementation libs.com.google.android.material
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.compose.material
+    implementation libs.com.google.accompanist.drawablepainter
+    implementation libs.com.google.accompanist.swiperefresh
+    implementation libs.com.google.dagger.hilt.android
+    kapt libs.com.google.dagger.hilt.compiler
+    implementation libs.com.orhanobut.logger
 }
