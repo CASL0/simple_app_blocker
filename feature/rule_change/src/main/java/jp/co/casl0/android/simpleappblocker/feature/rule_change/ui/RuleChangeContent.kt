@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.newrule
+package jp.co.casl0.android.simpleappblocker.feature.rule_change.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,10 +29,10 @@ import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 
 @Immutable
-data class InstalledPackagesList(val items: List<AppPackage>)
+internal data class InstalledPackagesList(val items: List<AppPackage>)
 
 @Composable
-fun NewRuleContent(
+internal fun RuleChangeContent(
     installedPackages: InstalledPackagesList,
     changeFilterRule: (allow: Boolean, appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier
@@ -48,7 +48,7 @@ fun NewRuleContent(
             items = installedPackages.items,
             key = { installedPackage -> installedPackage.packageName }
         ) { installedPackage ->
-            NewRuleItem(installedPackage, changeFilterRule, modifier = Modifier)
+            RuleChangeItem(installedPackage, changeFilterRule, modifier = Modifier)
         }
     }
 }

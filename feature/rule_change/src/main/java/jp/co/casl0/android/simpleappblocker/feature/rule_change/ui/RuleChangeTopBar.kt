@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.newrule
+package jp.co.casl0.android.simpleappblocker.feature.rule_change.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -43,10 +43,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.feature.rule_change.R
 
 @Composable
-fun NewRuleTopBar(
+internal fun RuleChangeTopBar(
     @StringRes title: Int,
     showedSearchBox: Boolean,
     searchValue: String,

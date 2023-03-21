@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.newrule
+package jp.co.casl0.android.simpleappblocker.feature.rule_change.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -44,7 +44,7 @@ import com.google.accompanist.drawablepainter.DrawablePainter
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 
 @Composable
-fun NewRuleItem(
+internal fun RuleChangeItem(
     appPackage: AppPackage,
     changeFilterRule: (allow: Boolean, appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier

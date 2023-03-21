@@ -55,6 +55,7 @@ dependencies {
     implementation project(":feature:about")
     implementation project(":feature:blocklog")
     implementation project(":feature:packet_filtering")
+    implementation project(":feature:rule_change")
     implementation "androidx.core:core-ktx:$ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "com.google.android.material:material:$material_version"

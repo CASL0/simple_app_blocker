@@ -51,9 +51,9 @@ import jp.co.casl0.android.simpleappblocker.R
 import jp.co.casl0.android.simpleappblocker.allowlsit.AllowlistFragment
 import jp.co.casl0.android.simpleappblocker.databinding.ActivityMainBinding
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.AppBlockerService
+import jp.co.casl0.android.simpleappblocker.feature.rule_change.dialog.RuleChangeDialog
 import jp.co.casl0.android.simpleappblocker.feature.update.AppUpdateController
 import jp.co.casl0.android.simpleappblocker.feature.update.Result
-import jp.co.casl0.android.simpleappblocker.newrule.NewRuleDialog
 import jp.co.casl0.android.simpleappblocker.utils.popupSnackbar
 import jp.co.casl0.android.simpleappblocker.utils.requestPermission
 import kotlinx.coroutines.flow.first
@@ -231,7 +231,7 @@ class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateCh
 
     // AllowlistFragment.onRuleChangeListener
     override fun onClickChangeButton() {
-        NewRuleDialog.newInstance().show(supportFragmentManager, "NewRuleDialog")
+        RuleChangeDialog.newInstance().show(supportFragmentManager, "NewRuleDialog")
     }
 
     // ライフサイクルメソッド

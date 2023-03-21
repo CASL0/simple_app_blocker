@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.newrule
+package jp.co.casl0.android.simpleappblocker.feature.rule_change.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,7 +35,7 @@ sealed interface UiState {
     val isRefreshing: Boolean
     val showedSearchBox: Boolean
 
-    data class NewRuleUiState(
+    data class RuleChangeUiState(
         /** 検索ボックスの入力値 */
         override val searchValue: String = "",
         /** インストール済みアプリ読み込み中フラグ */
@@ -46,15 +46,15 @@ sealed interface UiState {
 }
 
 @HiltViewModel
-class NewRuleViewModel @Inject constructor(
+class RuleChangeViewModel @Inject constructor(
     private val allowlistRepository: AllowlistRepository,
     private val installedApplicationRepository: InstalledApplicationRepository
 ) :
     ViewModel() {
 
     /** UI状態 */
-    private val _uiState = MutableStateFlow(UiState.NewRuleUiState())
-    val uiState: StateFlow<UiState.NewRuleUiState> get() = _uiState
+    private val _uiState = MutableStateFlow(UiState.RuleChangeUiState())
+    val uiState: StateFlow<UiState.RuleChangeUiState> get() = _uiState
 
     /** 許可済みパッケージリスト */
     val allowlist = allowlistRepository.allowlist

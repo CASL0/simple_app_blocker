@@ -2,10 +2,10 @@
  * Copyright 2022 CASL0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.newrule
+package jp.co.casl0.android.simpleappblocker.feature.rule_change.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,20 +33,21 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
-import jp.co.casl0.android.simpleappblocker.ui.newrule.InstalledPackagesList
-import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleContent
-import jp.co.casl0.android.simpleappblocker.ui.newrule.NewRuleScreen
+import jp.co.casl0.android.simpleappblocker.feature.rule_change.ui.InstalledPackagesList
+import jp.co.casl0.android.simpleappblocker.feature.rule_change.ui.RuleChangeContent
+import jp.co.casl0.android.simpleappblocker.feature.rule_change.ui.RuleChangeScreen
+import jp.co.casl0.android.simpleappblocker.feature.rule_change.viewmodel.RuleChangeViewModel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-open class NewRuleDialog : BottomSheetDialogFragment() {
+open class RuleChangeDialog : BottomSheetDialogFragment() {
     companion object {
-        fun newInstance(): NewRuleDialog {
-            return NewRuleDialog()
+        fun newInstance(): RuleChangeDialog {
+            return RuleChangeDialog()
         }
     }
 
-    private val viewModel: NewRuleViewModel by viewModels()
+    private val viewModel: RuleChangeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,10 +84,10 @@ open class NewRuleDialog : BottomSheetDialogFragment() {
 }
 
 @Composable
-fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
+private fun NewRuleDialogScreen(viewModel: RuleChangeViewModel, onClose: () -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
     val installedApplications = viewModel.installedApplications.collectAsState(listOf()).value
-    NewRuleScreen(
+    RuleChangeScreen(
         isRefreshing = uiState.value.isRefreshing,
         showedSearchBox = uiState.value.showedSearchBox,
         searchValue = uiState.value.searchValue,
@@ -99,7 +100,7 @@ fun NewRuleDialogScreen(viewModel: NewRuleViewModel, onClose: () -> Unit) {
         val filteredApplications = installedApplications.filter {
             it.appName.contains(searchValue, ignoreCase = true)
         }
-        NewRuleContent(
+        RuleChangeContent(
             InstalledPackagesList(filteredApplications),
             viewModel::changeFilterRule
         )

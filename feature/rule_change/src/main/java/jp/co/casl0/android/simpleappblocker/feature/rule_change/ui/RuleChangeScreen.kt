@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.ui.newrule
+package jp.co.casl0.android.simpleappblocker.feature.rule_change.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,10 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import jp.co.casl0.android.simpleappblocker.R
+import jp.co.casl0.android.simpleappblocker.feature.rule_change.R
 
 @Composable
-fun NewRuleScreen(
+internal fun RuleChangeScreen(
     onClose: () -> Unit,
     isRefreshing: Boolean,
     showedSearchBox: Boolean,
@@ -38,8 +38,8 @@ fun NewRuleScreen(
     content: @Composable () -> Unit
 ) {
     Scaffold(topBar = {
-        NewRuleTopBar(
-            title = R.string.new_rule_title,
+        RuleChangeTopBar(
+            title = R.string.rule_change_title,
             showedSearchBox = showedSearchBox,
             searchValue = searchValue,
             onClickSearch = onClickSearch,
