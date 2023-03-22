@@ -61,7 +61,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), AppUpdateController.OnAppUpdateStateChangeListener,
+class MainActivity :
+    AppCompatActivity(),
+    AppUpdateController.OnAppUpdateStateChangeListener,
     AllowlistFragment.OnRuleChangeListener {
 
     private lateinit var binding: ActivityMainBinding
