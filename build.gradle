@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.de.undercouch.download)
     alias(libs.plugins.org.jmailen.kotlinter) apply false
+    alias(libs.plugins.com.vanniktech.dependency.graph.generator)
 }
 
 task clean(type: Delete) {
