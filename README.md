@@ -34,6 +34,10 @@ Android Studio (Electric Eel 以降) をインストールしてください。
 ./gradlew setup
 ```
 
+### モジュール
+
+![モジュール構成](https://user-images.githubusercontent.com/28913760/227686241-7f6462cb-08fe-4759-8bf1-efaa0b5957a3.svg)
+
 ## ドキュメント
 
 - [docs](/docs)
