@@ -18,15 +18,13 @@ package jp.co.casl0.android.simpleappblocker.feature.packet_filtering
 
 import android.os.ParcelFileDescriptor
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
 import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.PcapPlusPlusInterface
-import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.formatter
+import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model.ParsedPacket
 import kotlinx.coroutines.Runnable
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ReadOnlyBufferException
-import java.time.LocalDateTime
 
 internal class AppBlockerConnection(private val tunnelInterface: ParcelFileDescriptor) : Runnable {
     companion object {
@@ -34,7 +32,7 @@ internal class AppBlockerConnection(private val tunnelInterface: ParcelFileDescr
     }
 
     interface OnBlockPacketListener {
-        fun onBlockPacket(packetInfo: PacketInfo)
+        fun onBlockPacket(blockedPacket: ParsedPacket)
     }
 
     private var _listener: OnBlockPacketListener? = null
@@ -65,31 +63,14 @@ internal class AppBlockerConnection(private val tunnelInterface: ParcelFileDescr
                 0
             }
             if (length > 0) {
-                _listener?.onBlockPacket(
-                    PacketInfo(
-                        PcapPlusPlusInterface.getSrcIpAddressNative(
-                            packet.array(),
-                            length
-                        ),
-                        PcapPlusPlusInterface.getSrcPortNative(
-                            packet.array(),
-                            length
-                        ),
-                        PcapPlusPlusInterface.getDstIpAddressNative(
-                            packet.array(),
-                            length
-                        ),
-                        PcapPlusPlusInterface.getDstPortNative(
-                            packet.array(),
-                            length
-                        ),
-                        PcapPlusPlusInterface.getProtocolAsStringNative(
-                            packet.array(),
-                            length
-                        ),
-                        LocalDateTime.now().format(formatter)
+                PcapPlusPlusInterface.analyzePacket(
+                    packet.array(),
+                    length
+                )?.let {
+                    _listener?.onBlockPacket(
+                        it
                     )
-                )
+                }
             }
             packet.clear()
             try {

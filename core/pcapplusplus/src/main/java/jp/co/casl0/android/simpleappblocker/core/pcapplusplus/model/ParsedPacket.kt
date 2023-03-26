@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package jp.co.casl0.android.simpleappblocker.core.model
+package jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model
 
-data class PacketInfo(
+class ParsedPacket(
     val srcAddress: String,
     val srcPort: Int,
     val dstAddress: String,
     val dstPort: Int,
-    val protocol: String,
-    val blockTime: String
+    val protocol: String
 ) {
     /** 送信元のIP・ポートの情報を取得する関数 */
     fun getSrcAddressAndPort(): String = "$srcAddress ($srcPort)"

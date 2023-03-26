@@ -27,15 +27,17 @@ import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.core.data.repository.BlockedPacketsRepository
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
-import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model.ParsedPacket
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.NOTIFICATION_ID
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.VPN_SERVICE_SESSION
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.createNotificationChannel
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.formatter
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.getNotificationBuilder
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.retrieveUid
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
@@ -148,22 +150,22 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
 
     // AppBlockerConnection.OnBlockPacketListener
     @OptIn(DelicateCoroutinesApi::class)
-    override fun onBlockPacket(packetInfo: PacketInfo) {
+    override fun onBlockPacket(blockedPacket: ParsedPacket) {
         val connectivityManager =
             applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val packageManager = applicationContext.packageManager
-        val uid = connectivityManager.retrieveUid(packetInfo)
+        val uid = connectivityManager.retrieveUid(blockedPacket)
         packageManager.getNameForUid(uid)?.let { packageName ->
             GlobalScope.launch {
                 repository.insertBlockedPacket(
                     DomainBlockedPacket(
                         packageName = packageName,
-                        srcAddress = packetInfo.srcAddress,
-                        srcPort = packetInfo.srcPort,
-                        dstAddress = packetInfo.dstAddress,
-                        dstPort = packetInfo.dstPort,
-                        protocol = packetInfo.protocol,
-                        blockedAt = packetInfo.blockTime
+                        srcAddress = blockedPacket.srcAddress,
+                        srcPort = blockedPacket.srcPort,
+                        dstAddress = blockedPacket.dstAddress,
+                        dstPort = blockedPacket.dstPort,
+                        protocol = blockedPacket.protocol,
+                        blockedAt = LocalDateTime.now().format(formatter)
                     )
                 )
             }

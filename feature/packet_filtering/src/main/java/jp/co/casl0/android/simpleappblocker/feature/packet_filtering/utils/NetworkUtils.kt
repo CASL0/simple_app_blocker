@@ -21,7 +21,7 @@ import android.os.Process
 import android.system.OsConstants
 import androidx.annotation.RequiresApi
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.core.model.PacketInfo
+import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model.ParsedPacket
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.UnknownHostException
@@ -29,20 +29,20 @@ import java.net.UnknownHostException
 /**
  * パケット情報からuidを取得する関数
  *
- * @param packetInfo パケット情報
+ * @param blockedPacket パケット情報
  * @return 取得したuid、取得に失敗した場合は -1
  */
 @RequiresApi(api = 29)
-internal fun ConnectivityManager.retrieveUid(packetInfo: PacketInfo): Int {
-    val protocol = when (packetInfo.protocol) {
+internal fun ConnectivityManager.retrieveUid(blockedPacket: ParsedPacket): Int {
+    val protocol = when (blockedPacket.protocol) {
         "TCP" -> OsConstants.IPPROTO_TCP
         "UDP" -> OsConstants.IPPROTO_UDP
         else -> -1
     }
     val localSocketAddress =
-        translateInetSocketAddress(packetInfo.srcAddress, packetInfo.srcPort)
+        translateInetSocketAddress(blockedPacket.srcAddress, blockedPacket.srcPort)
     val remoteSocketAddress =
-        translateInetSocketAddress(packetInfo.dstAddress, packetInfo.dstPort)
+        translateInetSocketAddress(blockedPacket.dstAddress, blockedPacket.dstPort)
     if (localSocketAddress != null && remoteSocketAddress != null) {
         try {
             val uid = getConnectionOwnerUid(

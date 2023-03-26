@@ -38,87 +38,54 @@ const char *TAG = "PcapPlusPlusNativeInterface";
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
 
 static pcpp::Packet rawPacketBytesToPacket(const uint8_t *packetBytes, int packetLength);
-
 static std::string getTlsServerName(const pcpp::Packet &packet);
-
 static std::string getHttpHostName(const pcpp::Packet &packet);
+static std::string getSrcIpAddress(const pcpp::Packet &packet);
+static std::string getDstIpAddress(const pcpp::Packet &packet);
+static int getSrcPort(const pcpp::Packet &packet);
+static int getDstPort(const pcpp::Packet &packet);
+static std::string getProtocol(const pcpp::Packet &packet);
 
-JNIEXPORT jstring JNICALL
-Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getSrcIpAddressNative(
+JNIEXPORT jobject JNICALL
+Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_analyzePacket(
         JNIEnv *env,
         jobject thiz,
         jbyteArray packet,
         jint packetLength) {
     const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
-    auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
-                                               packetLength);
+    auto parsedPacket = rawPacketBytesToPacket(
+            reinterpret_cast<const uint8_t *>(packetBytes),
+            packetLength
+    );
 
-    if (parsedPacket.isPacketOfType(pcpp::IPv4)) {
-        return env->NewStringUTF(
-                parsedPacket.getLayerOfType<pcpp::IPv4Layer>()->getSrcIPAddress().toString().c_str());
-    } else if (parsedPacket.isPacketOfType(pcpp::IPv6)) {
-        return env->NewStringUTF(
-                parsedPacket.getLayerOfType<pcpp::IPv6Layer>()->getSrcIPAddress().toString().c_str());
+    jclass clazz = env->FindClass(
+            "jp/co/casl0/android/simpleappblocker/core/pcapplusplus/model/ParsedPacket"
+    );
+    if (clazz == nullptr) {
+        LOGE(TAG, "class not found");
+        return nullptr;
     }
-    return env->NewStringUTF("");
-}
 
-JNIEXPORT jstring JNICALL
-Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getDstIpAddressNative(
-        JNIEnv *env,
-        jobject thiz,
-        jbyteArray packet,
-        jint packetLength) {
-    const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
-    auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
-                                               packetLength);
-
-    if (parsedPacket.isPacketOfType(pcpp::IPv4)) {
-        return env->NewStringUTF(
-                parsedPacket.getLayerOfType<pcpp::IPv4Layer>()->getDstIPAddress().toString().c_str());
-    } else if (parsedPacket.isPacketOfType(pcpp::IPv6)) {
-        return env->NewStringUTF(
-                parsedPacket.getLayerOfType<pcpp::IPv6Layer>()->getDstIPAddress().toString().c_str());
+    jmethodID ctor = env->GetMethodID(
+            clazz,
+            "<init>",
+            "(Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V"
+    );
+    if (ctor == nullptr) {
+        LOGE(TAG, "method not found");
+        return nullptr;
     }
-    return env->NewStringUTF("");
-}
 
-JNIEXPORT jint JNICALL
-Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getSrcPortNative(
-        JNIEnv *env,
-        jobject thiz,
-        jbyteArray packet,
-        jint packetLength) {
-    const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
-    auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
-                                               packetLength);
+    return env->NewObject(
+            clazz,
+            ctor,
+            env->NewStringUTF(getSrcIpAddress(parsedPacket).c_str()),
+            getSrcPort(parsedPacket),
+            env->NewStringUTF(getDstIpAddress(parsedPacket).c_str()),
+            getDstPort(parsedPacket),
+            env->NewStringUTF(getProtocol(parsedPacket).c_str())
+    );
 
-    if (auto tcpLayer = parsedPacket.getLayerOfType<pcpp::TcpLayer>(); tcpLayer != nullptr) {
-        return tcpLayer->getSrcPort();
-    }
-    if (auto udpLayer = parsedPacket.getLayerOfType<pcpp::UdpLayer>(); udpLayer != nullptr) {
-        return udpLayer->getSrcPort();
-    }
-    return 0;
-}
-
-JNIEXPORT jint JNICALL
-Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getDstPortNative(
-        JNIEnv *env,
-        jobject thiz,
-        jbyteArray packet,
-        jint packetLength) {
-    const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
-    auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
-                                               packetLength);
-
-    if (auto tcpLayer = parsedPacket.getLayerOfType<pcpp::TcpLayer>(); tcpLayer != nullptr) {
-        return tcpLayer->getDstPort();
-    }
-    if (auto udpLayer = parsedPacket.getLayerOfType<pcpp::UdpLayer>(); udpLayer != nullptr) {
-        return udpLayer->getDstPort();
-    }
-    return 0;
 }
 
 JNIEXPORT jstring JNICALL
@@ -142,23 +109,6 @@ Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterfac
     }
 
     return env->NewStringUTF("");
-}
-
-JNIEXPORT jstring JNICALL
-Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_getProtocolAsStringNative(
-        JNIEnv *env,
-        jobject thiz,
-        jbyteArray packet,
-        jint packetLength) {
-    const jbyte *packetBytes = env->GetByteArrayElements(packet, nullptr);
-    auto parsedPacket = rawPacketBytesToPacket(reinterpret_cast<const uint8_t *>(packetBytes),
-                                               packetLength);
-    if (parsedPacket.getLayerOfType<pcpp::TcpLayer>() != nullptr) {
-        return env->NewStringUTF("TCP");
-    } else if (parsedPacket.getLayerOfType<pcpp::UdpLayer>() != nullptr) {
-        return env->NewStringUTF("UDP");
-    }
-    return env->NewStringUTF("Unknown");
 }
 
 /**
@@ -226,6 +176,78 @@ std::string getHttpHostName(const pcpp::Packet &packet) {
         return hostField->getFieldValue();
     }
     return std::string();
+}
+
+/**
+ * 送信元IPアドレスの文字列を取得する関数
+ * @param packet パケット
+ * @return 送信元IPアドレスの文字列(取得できなかった場合は空文字)
+ */
+std::string getSrcIpAddress(const pcpp::Packet &packet) {
+    if (packet.isPacketOfType(pcpp::IPv4)) {
+        return packet.getLayerOfType<pcpp::IPv4Layer>()->getSrcIPAddress().toString();
+    } else if (packet.isPacketOfType(pcpp::IPv6)) {
+        return packet.getLayerOfType<pcpp::IPv6Layer>()->getSrcIPAddress().toString();
+    }
+    return std::string();
+}
+
+/**
+ * 宛先IPアドレスの文字列を取得する関数
+ * @param packet パケット
+ * @return 宛先IPアドレスの文字列(取得できなかった場合は空文字)
+ */
+std::string getDstIpAddress(const pcpp::Packet &packet) {
+    if (packet.isPacketOfType(pcpp::IPv4)) {
+        return packet.getLayerOfType<pcpp::IPv4Layer>()->getDstIPAddress().toString();
+    } else if (packet.isPacketOfType(pcpp::IPv6)) {
+        return packet.getLayerOfType<pcpp::IPv6Layer>()->getDstIPAddress().toString();
+    }
+    return std::string();
+}
+
+/**
+ * 送信元ポートの文字列を取得する関数
+ * @param packet パケット
+ * @return 送信元ポート(取得できなかった場合は0)
+ */
+int getSrcPort(const pcpp::Packet &packet) {
+    if (auto tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>(); tcpLayer != nullptr) {
+        return tcpLayer->getSrcPort();
+    }
+    if (auto udpLayer = packet.getLayerOfType<pcpp::UdpLayer>(); udpLayer != nullptr) {
+        return udpLayer->getSrcPort();
+    }
+    return 0;
+}
+
+/**
+ * 宛先ポートの文字列を取得する関数
+ * @param packet パケット
+ * @return 宛先ポート(取得できなかった場合は0)
+ */
+int getDstPort(const pcpp::Packet &packet) {
+    if (auto tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>(); tcpLayer != nullptr) {
+        return tcpLayer->getDstPort();
+    }
+    if (auto udpLayer = packet.getLayerOfType<pcpp::UdpLayer>(); udpLayer != nullptr) {
+        return udpLayer->getDstPort();
+    }
+    return 0;
+}
+
+/**
+ * プロトコルの文字列を取得する関数
+ * @param packet
+ * @return プロトコル(取得できなかった場合はUNKNOWN)
+ */
+std::string getProtocol(const pcpp::Packet &packet) {
+    if (packet.getLayerOfType<pcpp::TcpLayer>() != nullptr) {
+        return "TCP";
+    } else if (packet.getLayerOfType<pcpp::UdpLayer>() != nullptr) {
+        return "UDP";
+    }
+    return "UNKNOWN";
 }
 
 #ifdef __cplusplus
