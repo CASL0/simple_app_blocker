@@ -32,12 +32,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
+import jp.co.casl0.android.simpleappblocker.core.ui.theme.LightBlue300
+import jp.co.casl0.android.simpleappblocker.core.ui.theme.Pink300
 import jp.co.casl0.android.simpleappblocker.feature.blocklog.R
 import jp.co.casl0.android.simpleappblocker.feature.blocklog.viewmodel.UiState
 
@@ -50,8 +53,10 @@ internal fun BlockLogItem(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .height(IntrinsicSize.Max)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        backgroundColor = getCardColor(protocol = blockedApp.protocol)
     ) {
+        val contentColor = Color.White
         Column(
             modifier = Modifier
                 .padding(8.dp)
@@ -61,7 +66,7 @@ internal fun BlockLogItem(
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = blockedApp.appName.toString(),
-                    color = MaterialTheme.colors.onSurface,
+                    color = contentColor,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
@@ -72,13 +77,13 @@ internal fun BlockLogItem(
                     text = blockedApp.protocol.toString(),
                     textAlign = TextAlign.Left,
                     modifier = Modifier.weight(1.0f),
-                    color = MaterialTheme.colors.onSurface,
+                    color = contentColor,
                     fontWeight = FontWeight.Bold
                 )
                 // ブロック時刻
                 Text(
                     text = blockedApp.blockedAt.toString(),
-                    color = MaterialTheme.colors.onSurface,
+                    color = contentColor,
                     textAlign = TextAlign.Right,
                     modifier = Modifier.weight(1.0f)
                 )
@@ -86,28 +91,37 @@ internal fun BlockLogItem(
             Row { // 送信元IPアドレス
                 Text(
                     text = stringResource(R.string.block_log_src),
-                    color = MaterialTheme.colors.onSurface
+                    color = contentColor
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = blockedApp.src.toString(),
-                    color = MaterialTheme.colors.onSurface,
+                    color = contentColor,
                     fontWeight = FontWeight.Bold
                 )
             }
             Row { // 宛先IPアドレス
                 Text(
                     text = stringResource(R.string.block_log_dst),
-                    color = MaterialTheme.colors.onSurface
+                    color = contentColor
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = blockedApp.dst.toString(),
-                    color = MaterialTheme.colors.onSurface,
+                    color = contentColor,
                     fontWeight = FontWeight.Bold
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun getCardColor(protocol: CharSequence): Color {
+    return when (protocol) {
+        "TCP" -> Pink300
+        "UDP" -> LightBlue300
+        else -> MaterialTheme.colors.surface
     }
 }
 
