@@ -37,6 +37,7 @@ import jp.co.casl0.android.simpleappblocker.feature.about.R
 
 @Composable
 fun AboutScreen(
+    appVersion: CharSequence,
     onClickOssLicenses: () -> Unit,
     onClickSource: () -> Unit,
     modifier: Modifier = Modifier
@@ -45,7 +46,7 @@ fun AboutScreen(
     Column(modifier = modifier.verticalScroll(scrollState)) {
         ListItem(
             headerText = stringResource(id = R.string.version_header),
-            contentText = "1.1.5" // TODO: FIX ME
+            contentText = appVersion
         )
         LinkedItem(headerText = R.string.licenses_header, onClick = onClickOssLicenses)
         LinkedItem(headerText = R.string.source_code, onClick = onClickSource)

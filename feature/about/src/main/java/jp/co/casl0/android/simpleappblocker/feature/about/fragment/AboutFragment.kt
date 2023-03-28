@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.orhanobut.logger.Logger
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
+import jp.co.casl0.android.simpleappblocker.feature.about.BuildConfig
 import jp.co.casl0.android.simpleappblocker.feature.about.databinding.FragmentAboutBinding
 import jp.co.casl0.android.simpleappblocker.feature.about.ui.AboutScreen
 import jp.co.casl0.android.simpleappblocker.feature.about.utils.SOURCE_CODE_URL
@@ -53,6 +54,7 @@ class AboutFragment : Fragment() {
             setContent {
                 ApplicationTheme {
                     AboutScreen(
+                        BuildConfig.VERSION_NAME,
                         onClickOssLicenses = {
                             startActivity(
                                 Intent(

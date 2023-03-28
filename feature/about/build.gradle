@@ -11,6 +11,7 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk libs.versions.targetSdk.get().toInteger()
+        buildConfigField("String", "VERSION_NAME", "\"${libs.versions.versionName.get()}\"")
     }
 
     buildTypes {

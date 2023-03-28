@@ -16,8 +16,8 @@ android {
         applicationId "jp.co.casl0.android.simpleappblocker"
         minSdk 29
         targetSdk libs.versions.targetSdk.get().toInteger()
-        versionCode 9
-        versionName "1.1.5"
+        versionCode libs.versions.versionCode.get().toInteger()
+        versionName libs.versions.versionName.get()
     }
 
     buildTypes {
