@@ -9,6 +9,12 @@
 - FIX
   - バグ修正
 
+## v1.2.0
+
+- [UPDATE] マルチモジュール化
+- [UPDATE] ライブラリのバージョン管理を、Gradle Version Catalogに移行
+- [CHANGE] ブロックログのCardの色をプロトコルに応じて変化するように修正
+
 ## v1.1.5
 
 - [UPDATE] フィルターの適用状態をSavedStateに保存するように修正
