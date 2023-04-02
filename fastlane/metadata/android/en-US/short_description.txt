@@ -1,0 +1,1 @@
+A simple tool to block Internet access except for selected apps.

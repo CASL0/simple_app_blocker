@@ -1,0 +1,5 @@
+From the apps installed on your device, you can select the apps you want to allow Internet access with a simple operation.
+
+You can switch between allowing and denial of Internet access with one touch.
+
+It also displays information of blocked Internet access packets in real time.
