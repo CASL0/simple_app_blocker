@@ -18,12 +18,11 @@
 #include <android/log.h>
 #include <string>
 #include "Packet.h"
-#include "IPv4Layer.h"
-#include "IPv6Layer.h"
-#include "TcpLayer.h"
-#include "UdpLayer.h"
 #include "SSLLayer.h"
 #include "HttpLayer.h"
+#include "network.h"
+#include "transport.h"
+#include "protocol.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,11 +39,6 @@ const char *TAG = "PcapPlusPlusNativeInterface";
 static pcpp::Packet rawPacketBytesToPacket(const uint8_t *packetBytes, int packetLength);
 static std::string getTlsServerName(const pcpp::Packet &packet);
 static std::string getHttpHostName(const pcpp::Packet &packet);
-static std::string getSrcIpAddress(const pcpp::Packet &packet);
-static std::string getDstIpAddress(const pcpp::Packet &packet);
-static int getSrcPort(const pcpp::Packet &packet);
-static int getDstPort(const pcpp::Packet &packet);
-static std::string getProtocol(const pcpp::Packet &packet);
 
 JNIEXPORT jobject JNICALL
 Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_analyzePacket(
@@ -76,6 +70,10 @@ Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterfac
         return nullptr;
     }
 
+    using namespace Jni::PcapPlusPlus::Network;
+    using namespace Jni::PcapPlusPlus::Transport;
+    using namespace Jni::PcapPlusPlus::Protocol;
+
     return env->NewObject(
             clazz,
             ctor,
@@ -83,7 +81,7 @@ Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterfac
             getSrcPort(parsedPacket),
             env->NewStringUTF(getDstIpAddress(parsedPacket).c_str()),
             getDstPort(parsedPacket),
-            env->NewStringUTF(getProtocol(parsedPacket).c_str())
+            env->NewStringUTF(getProtocolTypeAsString(parsedPacket).c_str())
     );
 
 }
@@ -176,78 +174,6 @@ std::string getHttpHostName(const pcpp::Packet &packet) {
         return hostField->getFieldValue();
     }
     return std::string();
-}
-
-/**
- * 送信元IPアドレスの文字列を取得する関数
- * @param packet パケット
- * @return 送信元IPアドレスの文字列(取得できなかった場合は空文字)
- */
-std::string getSrcIpAddress(const pcpp::Packet &packet) {
-    if (packet.isPacketOfType(pcpp::IPv4)) {
-        return packet.getLayerOfType<pcpp::IPv4Layer>()->getSrcIPAddress().toString();
-    } else if (packet.isPacketOfType(pcpp::IPv6)) {
-        return packet.getLayerOfType<pcpp::IPv6Layer>()->getSrcIPAddress().toString();
-    }
-    return std::string();
-}
-
-/**
- * 宛先IPアドレスの文字列を取得する関数
- * @param packet パケット
- * @return 宛先IPアドレスの文字列(取得できなかった場合は空文字)
- */
-std::string getDstIpAddress(const pcpp::Packet &packet) {
-    if (packet.isPacketOfType(pcpp::IPv4)) {
-        return packet.getLayerOfType<pcpp::IPv4Layer>()->getDstIPAddress().toString();
-    } else if (packet.isPacketOfType(pcpp::IPv6)) {
-        return packet.getLayerOfType<pcpp::IPv6Layer>()->getDstIPAddress().toString();
-    }
-    return std::string();
-}
-
-/**
- * 送信元ポートの文字列を取得する関数
- * @param packet パケット
- * @return 送信元ポート(取得できなかった場合は0)
- */
-int getSrcPort(const pcpp::Packet &packet) {
-    if (auto tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>(); tcpLayer != nullptr) {
-        return tcpLayer->getSrcPort();
-    }
-    if (auto udpLayer = packet.getLayerOfType<pcpp::UdpLayer>(); udpLayer != nullptr) {
-        return udpLayer->getSrcPort();
-    }
-    return 0;
-}
-
-/**
- * 宛先ポートの文字列を取得する関数
- * @param packet パケット
- * @return 宛先ポート(取得できなかった場合は0)
- */
-int getDstPort(const pcpp::Packet &packet) {
-    if (auto tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>(); tcpLayer != nullptr) {
-        return tcpLayer->getDstPort();
-    }
-    if (auto udpLayer = packet.getLayerOfType<pcpp::UdpLayer>(); udpLayer != nullptr) {
-        return udpLayer->getDstPort();
-    }
-    return 0;
-}
-
-/**
- * プロトコルの文字列を取得する関数
- * @param packet
- * @return プロトコル(取得できなかった場合はUNKNOWN)
- */
-std::string getProtocol(const pcpp::Packet &packet) {
-    if (packet.getLayerOfType<pcpp::TcpLayer>() != nullptr) {
-        return "TCP";
-    } else if (packet.getLayerOfType<pcpp::UdpLayer>() != nullptr) {
-        return "UDP";
-    }
-    return "UNKNOWN";
 }
 
 #ifdef __cplusplus

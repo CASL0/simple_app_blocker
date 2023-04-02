@@ -4,7 +4,11 @@ set(CMAKE_CXX_STANDARD 17)
 add_library(
         pcapplusplus_interface
         SHARED
-        pcapplusplus_interface.cpp)
+        pcapplusplus_interface.cpp
+        network.cpp
+        transport.cpp
+        protocol.cpp
+)
 find_library(log-lib log)
 target_include_directories(pcapplusplus_interface PUBLIC ${CMAKE_SOURCE_DIR}/../../../libs/pcapplusplus/include)
 target_link_libraries(
