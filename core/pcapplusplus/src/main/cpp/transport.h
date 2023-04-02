@@ -17,22 +17,22 @@
 #ifndef SIMPLEAPPBLOCKER_TRANSPORT_H
 #define SIMPLEAPPBLOCKER_TRANSPORT_H
 
+#include <string>
 #include "Packet.h"
 
 namespace Jni::PcapPlusPlus::Transport {
-    /**
-     * 送信元ポートの文字列を取得する関数
-     * @param packet パケット
-     * @return 送信元ポート(取得できなかった場合は0)
-     */
-    int getSrcPort(const pcpp::Packet &packet);
+    typedef struct TransportLayer {
+        int srcPort;
+        int dstPort;
+        std::string protocol;
+    } TransportLayer;
 
     /**
-     * 宛先ポートの文字列を取得する関数
+     * トランスポート層の情報を取得する関数
      * @param packet パケット
-     * @return 宛先ポート(取得できなかった場合は0)
+     * @return トランスポート層の情報
      */
-    int getDstPort(const pcpp::Packet &packet);
+    TransportLayer getTransportLayer(const pcpp::Packet &packet);
 }
 
 #endif //SIMPLEAPPBLOCKER_TRANSPORT_H

@@ -40,6 +40,65 @@ static pcpp::Packet rawPacketBytesToPacket(const uint8_t *packetBytes, int packe
 static std::string getTlsServerName(const pcpp::Packet &packet);
 static std::string getHttpHostName(const pcpp::Packet &packet);
 
+static jobject parseNetworkLayer(JNIEnv *env, const pcpp::Packet &packet) {
+    jclass clazz = env->FindClass(
+            "jp/co/casl0/android/simpleappblocker/core/pcapplusplus/model/NetworkLayer"
+    );
+    if (clazz == nullptr) {
+        LOGE(TAG, "class not found");
+        return nullptr;
+    }
+
+    jmethodID ctor = env->GetMethodID(
+            clazz,
+            "<init>",
+            "(Ljava/lang/String;Ljava/lang/String;)V"
+    );
+    if (ctor == nullptr) {
+        LOGE(TAG, "method not found");
+        return nullptr;
+    }
+
+    using namespace Jni::PcapPlusPlus::Network;
+    auto networkLayer = getNetworkLayer(packet);
+    return env->NewObject(
+            clazz,
+            ctor,
+            env->NewStringUTF(networkLayer.srcAddress.c_str()),
+            env->NewStringUTF(networkLayer.dstAddress.c_str())
+    );
+}
+
+static jobject parseTransportLayer(JNIEnv *env, const pcpp::Packet &packet) {
+    jclass clazz = env->FindClass(
+            "jp/co/casl0/android/simpleappblocker/core/pcapplusplus/model/TransportLayer"
+    );
+    if (clazz == nullptr) {
+        LOGE(TAG, "class not found");
+        return nullptr;
+    }
+
+    jmethodID ctor = env->GetMethodID(
+            clazz,
+            "<init>",
+            "(IILjava/lang/String;)V"
+    );
+    if (ctor == nullptr) {
+        LOGE(TAG, "method not found");
+        return nullptr;
+    }
+
+    using namespace Jni::PcapPlusPlus::Transport;
+    auto transportLayer = getTransportLayer(packet);
+    return env->NewObject(
+            clazz,
+            ctor,
+            transportLayer.srcPort,
+            transportLayer.dstPort,
+            env->NewStringUTF(transportLayer.protocol.c_str())
+    );
+}
+
 JNIEXPORT jobject JNICALL
 Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterface_analyzePacket(
         JNIEnv *env,
@@ -63,25 +122,18 @@ Java_jp_co_casl0_android_simpleappblocker_core_pcapplusplus_PcapPlusPlusInterfac
     jmethodID ctor = env->GetMethodID(
             clazz,
             "<init>",
-            "(Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)V"
+            "(Ljp/co/casl0/android/simpleappblocker/core/pcapplusplus/model/NetworkLayer;Ljp/co/casl0/android/simpleappblocker/core/pcapplusplus/model/TransportLayer;)V"
     );
     if (ctor == nullptr) {
         LOGE(TAG, "method not found");
         return nullptr;
     }
 
-    using namespace Jni::PcapPlusPlus::Network;
-    using namespace Jni::PcapPlusPlus::Transport;
-    using namespace Jni::PcapPlusPlus::Protocol;
-
     return env->NewObject(
             clazz,
             ctor,
-            env->NewStringUTF(getSrcIpAddress(parsedPacket).c_str()),
-            getSrcPort(parsedPacket),
-            env->NewStringUTF(getDstIpAddress(parsedPacket).c_str()),
-            getDstPort(parsedPacket),
-            env->NewStringUTF(getProtocolTypeAsString(parsedPacket).c_str())
+            parseNetworkLayer(env, parsedPacket),
+            parseTransportLayer(env, parsedPacket)
     );
 
 }

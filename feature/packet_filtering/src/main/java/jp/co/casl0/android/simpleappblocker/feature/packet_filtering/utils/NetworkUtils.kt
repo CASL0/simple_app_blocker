@@ -34,15 +34,21 @@ import java.net.UnknownHostException
  */
 @RequiresApi(api = 29)
 internal fun ConnectivityManager.retrieveUid(blockedPacket: ParsedPacket): Int {
-    val protocol = when (blockedPacket.protocol) {
+    val protocol = when (blockedPacket.transportLayer.protocol) {
         "TCP" -> OsConstants.IPPROTO_TCP
         "UDP" -> OsConstants.IPPROTO_UDP
         else -> -1
     }
     val localSocketAddress =
-        translateInetSocketAddress(blockedPacket.srcAddress, blockedPacket.srcPort)
+        translateInetSocketAddress(
+            blockedPacket.networkLayer.srcAddress,
+            blockedPacket.transportLayer.srcPort
+        )
     val remoteSocketAddress =
-        translateInetSocketAddress(blockedPacket.dstAddress, blockedPacket.dstPort)
+        translateInetSocketAddress(
+            blockedPacket.networkLayer.dstAddress,
+            blockedPacket.transportLayer.dstPort
+        )
     if (localSocketAddress != null && remoteSocketAddress != null) {
         try {
             val uid = getConnectionOwnerUid(

@@ -16,16 +16,18 @@
 
 package jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model
 
-class ParsedPacket(
+data class ParsedPacket(
+    val networkLayer: NetworkLayer,
+    val transportLayer: TransportLayer,
+)
+
+data class NetworkLayer(
     val srcAddress: String,
+    val dstAddress: String
+)
+
+data class TransportLayer(
     val srcPort: Int,
-    val dstAddress: String,
     val dstPort: Int,
     val protocol: String
-) {
-    /** 送信元のIP・ポートの情報を取得する関数 */
-    fun getSrcAddressAndPort(): String = "$srcAddress ($srcPort)"
-
-    /** 宛先のIP・ポートの情報を取得する関数 */
-    fun getDstAddressAndPort(): String = "$dstAddress ($dstPort)"
-}
+)

@@ -18,7 +18,9 @@
 #include "IPv4Layer.h"
 #include "IPv6Layer.h"
 
-std::string Jni::PcapPlusPlus::Network::getSrcIpAddress(const pcpp::Packet &packet) {
+using namespace Jni::PcapPlusPlus::Network;
+
+static std::string getSrcIpAddress(const pcpp::Packet &packet) {
     if (packet.isPacketOfType(pcpp::IPv4)) {
         return packet.getLayerOfType<pcpp::IPv4Layer>()->getSrcIPAddress().toString();
     } else if (packet.isPacketOfType(pcpp::IPv6)) {
@@ -27,11 +29,18 @@ std::string Jni::PcapPlusPlus::Network::getSrcIpAddress(const pcpp::Packet &pack
     return std::string();
 }
 
-std::string Jni::PcapPlusPlus::Network::getDstIpAddress(const pcpp::Packet &packet) {
+static std::string getDstIpAddress(const pcpp::Packet &packet) {
     if (packet.isPacketOfType(pcpp::IPv4)) {
         return packet.getLayerOfType<pcpp::IPv4Layer>()->getDstIPAddress().toString();
     } else if (packet.isPacketOfType(pcpp::IPv6)) {
         return packet.getLayerOfType<pcpp::IPv6Layer>()->getDstIPAddress().toString();
     }
     return std::string();
+}
+
+NetworkLayer Jni::PcapPlusPlus::Network::getNetworkLayer(const pcpp::Packet &packet) {
+    return {
+            getSrcIpAddress(packet),
+            getDstIpAddress(packet)
+    };
 }

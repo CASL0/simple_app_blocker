@@ -21,20 +21,17 @@
 #include "Packet.h"
 
 namespace Jni::PcapPlusPlus::Network {
+    typedef struct NetworkLayer {
+        std::string srcAddress;
+        std::string dstAddress;
+    } NetworkLayer;
 
     /**
-     * 送信元IPアドレスの文字列を取得する関数
+     * ネットワーク層の情報を取得する関数
      * @param packet パケット
-     * @return 送信元IPアドレスの文字列(取得できなかった場合は空文字)
+     * @return ネットワーク層の情報
      */
-    std::string getSrcIpAddress(const pcpp::Packet &packet);
-
-    /**
-     * 宛先IPアドレスの文字列を取得する関数
-     * @param packet パケット
-     * @return 宛先IPアドレスの文字列(取得できなかった場合は空文字)
-     */
-    std::string getDstIpAddress(const pcpp::Packet &packet);
+    NetworkLayer getNetworkLayer(const pcpp::Packet &packet);
 
 }
 

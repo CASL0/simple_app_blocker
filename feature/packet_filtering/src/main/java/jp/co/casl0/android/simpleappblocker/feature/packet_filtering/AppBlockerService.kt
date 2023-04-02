@@ -160,11 +160,11 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
                 repository.insertBlockedPacket(
                     DomainBlockedPacket(
                         packageName = packageName,
-                        srcAddress = blockedPacket.srcAddress,
-                        srcPort = blockedPacket.srcPort,
-                        dstAddress = blockedPacket.dstAddress,
-                        dstPort = blockedPacket.dstPort,
-                        protocol = blockedPacket.protocol,
+                        srcAddress = blockedPacket.networkLayer.srcAddress,
+                        srcPort = blockedPacket.transportLayer.srcPort,
+                        dstAddress = blockedPacket.networkLayer.dstAddress,
+                        dstPort = blockedPacket.transportLayer.dstPort,
+                        protocol = blockedPacket.transportLayer.protocol,
                         blockedAt = LocalDateTime.now().format(formatter)
                     )
                 )
