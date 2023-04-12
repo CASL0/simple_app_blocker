@@ -26,7 +26,7 @@ import jp.co.casl0.android.simpleappblocker.core.database.model.BlockedPacket
 @Database(
     entities = [AllowedPackage::class, BlockedPacket::class],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class SimpleAppBlockerDatabase : RoomDatabase() {
     /** 許可アプリリスト操作用のDAOを取得する関数 */

@@ -13,6 +13,11 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk libs.versions.targetSdk.get().toInteger()
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
