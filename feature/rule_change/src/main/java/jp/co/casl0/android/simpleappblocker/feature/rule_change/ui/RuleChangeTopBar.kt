@@ -59,10 +59,16 @@ internal fun RuleChangeTopBar(
         SearchTopAppBar(
             searchValue = searchValue,
             onSearchValueChange = onSearchValueChange,
-            onClose = onClose
+            onClose = onClose,
+            modifier = modifier
         )
     } else {
-        DefaultTopAppBar(title = title, onClickSearch = onClickSearch, onClose = onClose)
+        DefaultTopAppBar(
+            title = title,
+            onClickSearch = onClickSearch,
+            onClose = onClose,
+            modifier = modifier
+        )
     }
 }
 
@@ -70,10 +76,12 @@ internal fun RuleChangeTopBar(
 private fun DefaultTopAppBar(
     @StringRes title: Int,
     onClickSearch: () -> Unit,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val contentColor = contentColorFor(MaterialTheme.colors.primarySurface)
     TopAppBar(
+        modifier = modifier,
         title = {
             Text(
                 text = stringResource(id = title),
@@ -108,10 +116,11 @@ private fun DefaultTopAppBar(
 private fun SearchTopAppBar(
     searchValue: String,
     onSearchValueChange: (newValue: String) -> Unit,
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
         color = Color.Transparent

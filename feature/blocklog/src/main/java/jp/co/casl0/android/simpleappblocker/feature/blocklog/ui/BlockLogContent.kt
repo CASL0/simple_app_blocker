@@ -37,13 +37,13 @@ internal fun BlockLogContent(
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
+        contentPadding = PaddingValues(vertical = 8.dp),
+        modifier = modifier
     ) {
         items(items = blockedPackets.items) { packet ->
             Column {
                 BlockLogItem(
-                    blockedApp = packet,
-                    modifier = modifier
+                    blockedApp = packet
                 )
             }
         }

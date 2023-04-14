@@ -51,7 +51,7 @@ internal fun RuleChangeItem(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier
+        modifier = modifier
             .height(IntrinsicSize.Max)
             .fillMaxWidth()
     ) {

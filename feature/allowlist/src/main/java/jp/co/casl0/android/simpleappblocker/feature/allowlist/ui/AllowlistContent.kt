@@ -55,7 +55,8 @@ fun AllowlistContent(
         LazyColumn(
             state = scrollState,
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = modifier
         ) {
             items(
                 items = allowedPackages.items,

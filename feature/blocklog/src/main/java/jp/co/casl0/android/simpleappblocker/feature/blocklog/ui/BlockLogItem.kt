@@ -51,7 +51,7 @@ internal fun BlockLogItem(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier
+        modifier = modifier
             .height(IntrinsicSize.Max)
             .fillMaxWidth(),
         backgroundColor = getCardColor(protocol = blockedApp.protocol)

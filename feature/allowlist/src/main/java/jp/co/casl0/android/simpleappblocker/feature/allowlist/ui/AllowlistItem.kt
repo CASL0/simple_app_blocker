@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.DrawablePainter
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
+import jp.co.casl0.android.simpleappblocker.feature.allowlist.R
 
 @Composable
 fun AllowlistItem(
@@ -53,7 +54,7 @@ fun AllowlistItem(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = Modifier
+        modifier = modifier
             .height(IntrinsicSize.Max)
             .fillMaxWidth()
     ) {
@@ -108,12 +109,14 @@ fun AllowlistItem(
 fun PreviewAllowlistItem() {
     ApplicationTheme {
         val packageName = LocalContext.current.packageName
-        val icon = LocalContext.current.packageManager.getApplicationIcon(packageName)
+        val icon = LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground)
         AllowlistItem(
             AppPackage(
-                icon,
+                icon!!,
                 "SimpleAppBlocker",
                 packageName
-            ), {})
+            ),
+            { /* no op */ }
+        )
     }
 }
