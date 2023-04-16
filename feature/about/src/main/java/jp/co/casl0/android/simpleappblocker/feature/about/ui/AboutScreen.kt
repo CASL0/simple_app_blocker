@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.feature.about.ui
 
+import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
 import jp.co.casl0.android.simpleappblocker.feature.about.R
 
 @Composable
@@ -83,11 +86,12 @@ private fun LinkedItem(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(0)
+        shape = MaterialTheme.shapes.large
     ) {
         TextButton(
             onClick = onClick,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.large
         ) {
             Row(modifier = Modifier.padding(8.dp)) {
                 Text(
@@ -97,5 +101,23 @@ private fun LinkedItem(
                 )
             }
         }
+    }
+}
+
+@Preview(name = "light Mode")
+@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun PreviewListItem() {
+    ApplicationTheme {
+        ListItem(headerText = "App version", contentText = "0.0.0")
+    }
+}
+
+@Preview(name = "Light Mode")
+@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun PreviewLinkedItem() {
+    ApplicationTheme {
+        LinkedItem(headerText = R.string.licenses_header, onClick = { /* no op */ })
     }
 }
