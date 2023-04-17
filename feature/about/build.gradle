@@ -44,6 +44,8 @@ dependencies {
     implementation project(":core:ui")
     implementation libs.androidx.compose.material
     implementation libs.androidx.compose.ui.tooling
+    implementation libs.androidx.compose.material.icons.extended
+    implementation libs.com.google.accompanist.drawablepainter
     implementation libs.com.orhanobut.logger
     implementation libs.com.google.android.gms.play.services.oss.licenses
 }
