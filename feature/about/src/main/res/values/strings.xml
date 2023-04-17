@@ -18,4 +18,5 @@
     <string name="version_header">App version</string>
     <string name="licenses_header">Open source licenses</string>
     <string name="source_code">Source code</string>
+    <string name="description">A simple tool to block Internet access except for selected apps.</string>
 </resources>

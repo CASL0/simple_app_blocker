@@ -17,3 +17,4 @@
 package jp.co.casl0.android.simpleappblocker.feature.about.utils
 
 internal const val SOURCE_CODE_URL = "https://github.com/CASL0/simple_app_blocker"
+internal const val APP_NAME = "Simple App Blocker"

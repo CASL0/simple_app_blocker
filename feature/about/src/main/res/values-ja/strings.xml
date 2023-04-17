@@ -18,4 +18,5 @@
     <string name="version_header">アプリバージョン</string>
     <string name="licenses_header">オープンソースライセンス</string>
     <string name="source_code">ソースコード</string>
+    <string name="description">指定のアプリ以外のインターネットアクセスをブロックするシンプルなユーティリティツールです。</string>
 </resources>
