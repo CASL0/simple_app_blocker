@@ -9,6 +9,12 @@
 - FIX
   - バグ修正
 
+## v1.2.1
+
+- [UPDATE] 「その他」画面 リンク項目のリップルのRoundを0dpに修正
+- [UPDATE] アプリについての説明欄を追加
+- [UPDATE] roomのスキーマのexport
+
 ## v1.2.0
 
 - [UPDATE] マルチモジュール化

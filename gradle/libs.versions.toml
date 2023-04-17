@@ -1,6 +1,6 @@
 [versions]
-versionCode = "12"
-versionName = "1.2.0"
+versionCode = "13"
+versionName = "1.2.1"
 targetSdk = "33"
 compileSdk = "33"
 buildTools = "33.0.1"
