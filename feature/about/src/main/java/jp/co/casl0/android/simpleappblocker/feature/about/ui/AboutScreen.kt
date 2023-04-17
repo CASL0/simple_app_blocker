@@ -20,18 +20,23 @@ import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,69 +52,45 @@ fun AboutScreen(
 ) {
     val scrollState = rememberScrollState()
     Column(modifier = modifier.verticalScroll(scrollState)) {
-        ListItem(
-            headerText = stringResource(id = R.string.version_header),
-            contentText = appVersion
+        AboutPanel(appVersion = appVersion)
+        Spacer(modifier = Modifier.height(16.dp))
+        LinkedItem(
+            Icons.Filled.List,
+            headerText = R.string.licenses_header,
+            onClick = onClickOssLicenses
         )
-        LinkedItem(headerText = R.string.licenses_header, onClick = onClickOssLicenses)
-        LinkedItem(headerText = R.string.source_code, onClick = onClickSource)
-    }
-}
-
-@Composable
-private fun ListItem(
-    headerText: CharSequence,
-    contentText: CharSequence,
-    modifier: Modifier = Modifier
-) {
-    Card(modifier = modifier, shape = RoundedCornerShape(0)) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = headerText.toString(),
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                text = contentText.toString()
-            )
-        }
+        LinkedItem(
+            leadingIcon = Icons.Filled.Code,
+            headerText = R.string.source_code,
+            onClick = onClickSource
+        )
     }
 }
 
 @Composable
 private fun LinkedItem(
+    leadingIcon: ImageVector,
     @StringRes headerText: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    TextButton(
+        onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large
     ) {
-        TextButton(
-            onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.large
-        ) {
-            Row(modifier = Modifier.padding(8.dp)) {
-                Text(
-                    text = stringResource(id = headerText),
-                    color = MaterialTheme.colors.onSurface,
-                    modifier = Modifier.weight(1f)
-                )
-            }
+        Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = leadingIcon,
+                contentDescription = "icon",
+                modifier = Modifier.padding(end = 16.dp)
+            )
+            Text(
+                text = stringResource(id = headerText),
+                color = MaterialTheme.colors.onSurface,
+                modifier = Modifier.weight(1f)
+            )
         }
-    }
-}
-
-@Preview(name = "light Mode")
-@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun PreviewListItem() {
-    ApplicationTheme {
-        ListItem(headerText = "App version", contentText = "0.0.0")
     }
 }
 
@@ -118,6 +99,10 @@ private fun PreviewListItem() {
 @Composable
 private fun PreviewLinkedItem() {
     ApplicationTheme {
-        LinkedItem(headerText = R.string.licenses_header, onClick = { /* no op */ })
+        LinkedItem(
+            leadingIcon = Icons.Filled.List,
+            headerText = R.string.licenses_header,
+            onClick = { /* no op */ }
+        )
     }
 }
