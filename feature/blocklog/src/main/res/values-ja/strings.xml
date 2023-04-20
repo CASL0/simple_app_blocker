@@ -17,4 +17,5 @@
 <resources>
     <string name="block_log_src">src</string>
     <string name="block_log_dst">dst</string>
+    <string name="empty_block_log">ブロックログがありません。</string>
 </resources>

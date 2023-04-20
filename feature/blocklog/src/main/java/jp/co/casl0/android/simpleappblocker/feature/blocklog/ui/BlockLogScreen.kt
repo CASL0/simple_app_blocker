@@ -20,17 +20,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun BlockLogScreen(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    Column(
+    Scaffold(
         modifier = modifier
             .background(MaterialTheme.colors.background)
             .padding(horizontal = 8.dp)
     ) {
-        content()
+        Column(modifier.padding(it)) {
+            content()
+        }
     }
 }
