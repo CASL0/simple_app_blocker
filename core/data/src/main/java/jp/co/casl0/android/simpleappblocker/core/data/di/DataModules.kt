@@ -31,6 +31,9 @@ import jp.co.casl0.android.simpleappblocker.core.data.datasource.local.BlockedPa
 import jp.co.casl0.android.simpleappblocker.core.data.datasource.local.InstalledApplicationLocalDataSource
 import jp.co.casl0.android.simpleappblocker.core.data.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.core.data.repository.BlockedPacketsRepository
+import jp.co.casl0.android.simpleappblocker.core.data.repository.DefaultAllowlistRepository
+import jp.co.casl0.android.simpleappblocker.core.data.repository.DefaultBlockedPacketsRepository
+import jp.co.casl0.android.simpleappblocker.core.data.repository.DefaultInstalledApplicationRepository
 import jp.co.casl0.android.simpleappblocker.core.data.repository.InstalledApplicationRepository
 import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -45,7 +48,7 @@ object RepositoryModule {
         allowlistDataSource: AllowlistDataSource,
         @IoDispatcher defaultDispatcher: CoroutineDispatcher
     ): AllowlistRepository {
-        return AllowlistRepository(allowlistDataSource, defaultDispatcher)
+        return DefaultAllowlistRepository(allowlistDataSource, defaultDispatcher)
     }
 
     @Singleton
@@ -54,7 +57,10 @@ object RepositoryModule {
         installedApplicationDataSource: InstalledApplicationDataSource,
         @IoDispatcher defaultDispatcher: CoroutineDispatcher
     ): InstalledApplicationRepository {
-        return InstalledApplicationRepository(installedApplicationDataSource, defaultDispatcher)
+        return DefaultInstalledApplicationRepository(
+            installedApplicationDataSource,
+            defaultDispatcher
+        )
     }
 
     @Singleton
@@ -63,7 +69,7 @@ object RepositoryModule {
         blockedPacketsDataSource: BlockedPacketsDataSource,
         @IoDispatcher defaultDispatcher: CoroutineDispatcher
     ): BlockedPacketsRepository {
-        return BlockedPacketsRepository(blockedPacketsDataSource, defaultDispatcher)
+        return DefaultBlockedPacketsRepository(blockedPacketsDataSource, defaultDispatcher)
     }
 }
 

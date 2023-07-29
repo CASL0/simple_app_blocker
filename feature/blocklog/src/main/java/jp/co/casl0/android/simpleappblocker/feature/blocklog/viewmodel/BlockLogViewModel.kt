@@ -62,7 +62,7 @@ class BlockLogViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            blockedPacketsRepository.blockedPackets.collect { domainBlockedPackets ->
+            blockedPacketsRepository.getBlockedPacketsStream().collect { domainBlockedPackets ->
                 val packageManager = context.packageManager
                 val blockedPackets: List<UiState.BlockedApp?> =
                     domainBlockedPackets.map { domainBlockedPacket ->

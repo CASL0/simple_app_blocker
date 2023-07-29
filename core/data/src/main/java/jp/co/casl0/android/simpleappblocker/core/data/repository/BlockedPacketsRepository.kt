@@ -16,23 +16,18 @@
 
 package jp.co.casl0.android.simpleappblocker.core.data.repository
 
-import jp.co.casl0.android.simpleappblocker.core.data.datasource.BlockedPacketsDataSource
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 
-class BlockedPacketsRepository(
-    private val blockedPacketsDataSource: BlockedPacketsDataSource,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
-) {
-    val blockedPackets: Flow<List<DomainBlockedPacket>> =
-        blockedPacketsDataSource.getBlockedPacketsStream().flowOn(defaultDispatcher)
+/** ブロックログ機能のデータ層のインターフェース */
+interface BlockedPacketsRepository {
+    /** ブロックログのFlowを取得する関数 */
+    fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>>
 
-    suspend fun insertBlockedPacket(domainBlockedPacket: DomainBlockedPacket) =
-        withContext(defaultDispatcher) {
-            blockedPacketsDataSource.insertBlockedPacket(domainBlockedPacket)
-        }
+    /**
+     * ブロックログを追加する関数
+     *
+     * @param domainBlockedPacket 追加するブロックログ
+     */
+    suspend fun insertBlockedPacket(domainBlockedPacket: DomainBlockedPacket)
 }

@@ -37,7 +37,7 @@ class AllowlistViewModel @Inject constructor(
 ) :
     AndroidViewModel(context.applicationContext as Application) {
     /** 許可リスト */
-    val allowlist = allowlistRepository.allowlist.map { allowedPackages ->
+    val allowlist = allowlistRepository.getAllowlistStream().map { allowedPackages ->
         val pm = getApplication<Application>().packageManager
         allowedPackages.map {
             val appInfo = if (Build.VERSION.SDK_INT >= 33) {

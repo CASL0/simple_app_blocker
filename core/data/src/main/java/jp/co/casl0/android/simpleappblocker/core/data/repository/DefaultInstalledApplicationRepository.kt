@@ -16,15 +16,28 @@
 
 package jp.co.casl0.android.simpleappblocker.core.data.repository
 
+import jp.co.casl0.android.simpleappblocker.core.data.datasource.InstalledApplicationDataSource
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
-/** インストール済みアプリ一覧のデータ層のインターフェース */
-interface InstalledApplicationRepository {
+/** インストール済みアプリの操作用リポジトリ */
+class DefaultInstalledApplicationRepository(
+    private val installedApplicationDataSource: InstalledApplicationDataSource,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+) : InstalledApplicationRepository {
 
     /** インストール済みアプリ一覧のFlowを取得する関数 */
-    fun getInstalledApplicationsStream(): Flow<List<AppPackage>>
+    override fun getInstalledApplicationsStream(): Flow<List<AppPackage>> {
+        return installedApplicationDataSource.getInstalledApplicationsStream()
+            .flowOn(defaultDispatcher)
+    }
 
     /** インストール済みアプリ一覧を更新します */
-    suspend fun refresh()
+    override suspend fun refresh() = withContext(defaultDispatcher) {
+        installedApplicationDataSource.refreshInstalledApplications()
+    }
 }

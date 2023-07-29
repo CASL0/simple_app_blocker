@@ -57,12 +57,12 @@ class RuleChangeViewModel @Inject constructor(
     val uiState: StateFlow<UiState.RuleChangeUiState> get() = _uiState
 
     /** 許可済みパッケージリスト */
-    val allowlist = allowlistRepository.allowlist
+    private val allowlist = allowlistRepository.getAllowlistStream()
 
     /** インストール済みパッケージ一覧 */
     val installedApplications =
         combine(
-            installedApplicationRepository.installedApplications,
+            installedApplicationRepository.getInstalledApplicationsStream(),
             allowlist
         ) { allInstalledApps, allowlist ->
             allInstalledApps.map {

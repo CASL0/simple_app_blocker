@@ -47,7 +47,7 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<MainUiState> get() = _uiState
 
     /** 許可リスト */
-    val allowlist = allowlistRepository.allowlist
+    val allowlist = allowlistRepository.getAllowlistStream()
 
     /** フィルターの有効・無効を切り替えます */
     fun enableFilters(enable: Boolean) {
