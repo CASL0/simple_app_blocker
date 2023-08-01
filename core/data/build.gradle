@@ -13,6 +13,7 @@ android {
     defaultConfig {
         minSdk 26
         targetSdk libs.versions.targetSdk.get().toInteger()
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -31,6 +32,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    testOptions.unitTests {
+        includeAndroidResources = true
+    }
 }
 
 dependencies {
@@ -44,4 +48,10 @@ dependencies {
     testImplementation libs.junit
     testImplementation libs.org.hamcrest.all
     testImplementation libs.org.jetbrains.kotlinx.coroutines.test
+
+    androidTestImplementation libs.androidx.arch.core.testing
+    androidTestImplementation libs.androidx.test.core
+    androidTestImplementation libs.androidx.test.ext.junit.ktx
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.org.jetbrains.kotlinx.coroutines.test
 }

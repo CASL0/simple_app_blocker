@@ -34,6 +34,10 @@ dependency-graph-generator = "0.8.0"
 material-icons-extended = "1.3.1"
 junit = "4.13.2"
 org-hamcrest = "1.3"
+androidx-arch-core-testing = "2.2.0"
+androidx-test-core = "1.5.0"
+androidx-test-ext-junit-ktx = "1.1.5"
+androidx-test-rules = "1.5.0"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
@@ -64,6 +68,10 @@ androidx-compose-material-icons-extended = { module = "androidx.compose.material
 junit = { module = "junit:junit", version.ref = "junit" }
 org-hamcrest-all = { module = "org.hamcrest:hamcrest-all", version.ref = "org-hamcrest" }
 org-jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
+androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext-junit-ktx" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test-rules" }
 
 [bundles]
 com-google-android-play-update = [
