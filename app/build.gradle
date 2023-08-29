@@ -6,6 +6,7 @@ plugins {
     id 'com.google.android.gms.oss-licenses-plugin'
     id 'kotlin-parcelize'
     id 'org.jmailen.kotlinter'
+    id 'org.jetbrains.kotlinx.kover'
 }
 
 android {
@@ -59,4 +60,5 @@ dependencies {
     implementation libs.com.google.android.play.app.update
     implementation libs.com.google.dagger.hilt.android
     kapt libs.com.google.dagger.hilt.compiler
+    kover(project(":core:data"))
 }

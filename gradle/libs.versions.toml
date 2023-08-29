@@ -38,6 +38,7 @@ androidx-arch-core-testing = "2.2.0"
 androidx-test-core = "1.5.0"
 androidx-test-ext-junit-ktx = "1.1.5"
 androidx-test-rules = "1.5.0"
+kover = "0.7.3"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
@@ -86,3 +87,4 @@ kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 de-undercouch-download = { id = "de.undercouch.download", version.ref = "de-undercouch-download" }
 org-jmailen-kotlinter = { id = "org.jmailen.kotlinter", version.ref = "org-jmailen-kotlinter" }
 com-vanniktech-dependency-graph-generator = { id = "com.vanniktech.dependency.graph.generator", version.ref = "dependency-graph-generator" }
+org-jetbrains-kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
