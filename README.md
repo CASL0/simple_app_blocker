@@ -3,6 +3,7 @@
 [![Weekly Build](https://github.com/CASL0/simple_app_blocker/actions/workflows/weekly_build.yml/badge.svg)](https://github.com/CASL0/simple_app_blocker/actions/workflows/weekly_build.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![API](https://img.shields.io/badge/API-29%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=29)
+[![codecov](https://codecov.io/github/CASL0/simple_app_blocker/graph/badge.svg?token=0RFQSCROZT)](https://codecov.io/github/CASL0/simple_app_blocker)
 
 [VpnService](https://developer.android.com/reference/android/net/VpnService)を利用し、指定のアプリ以外の通信をブロックするシンプルなユーティリティツールです。
 
