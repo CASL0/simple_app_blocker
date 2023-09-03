@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:enableOnBackInvokedCallback="true"
         android:localeConfig="@xml/locales_config"
-        android:theme="@style/Theme.SimpleAppBlocker">
+        android:theme="@style/Theme.App.Starting">
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"

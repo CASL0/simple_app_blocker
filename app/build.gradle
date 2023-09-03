@@ -59,6 +59,7 @@ dependencies {
     implementation libs.com.orhanobut.logger
     implementation libs.com.google.android.play.app.update
     implementation libs.com.google.dagger.hilt.android
+    implementation libs.androidx.core.splashscreen
     kapt libs.com.google.dagger.hilt.compiler
     kover(project(":core:data"))
 }
