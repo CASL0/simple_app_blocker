@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.feature.rule_change.dialog
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,9 +31,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.core.ui.theme.ApplicationTheme
+import jp.co.casl0.android.simpleappblocker.feature.rule_change.R
 import jp.co.casl0.android.simpleappblocker.feature.rule_change.ui.InstalledPackagesList
 import jp.co.casl0.android.simpleappblocker.feature.rule_change.ui.RuleChangeContent
 import jp.co.casl0.android.simpleappblocker.feature.rule_change.ui.RuleChangeScreen
@@ -76,6 +79,20 @@ open class RuleChangeDialog : BottomSheetDialogFragment() {
                         dismiss()
                     }
                 }
+            }
+        }
+    }
+
+    /** Edge to Edge対応のためカスタムしたBottomSheetDialog */
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return object : BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme) {
+            override fun onAttachedToWindow() {
+                super.onAttachedToWindow()
+
+                findViewById<View>(com.google.android.material.R.id.container)?.fitsSystemWindows =
+                    false
+                findViewById<View>(com.google.android.material.R.id.coordinator)?.fitsSystemWindows =
+                    false
             }
         }
     }

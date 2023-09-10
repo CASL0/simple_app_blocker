@@ -18,11 +18,14 @@ package jp.co.casl0.android.simpleappblocker.feature.rule_change.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -55,20 +58,25 @@ internal fun RuleChangeTopBar(
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if (showedSearchBox) {
-        SearchTopAppBar(
-            searchValue = searchValue,
-            onSearchValueChange = onSearchValueChange,
-            onClose = onClose,
-            modifier = modifier
-        )
-    } else {
-        DefaultTopAppBar(
-            title = title,
-            onClickSearch = onClickSearch,
-            onClose = onClose,
-            modifier = modifier
-        )
+    Box(
+        modifier = modifier
+            .background(MaterialTheme.colors.primary)
+    ) {
+        if (showedSearchBox) {
+            SearchTopAppBar(
+                searchValue = searchValue,
+                onSearchValueChange = onSearchValueChange,
+                onClose = onClose,
+                modifier = Modifier.statusBarsPadding()
+            )
+        } else {
+            DefaultTopAppBar(
+                title = title,
+                onClickSearch = onClickSearch,
+                onClose = onClose,
+                modifier = Modifier.statusBarsPadding()
+            )
+        }
     }
 }
 
@@ -82,6 +90,7 @@ private fun DefaultTopAppBar(
     val contentColor = contentColorFor(MaterialTheme.colors.primarySurface)
     TopAppBar(
         modifier = modifier,
+        backgroundColor = MaterialTheme.colors.primary,
         title = {
             Text(
                 text = stringResource(id = title),
@@ -123,25 +132,28 @@ private fun SearchTopAppBar(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
-        color = Color.Transparent
+        color = Color.Transparent,
     ) {
-        val backgroundColor = MaterialTheme.colors.primarySurface
+        val backgroundColor = MaterialTheme.colors.primary
+        val contentColor = contentColorFor(MaterialTheme.colors.primarySurface)
         Row {
             IconButton(
                 onClick = onClose,
                 modifier = Modifier
-                    .height(56.dp)
+                    .fillMaxHeight()
                     .background(backgroundColor)
             ) {
                 Icon(
                     Icons.Filled.Close,
                     contentDescription = "Close",
-                    tint = contentColorFor(backgroundColor),
+                    tint = contentColor,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
             TextField(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(backgroundColor),
                 shape = MaterialTheme.shapes.large,
                 value = searchValue,
                 onValueChange = onSearchValueChange,
@@ -155,13 +167,13 @@ private fun SearchTopAppBar(
                 },
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
-                    textColor = contentColorFor(backgroundColor),
-                    placeholderColor = contentColorFor(backgroundColor),
+                    textColor = contentColor,
+                    placeholderColor = contentColor,
                     cursorColor = Color.White,
                     focusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    backgroundColor = MaterialTheme.colors.primarySurface
+                    backgroundColor = backgroundColor
                 )
             )
         }
