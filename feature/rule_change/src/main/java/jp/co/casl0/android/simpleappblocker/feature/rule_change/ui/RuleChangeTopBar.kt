@@ -41,7 +41,11 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -136,6 +140,13 @@ private fun SearchTopAppBar(
     ) {
         val backgroundColor = MaterialTheme.colors.primary
         val contentColor = contentColorFor(MaterialTheme.colors.primarySurface)
+
+        // 検索ボックスにフォーカスを当てるコルーチンを起動
+        val focusRequester = remember { FocusRequester() }
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
+
         Row {
             IconButton(
                 onClick = onClose,
@@ -153,7 +164,8 @@ private fun SearchTopAppBar(
             TextField(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(backgroundColor),
+                    .background(backgroundColor)
+                    .focusRequester(focusRequester),
                 shape = MaterialTheme.shapes.large,
                 value = searchValue,
                 onValueChange = onSearchValueChange,
