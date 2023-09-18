@@ -87,10 +87,12 @@ class RuleChangeViewModel @Inject constructor(
     /** インストール済みパッケージを読み込む関数 */
     fun refreshInstalledApplications() {
         Logger.d("refresh installed applications")
-        viewModelScope.launch {
-            _uiState.update { it.copy(isRefreshing = true) }
-            installedApplicationRepository.refresh()
-            _uiState.update { it.copy(isRefreshing = false) }
+        if (!_uiState.value.isRefreshing) {
+            viewModelScope.launch {
+                _uiState.update { it.copy(isRefreshing = true) }
+                installedApplicationRepository.refresh()
+                _uiState.update { it.copy(isRefreshing = false) }
+            }
         }
     }
 

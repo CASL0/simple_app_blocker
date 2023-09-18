@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -93,8 +94,20 @@ class RuleChangeViewModelTest {
     }
 
     @Test
-    fun refreshInstalledApplications() {
-        // TODO: implement
+    fun refreshInstalledApplications_exclusiveCallingRepository() = runTest {
+        val viewModel = RuleChangeViewModel(
+            allowlistRepository,
+            installedApplicationRepository
+        )
+        // コンストラクション時のrefreshコルーチンを再開
+        advanceTimeBy(101)
+        assertThat(installedApplicationRepository.refreshCallCount, `is`(1))
+
+        viewModel.refreshInstalledApplications()
+        viewModel.refreshInstalledApplications()
+
+        advanceTimeBy(101)
+        assertThat(installedApplicationRepository.refreshCallCount, `is`(2))
     }
 
     @Test
