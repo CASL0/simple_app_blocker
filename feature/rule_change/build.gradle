@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'org.jmailen.kotlinter'
+    id 'org.jetbrains.kotlinx.kover'
 }
 
 android {

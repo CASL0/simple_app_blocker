@@ -61,5 +61,7 @@ dependencies {
     implementation libs.com.google.dagger.hilt.android
     implementation libs.androidx.core.splashscreen
     kapt libs.com.google.dagger.hilt.compiler
+
     kover(project(":core:data"))
+    kover(project(":feature:rule_change"))
 }

@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "**.kt"
+  workflow_dispatch:
 
 jobs:
   unit-test:
