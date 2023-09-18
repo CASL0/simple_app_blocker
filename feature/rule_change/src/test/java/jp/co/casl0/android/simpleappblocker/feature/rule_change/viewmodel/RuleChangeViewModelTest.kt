@@ -16,8 +16,10 @@
 
 package jp.co.casl0.android.simpleappblocker.feature.rule_change.viewmodel
 
+import android.graphics.drawable.Drawable
 import jp.co.casl0.android.simpleappblocker.FakeAllowlistRepository
 import jp.co.casl0.android.simpleappblocker.SpyInstalledApplicationRepository
+import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -31,6 +33,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.mock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RuleChangeViewModelTest {
@@ -38,14 +41,33 @@ class RuleChangeViewModelTest {
     private lateinit var allowlistRepository: FakeAllowlistRepository
     private lateinit var installedApplicationRepository: SpyInstalledApplicationRepository
 
+    private lateinit var fakeInstalledApps: List<AppPackage>
+
     @Before
     fun setup() {
         // viewModelScope向けにmainディスパッチャを変更
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
+
+        fakeInstalledApps = listOf(
+            AppPackage(
+                icon = mock(Drawable::class.java),
+                appName = "App1",
+                packageName = "app1"
+            ),
+            AppPackage(
+                icon = mock(Drawable::class.java),
+                appName = "App2",
+                packageName = "app2"
+            )
+        )
+
         allowlistRepository = FakeAllowlistRepository(UnconfinedTestDispatcher())
         installedApplicationRepository =
-            SpyInstalledApplicationRepository(UnconfinedTestDispatcher())
+            SpyInstalledApplicationRepository(
+                fakeInstalledApps = fakeInstalledApps,
+                dispatcher = UnconfinedTestDispatcher()
+            )
     }
 
     @After
@@ -111,7 +133,32 @@ class RuleChangeViewModelTest {
     }
 
     @Test
-    fun changeFilterRule() {
-        // TODO: implement
+    fun changeFilterRule_installedApplicationsUpdated() = runTest {
+        val viewModel = RuleChangeViewModel(
+            allowlistRepository,
+            installedApplicationRepository
+        )
+
+        var resultApps = listOf<AppPackage>()
+        val job = launch(UnconfinedTestDispatcher()) {
+            viewModel.installedApplications.collect {
+                // 許可済みのアプリをフィルター
+                resultApps = it
+            }
+        }
+
+        val app1 = fakeInstalledApps[0]
+        assertThat(resultApps.count { it.isAllowed }, `is`(0))
+
+        // App1を許可に変更
+        viewModel.changeFilterRule(allow = true, appPackage = app1)
+        assertThat(resultApps.count { it.isAllowed }, `is`(1))
+        assertThat(resultApps.first { it.isAllowed }.packageName, `is`(app1.packageName))
+
+        // App1を拒否に変更
+        viewModel.changeFilterRule(allow = false, appPackage = app1)
+        assertThat(resultApps.count { it.isAllowed }, `is`(0))
+
+        job.cancel()
     }
 }
