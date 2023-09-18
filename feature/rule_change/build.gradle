@@ -57,4 +57,5 @@ dependencies {
     testImplementation libs.junit
     testImplementation libs.org.hamcrest.all
     testImplementation libs.org.jetbrains.kotlinx.coroutines.test
+    testImplementation libs.org.mockito.core
 }
