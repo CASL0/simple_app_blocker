@@ -25,14 +25,10 @@ import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.InflateException
 import android.view.Menu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -40,6 +36,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -71,7 +68,7 @@ class MainActivity :
     AppUpdateController.OnAppUpdateStateChangeListener,
     AllowlistFragment.OnRuleChangeListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private var binding: ActivityMainBinding? = null
     private val _viewModel: MainViewModel by viewModels()
     var appBlockerService: AppBlockerService? = null
     private lateinit var appUpdateManager: AppUpdateManager
@@ -162,40 +159,13 @@ class MainActivity :
         }
     }
 
-    private fun setActionBarTextColor(actionBar: ActionBar?, color: Int) {
-        val title = SpannableString(actionBar?.title ?: "")
-        title.setSpan(
-            ForegroundColorSpan(color),
-            0,
-            title.length,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-        )
-        actionBar?.title = title
-    }
-
-    private fun getColorInt(resourceId: Int): Int {
-        return if (Build.VERSION.SDK_INT >= 23) {
-            resources.getColor(resourceId, theme)
-        } else {
-            resources.getColor(resourceId)
-        }
-    }
-
     /** フィルターの有効・無効切り替え時に行う処理 */
     private suspend fun onFiltersEnabled(enable: Boolean) {
         if (enable) {
-            setActionBarTextColor(
-                supportActionBar,
-                getColorInt(R.color.filters_enabled)
-            )
             appBlockerService?.updateFilters(
                 _viewModel.allowlist.first()
             )
         } else {
-            setActionBarTextColor(
-                supportActionBar,
-                getColorInt(R.color.filters_disabled)
-            )
             appBlockerService?.disableFilters()
         }
     }
@@ -224,14 +194,16 @@ class MainActivity :
         when (state) {
             InstallStatus.DOWNLOADED -> {
                 // アップデート適用のためスナックバーを表示
-                popupSnackbar(
-                    view = binding.root,
-                    message = R.string.update_downloaded_message,
-                    duration = Snackbar.LENGTH_INDEFINITE,
-                    actionLabel = R.string.restart_for_update
-                ) {
-                    // アプリを再起動し更新を適用する
-                    appUpdateManager.completeUpdate()
+                binding?.let {
+                    popupSnackbar(
+                        view = it.root,
+                        message = R.string.update_downloaded_message,
+                        duration = Snackbar.LENGTH_INDEFINITE,
+                        actionLabel = R.string.restart_for_update
+                    ) {
+                        // アプリを再起動し更新を適用する
+                        appUpdateManager.completeUpdate()
+                    }
                 }
             }
         }
@@ -247,22 +219,30 @@ class MainActivity :
         installSplashScreen()
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val navView: BottomNavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        navView.setupWithNavController(navController)
-        setSupportActionBar(binding.topAppBar)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.topAppBar) { _, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            binding.topAppBar.updatePadding(
-                top = insets.top,
-                left = insets.left,
-                right = insets.right
-            )
-            windowInsets
-        }
+        binding = DataBindingUtil.setContentView<ActivityMainBinding?>(this, R.layout.activity_main)
+            .also {
+                it.lifecycleOwner = this
+                it.viewmodel = _viewModel
+
+                setSupportActionBar(it.topAppBar)
+
+                val navView: BottomNavigationView = it.navView
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navView.setupWithNavController(navController)
+
+
+                ViewCompat.setOnApplyWindowInsetsListener(it.topAppBar) { _, windowInsets ->
+                    val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+                    it.topAppBar.updatePadding(
+                        top = insets.top,
+                        left = insets.left,
+                        right = insets.right
+                    )
+                    windowInsets
+                }
+            }
+
 
         appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateController = AppUpdateController(appUpdateManager).apply {
@@ -291,5 +271,6 @@ class MainActivity :
     override fun onDestroy() {
         super.onDestroy()
         appBlockerService?.disableFilters()
+        binding = null
     }
 }
