@@ -8,7 +8,7 @@ plugins {
 android {
     namespace 'jp.co.casl0.android.simpleappblocker.feature.packet_filtering'
     compileSdk libs.versions.compileSdk.get().toInteger()
-    buildToolsVersion libs.versions.buildTools.get()
+    buildToolsVersion = libs.versions.buildTools.get()
 
     defaultConfig {
         minSdk 29
