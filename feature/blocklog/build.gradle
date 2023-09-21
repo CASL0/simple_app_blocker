@@ -55,4 +55,9 @@ dependencies {
     kapt libs.com.google.dagger.hilt.compiler
     implementation libs.androidx.lifecycle.viewmodel.ktx
     implementation libs.com.orhanobut.logger
+
+    testImplementation libs.junit
+    testImplementation libs.org.hamcrest.all
+    testImplementation libs.org.jetbrains.kotlinx.coroutines.test
+    testImplementation libs.androidx.test.core
 }
