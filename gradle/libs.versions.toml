@@ -41,6 +41,7 @@ androidx-test-rules = "1.5.0"
 kover = "0.7.3"
 splashscreen = "1.0.1"
 mockito = "4.6.1"
+room-testing = "2.5.2"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
@@ -77,6 +78,7 @@ androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test-rules" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 org-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room-testing" }
 
 [bundles]
 com-google-android-play-update = [

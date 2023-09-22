@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
@@ -18,6 +20,11 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 
     buildTypes {
@@ -36,6 +43,27 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+        managedDevices {
+            devices {
+                pixel6api33(ManagedVirtualDevice) {
+                    device = "Pixel 6"
+                    apiLevel = 33
+                    systemImageSource = "google"
+                    require64Bit = false
+                }
+                pixel6api29(ManagedVirtualDevice) {
+                    device = "Pixel 6"
+                    apiLevel = 29
+                    systemImageSource = "google"
+                    require64Bit = false
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -45,4 +73,9 @@ dependencies {
     kapt libs.androidx.room.compiler
     implementation libs.com.google.dagger.hilt.android
     kapt libs.com.google.dagger.hilt.compiler
+
+    androidTestImplementation libs.androidx.test.core
+    androidTestImplementation libs.androidx.test.ext.junit.ktx
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.androidx.room.testing
 }
