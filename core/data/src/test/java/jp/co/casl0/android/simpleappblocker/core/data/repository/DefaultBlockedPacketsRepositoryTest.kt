@@ -37,6 +37,7 @@ class DefaultBlockedPacketsRepositoryTest {
         val blockedPacket1 =
             DomainBlockedPacket(
                 packageName = "package1",
+                appName = "app1",
                 srcAddress = "10.10.10.1",
                 srcPort = 1111,
                 dstAddress = "100.100.100.1",
@@ -47,6 +48,7 @@ class DefaultBlockedPacketsRepositoryTest {
         val blockedPacket2 =
             DomainBlockedPacket(
                 packageName = "package2",
+                appName = "app2",
                 srcAddress = "10.10.10.2",
                 srcPort = 2222,
                 dstAddress = "100.100.100.2",
@@ -57,6 +59,7 @@ class DefaultBlockedPacketsRepositoryTest {
         val blockedPacket3 =
             DomainBlockedPacket(
                 packageName = "package3",
+                appName = "app3",
                 srcAddress = "10.10.10.3",
                 srcPort = 3333,
                 dstAddress = "100.100.100.3",
@@ -72,6 +75,7 @@ class DefaultBlockedPacketsRepositoryTest {
     fun insertBlockedPacket_addNewBlockedPackage() = runTest {
         val newBlockedPackage = DomainBlockedPacket(
             packageName = "newPackage",
+            appName = "newApp",
             srcAddress = "10.10.10.4",
             srcPort = 4444,
             dstAddress = "100.100.100.4",

@@ -16,15 +16,9 @@
 
 package jp.co.casl0.android.simpleappblocker.feature.blocklog.viewmodel
 
-import android.app.Application
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import jp.co.casl0.android.simpleappblocker.core.data.repository.BlockedPacketsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -44,17 +38,18 @@ sealed interface UiState {
 
     val blockedApps: List<BlockedApp>
 
+    /** ブロックログ画面のUI状態 */
     data class BlockLogUiState(
         override val blockedApps: List<BlockedApp> = listOf()
     ) : UiState
 }
 
+/** ブロックログ画面のビジネスロジックを扱うViewModel */
 @HiltViewModel
 class BlockLogViewModel @Inject constructor(
-    private val blockedPacketsRepository: BlockedPacketsRepository,
-    @ApplicationContext context: Context
+    private val blockedPacketsRepository: BlockedPacketsRepository
 ) :
-    AndroidViewModel(context.applicationContext as Application) {
+    ViewModel() {
 
     /** UI状態 */
     private val _uiState = MutableStateFlow(UiState.BlockLogUiState())
@@ -62,36 +57,20 @@ class BlockLogViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            // ブロックログ追加の度にUI状態を更新する
             blockedPacketsRepository.getBlockedPacketsStream().collect { domainBlockedPackets ->
-                val packageManager = context.packageManager
-                val blockedPackets: List<UiState.BlockedApp?> =
+                val blockedPackets =
                     domainBlockedPackets.map { domainBlockedPacket ->
-                        try {
-                            val appInfo = if (Build.VERSION.SDK_INT >= 33) {
-                                packageManager.getApplicationInfo(
-                                    domainBlockedPacket.packageName.toString(),
-                                    PackageManager.ApplicationInfoFlags.of(0)
-                                )
-                            } else {
-                                packageManager.getApplicationInfo(
-                                    domainBlockedPacket.packageName.toString(),
-                                    0
-                                )
-                            }
-                            UiState.BlockedApp(
-                                appName = appInfo.loadLabel(packageManager),
-                                packageName = domainBlockedPacket.packageName,
-                                src = domainBlockedPacket.srcAddressAndPort,
-                                dst = domainBlockedPacket.dstAddressAndPort,
-                                protocol = domainBlockedPacket.protocol,
-                                blockedAt = domainBlockedPacket.blockedAt
-                            )
-                        } catch (e: PackageManager.NameNotFoundException) {
-                            e.localizedMessage?.let { err -> Logger.d(err) }
-                            null
-                        }
-                    }
-                _uiState.update { it.copy(blockedApps = blockedPackets.filterNotNull()) }
+                        UiState.BlockedApp(
+                            appName = domainBlockedPacket.appName,
+                            packageName = domainBlockedPacket.packageName,
+                            src = domainBlockedPacket.srcAddressAndPort,
+                            dst = domainBlockedPacket.dstAddressAndPort,
+                            protocol = domainBlockedPacket.protocol,
+                            blockedAt = domainBlockedPacket.blockedAt
+                        )
+                    }.toList()
+                _uiState.update { it.copy(blockedApps = blockedPackets) }
             }
         }
     }
