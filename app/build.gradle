@@ -65,4 +65,5 @@ dependencies {
 
     kover(project(":core:data"))
     kover(project(":feature:rule_change"))
+    kover(project(":feature:blocklog"))
 }
