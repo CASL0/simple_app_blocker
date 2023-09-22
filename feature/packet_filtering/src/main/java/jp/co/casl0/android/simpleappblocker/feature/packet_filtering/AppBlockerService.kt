@@ -32,6 +32,7 @@ import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.NOTIF
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.VPN_SERVICE_SESSION
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.createNotificationChannel
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.formatter
+import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.getApplicationLabel
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.getNotificationBuilder
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.retrieveUid
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -160,6 +161,7 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
                 repository.insertBlockedPacket(
                     DomainBlockedPacket(
                         packageName = packageName,
+                        appName = packageManager.getApplicationLabel(packageName),
                         srcAddress = blockedPacket.networkLayer.srcAddress,
                         srcPort = blockedPacket.transportLayer.srcPort,
                         dstAddress = blockedPacket.networkLayer.dstAddress,
