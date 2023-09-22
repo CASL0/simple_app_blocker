@@ -27,6 +27,9 @@ data class BlockedPacket(
     @ColumnInfo(name = "package_name")
     val packageName: String,
 
+    @ColumnInfo(name = "app_name", defaultValue = "")
+    val appName: String,
+
     @ColumnInfo(name = "src_address")
     val srcAddress: String,
 
@@ -49,6 +52,7 @@ data class BlockedPacket(
 fun BlockedPacket.asDomainModel(): DomainBlockedPacket {
     return DomainBlockedPacket(
         packageName = this.packageName,
+        appName = this.appName,
         srcAddress = this.srcAddress,
         srcPort = this.srcPort,
         dstAddress = this.dstAddress,

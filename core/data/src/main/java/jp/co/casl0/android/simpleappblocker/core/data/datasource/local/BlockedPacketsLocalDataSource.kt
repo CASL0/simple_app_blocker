@@ -38,6 +38,7 @@ class BlockedPacketsLocalDataSource @Inject constructor(private val database: Si
         database.blockedPacketsDao().insertBlockedPacket(
             BlockedPacket(
                 packageName = blockedPacket.packageName.toString(),
+                appName = blockedPacket.appName.toString(),
                 srcAddress = blockedPacket.srcAddress.toString(),
                 srcPort = blockedPacket.srcPort,
                 dstAddress = blockedPacket.dstAddress.toString(),

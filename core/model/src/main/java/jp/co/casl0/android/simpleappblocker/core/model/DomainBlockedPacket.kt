@@ -18,6 +18,7 @@ package jp.co.casl0.android.simpleappblocker.core.model
 
 data class DomainBlockedPacket(
     val packageName: CharSequence,
+    val appName: CharSequence,
     val srcAddress: CharSequence,
     val srcPort: Int,
     val dstAddress: CharSequence,

@@ -63,6 +63,7 @@ class BlockedPacketsLocalDataSourceTest {
     fun insertBlockedPacket() = runTest {
         val blockedPacket = DomainBlockedPacket(
             "package1",
+            "app1",
             "10.10.10.10",
             11111,
             "20.20.20.20",
