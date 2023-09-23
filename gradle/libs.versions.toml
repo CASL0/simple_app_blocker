@@ -10,22 +10,20 @@ de-undercouch-download = "5.3.0"
 core-ktx = "1.9.0"
 appcompat = "1.6.1"
 constraintlayout = "2.1.4"
-lifecycle-viewmodel-ktx = "2.5.1"
-navigation-ui-ktx = "2.5.3"
-navigation-fragment-ktx = "2.5.3"
+androidx-lifecycle = "2.6.2"
+androidx-navigation = "2.5.3"
 compose-material = "1.3.1"
 compose-ui-tooling = "1.3.1"
-room = "2.5.0"
+room = "2.5.2"
 material = "1.8.0"
-app-update = "2.0.1"
+app-update = "2.1.0"
 hilt = "2.44.2"
 accompanist-drawablepainter = "0.25.1"
 accompanist-swiperefresh = "0.27.0"
-play-services-oss-licenses = "17.0.0"
-oss-licenses-plugin = "0.10.5"
+play-services-oss-licenses = "17.0.1"
+oss-licenses-plugin = "0.10.6"
 kotlinx-coroutines = "1.6.4"
 logger = "2.2.0"
-lifecycle-runtime-ktx = "2.5.1"
 pcapplusplus = "22.11"
 compose-compiler-extension = "1.4.3"
 com-twitter-compose-rules-ktlint = "0.0.23"
@@ -35,21 +33,19 @@ material-icons-extended = "1.3.1"
 junit = "4.13.2"
 org-hamcrest = "1.3"
 androidx-arch-core-testing = "2.2.0"
-androidx-test-core = "1.5.0"
+androidx-test = "1.5.0"
 androidx-test-ext-junit-ktx = "1.1.5"
-androidx-test-rules = "1.5.0"
 kover = "0.7.3"
 splashscreen = "1.0.1"
 mockito = "4.6.1"
-room-testing = "2.5.2"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
-androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
-androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
+androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
 androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "compose-material" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui-tooling" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -66,19 +62,19 @@ com-google-android-gms-play-services-oss-licenses = { module = "com.google.andro
 com-google-android-gms-oss-licenses-plugin = { module = "com.google.android.gms:oss-licenses-plugin", version.ref = "oss-licenses-plugin" }
 org-jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 com-orhanobut-logger = { module = "com.orhanobut:logger", version.ref = "logger" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 com-twitter-compose-rules-ktlint = { module = "com.twitter.compose.rules:ktlint", version.ref = "com-twitter-compose-rules-ktlint" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-icons-extended" }
 junit = { module = "junit:junit", version.ref = "junit" }
 org-hamcrest-all = { module = "org.hamcrest:hamcrest-all", version.ref = "org-hamcrest" }
 org-jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
-androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test" }
 androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidx-test-ext-junit-ktx" }
-androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test-rules" }
+androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 org-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
-androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room-testing" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 
 [bundles]
 com-google-android-play-update = [
