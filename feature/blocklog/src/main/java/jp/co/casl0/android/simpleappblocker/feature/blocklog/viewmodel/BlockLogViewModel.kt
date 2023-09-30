@@ -24,6 +24,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 sealed interface UiState {
@@ -55,6 +59,9 @@ class BlockLogViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(UiState.BlockLogUiState())
     val uiState: StateFlow<UiState.BlockLogUiState> get() = _uiState
 
+    /** DateTimeフォーマッタ */
+    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
     init {
         viewModelScope.launch {
             // ブロックログ追加の度にUI状態を更新する
@@ -67,7 +74,8 @@ class BlockLogViewModel @Inject constructor(
                             src = domainBlockedPacket.srcAddressAndPort,
                             dst = domainBlockedPacket.dstAddressAndPort,
                             protocol = domainBlockedPacket.protocol,
-                            blockedAt = domainBlockedPacket.blockedAt
+                            blockedAt = domainBlockedPacket.blockedAt.toLocalDateTime(TimeZone.currentSystemDefault())
+                                .toJavaLocalDateTime().format(formatter)
                         )
                     }.toList()
                 _uiState.update { it.copy(blockedApps = blockedPackets) }

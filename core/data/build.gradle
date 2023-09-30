@@ -67,6 +67,8 @@ dependencies {
     implementation libs.androidx.room.ktx
     implementation libs.com.google.dagger.hilt.android
     kapt libs.com.google.dagger.hilt.compiler
+    implementation libs.org.jetbrains.kotlinx.datetime
+
     testImplementation libs.junit
     testImplementation libs.org.hamcrest.all
     testImplementation libs.org.jetbrains.kotlinx.coroutines.test

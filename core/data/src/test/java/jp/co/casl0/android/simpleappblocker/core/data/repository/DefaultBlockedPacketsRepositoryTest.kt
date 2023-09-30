@@ -22,6 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Instant
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -43,7 +44,7 @@ class DefaultBlockedPacketsRepositoryTest {
                 dstAddress = "100.100.100.1",
                 dstPort = 11111,
                 protocol = "http",
-                blockedAt = "2000-01-01"
+                blockedAt = Instant.parse("2000-01-01T00:00:00Z")
             )
         val blockedPacket2 =
             DomainBlockedPacket(
@@ -54,7 +55,7 @@ class DefaultBlockedPacketsRepositoryTest {
                 dstAddress = "100.100.100.2",
                 dstPort = 22222,
                 protocol = "http",
-                blockedAt = "2000-02-02"
+                blockedAt = Instant.parse("2000-02-02T00:00:00Z")
             )
         val blockedPacket3 =
             DomainBlockedPacket(
@@ -65,7 +66,7 @@ class DefaultBlockedPacketsRepositoryTest {
                 dstAddress = "100.100.100.3",
                 dstPort = 33333,
                 protocol = "http",
-                blockedAt = "2000-03-03"
+                blockedAt = Instant.parse("2000-03-03T00:00:00Z")
             )
         blockedPackets = listOf(blockedPacket1, blockedPacket2, blockedPacket3)
         blockedPacketsDataSource = FakeBlockedPacketsLocalDataSource(blockedPackets)
@@ -81,7 +82,7 @@ class DefaultBlockedPacketsRepositoryTest {
             dstAddress = "100.100.100.4",
             dstPort = 44444,
             protocol = "http",
-            blockedAt = "2000-04-04"
+            blockedAt = Instant.parse("2000-04-04T00:00:00Z")
         )
         val blockedPacketsRepository =
             DefaultBlockedPacketsRepository(

@@ -16,6 +16,8 @@
 
 package jp.co.casl0.android.simpleappblocker.core.model
 
+import kotlinx.datetime.Instant
+
 data class DomainBlockedPacket(
     val packageName: CharSequence,
     val appName: CharSequence,
@@ -24,7 +26,7 @@ data class DomainBlockedPacket(
     val dstAddress: CharSequence,
     val dstPort: Int,
     val protocol: CharSequence,
-    val blockedAt: CharSequence
+    val blockedAt: Instant
 ) {
     /** 送信元のIP・ポートの情報を取得する関数 */
     val srcAddressAndPort: CharSequence get() = "$srcAddress ($srcPort)"

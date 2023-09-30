@@ -41,4 +41,5 @@ dependencies {
     implementation libs.com.google.dagger.hilt.android
     kapt libs.com.google.dagger.hilt.compiler
     implementation libs.com.orhanobut.logger
+    implementation libs.org.jetbrains.kotlinx.datetime
 }

@@ -44,7 +44,7 @@ class BlockedPacketsLocalDataSource @Inject constructor(private val database: Si
                 dstAddress = blockedPacket.dstAddress.toString(),
                 dstPort = blockedPacket.dstPort,
                 protocol = blockedPacket.protocol.toString(),
-                blockedAt = blockedPacket.blockedAt.toString()
+                blockedAt = blockedPacket.blockedAt
             )
         )
     }

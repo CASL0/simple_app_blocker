@@ -27,6 +27,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Instant
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
@@ -69,7 +70,7 @@ class BlockedPacketsLocalDataSourceTest {
             "20.20.20.20",
             22222,
             "protocol",
-            "2000-01-01"
+            Instant.parse("2000-01-01T00:00:00Z")
         )
         var result = listOf<DomainBlockedPacket>()
         val job = launch(UnconfinedTestDispatcher(testScheduler)) {

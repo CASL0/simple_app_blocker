@@ -25,15 +25,21 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BlockLogViewModelTest {
     private lateinit var blockedPacketsRepository: FakeBlockedPacketsRepository
+    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
     @Before
     fun setup() {
@@ -68,7 +74,7 @@ class BlockLogViewModelTest {
             dstAddress = "20.20.20.20",
             dstPort = 200,
             protocol = "protocol1",
-            blockedAt = "2000-01-01"
+            blockedAt = Instant.parse("2000-01-01T00:00:00Z")
         )
 
         blockedPacketsRepository.insertBlockedPacket(data)
@@ -82,7 +88,8 @@ class BlockLogViewModelTest {
                         src = data.srcAddressAndPort,
                         dst = data.dstAddressAndPort,
                         protocol = data.protocol,
-                        blockedAt = data.blockedAt
+                        blockedAt = data.blockedAt.toLocalDateTime(TimeZone.currentSystemDefault())
+                            .toJavaLocalDateTime().format(formatter)
                     )
                 )
             )

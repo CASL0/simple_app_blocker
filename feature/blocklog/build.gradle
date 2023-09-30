@@ -13,7 +13,7 @@ android {
     buildToolsVersion = libs.versions.buildTools.get()
 
     defaultConfig {
-        minSdk 23
+        minSdk 26
         targetSdk libs.versions.targetSdk.get().toInteger()
 
     }
@@ -56,6 +56,7 @@ dependencies {
     kapt libs.com.google.dagger.hilt.compiler
     implementation libs.androidx.lifecycle.viewmodel.ktx
     implementation libs.com.orhanobut.logger
+    implementation libs.org.jetbrains.kotlinx.datetime
 
     testImplementation libs.junit
     testImplementation libs.org.hamcrest.all

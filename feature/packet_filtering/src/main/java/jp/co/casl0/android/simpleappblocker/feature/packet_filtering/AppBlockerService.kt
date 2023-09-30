@@ -31,14 +31,13 @@ import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model.ParsedPacket
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.NOTIFICATION_ID
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.VPN_SERVICE_SESSION
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.createNotificationChannel
-import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.formatter
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.getApplicationLabel
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.getNotificationBuilder
 import jp.co.casl0.android.simpleappblocker.feature.packet_filtering.utils.retrieveUid
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import kotlinx.datetime.Clock
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
@@ -167,7 +166,7 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
                         dstAddress = blockedPacket.networkLayer.dstAddress,
                         dstPort = blockedPacket.transportLayer.dstPort,
                         protocol = blockedPacket.transportLayer.protocol,
-                        blockedAt = LocalDateTime.now().format(formatter)
+                        blockedAt = Clock.System.now()
                     )
                 )
             }
