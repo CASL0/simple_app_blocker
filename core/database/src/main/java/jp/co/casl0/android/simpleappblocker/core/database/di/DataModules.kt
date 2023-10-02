@@ -23,6 +23,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import jp.co.casl0.android.simpleappblocker.core.database.MIGRATION_2_3
 import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
 import javax.inject.Singleton
 
@@ -36,6 +37,8 @@ object DatabaseModule {
             context.applicationContext,
             SimpleAppBlockerDatabase::class.java,
             "simple_app_blocker.db"
-        ).build()
+        )
+            .addMigrations(MIGRATION_2_3)
+            .build()
     }
 }

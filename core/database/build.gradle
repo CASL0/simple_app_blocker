@@ -13,7 +13,7 @@ android {
     buildToolsVersion = libs.versions.buildTools.get()
 
     defaultConfig {
-        minSdk 23
+        minSdk 26
         targetSdk libs.versions.targetSdk.get().toInteger()
         javaCompileOptions {
             annotationProcessorOptions {
@@ -73,6 +73,7 @@ dependencies {
     kapt libs.androidx.room.compiler
     implementation libs.com.google.dagger.hilt.android
     kapt libs.com.google.dagger.hilt.compiler
+    implementation libs.org.jetbrains.kotlinx.datetime
 
     androidTestImplementation libs.androidx.test.core
     androidTestImplementation libs.androidx.test.ext.junit.ktx

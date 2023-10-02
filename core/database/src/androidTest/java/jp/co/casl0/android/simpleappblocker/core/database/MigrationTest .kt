@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.core.database
 
+import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
@@ -38,9 +39,13 @@ class MigrationTest {
         INSERT INTO 
             blocked_packets (package_name, src_address, src_port, dst_address, dst_port, protocol, blocked_at) 
         VALUES
-            ('package1', '10.10.10.10', 100, '20.20.20.20', 200, 'protocol1', '2000-01-01')
+            ('package1', '10.10.10.10', 100, '20.20.20.20', 200, 'protocol1', '2000-01-01 00:00:00')
         ;
     """.trimIndent()
+
+    private val ALL_MIGRATIONS = arrayOf(
+        MIGRATION_2_3
+    )
 
     /** スキーマJSONファイルからDBを作成します */
     @get:Rule
@@ -78,5 +83,17 @@ class MigrationTest {
 
         ret.close()
         db.close()
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun migrateAll() {
+        Room.databaseBuilder(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            SimpleAppBlockerDatabase::class.java,
+            TEST_DB
+        ).addMigrations(*ALL_MIGRATIONS).build().apply {
+            openHelper.writableDatabase.close()
+        }
     }
 }
