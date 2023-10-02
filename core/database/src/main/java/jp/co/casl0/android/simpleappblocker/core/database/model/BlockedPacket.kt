@@ -20,6 +20,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
+import kotlinx.datetime.Instant
 
 @Entity(tableName = "blocked_packets")
 data class BlockedPacket(
@@ -46,7 +47,7 @@ data class BlockedPacket(
     val protocol: String,
 
     @ColumnInfo(name = "blocked_at")
-    val blockedAt: String
+    val blockedAt: Instant
 )
 
 fun BlockedPacket.asDomainModel(): DomainBlockedPacket {

@@ -19,19 +19,22 @@ package jp.co.casl0.android.simpleappblocker.core.database
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import jp.co.casl0.android.simpleappblocker.core.database.dao.AllowlistDAO
 import jp.co.casl0.android.simpleappblocker.core.database.dao.BlockedPacketsDAO
 import jp.co.casl0.android.simpleappblocker.core.database.model.AllowedPackage
 import jp.co.casl0.android.simpleappblocker.core.database.model.BlockedPacket
+import jp.co.casl0.android.simpleappblocker.core.database.utils.InstantConverter
 
 @Database(
     entities = [AllowedPackage::class, BlockedPacket::class],
-    version = 2,
+    version = 3,
     exportSchema = true,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 1, to = 2),
     ]
 )
+@TypeConverters(InstantConverter::class)
 abstract class SimpleAppBlockerDatabase : RoomDatabase() {
     /** 許可アプリリスト操作用のDAOを取得する関数 */
     abstract fun allowlistDao(): AllowlistDAO
