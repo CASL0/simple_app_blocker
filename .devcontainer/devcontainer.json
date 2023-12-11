@@ -1,0 +1,46 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/debian
+{
+  "name": "Ruby + Java",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17",
+      "installGradle": true,
+      "gradleVersion": "8.0.1"
+    },
+    "ghcr.io/devcontainers/features/ruby:1": {
+      "version": "3.1"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Shopify.ruby-lsp",
+        "castwide.solargraph",
+        "oderwat.indent-rainbow"
+      ],
+      "settings": {
+        "[ruby]": {
+          "editor.defaultFormatter": "castwide.solargraph"
+        },
+        "solargraph.useBundler": true,
+        "solargraph.diagnostics": true,
+        "solargraph.formatting": true,
+        "editor.tabSize": 2,
+        "editor.detectIndentation": false
+      }
+    }
+  },
+  "remoteEnv": {
+    "LC_ALL": "en_US.UTF-8",
+    "LANG": "en_US.UTF-8",
+    "ANDROID_SDK_ROOT": "/home/vscode/.android/sdk",
+    "PATH": "${containerEnv:PATH}:/home/vscode/.android/sdk/cmdline-tools/latest/bin"
+  },
+  "workspaceFolder": "/opt/simple_app_blocker",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/opt/simple_app_blocker,type=bind,consistency=delegated",
+  "onCreateCommand": "bash .devcontainer/install_android_sdk.sh",
+  "postCreateCommand": "bundle config --local path vendor/bundle && bundle install"
+}

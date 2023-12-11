@@ -17,3 +17,6 @@ local.properties
 /core/pcapplusplus/libs/pcapplusplus
 [Dd]ebug/
 [Rr]elease/
+
+.bundle
+vendor/bundle
