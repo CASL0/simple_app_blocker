@@ -21,3 +21,6 @@ local.properties
 .bundle
 vendor/bundle
 service-account.json
+
+keystore.properties
+*.jks
