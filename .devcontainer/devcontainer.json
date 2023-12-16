@@ -12,6 +12,14 @@
     },
     "ghcr.io/devcontainers/features/ruby:1": {
       "version": "3.1"
+    },
+    "ghcr.io/CASL0/devcontainer-features/android-sdk:1": {
+      "platformsVersion": "33",
+      "buildToolsVersion": "33.0.1",
+      "installNdk": true,
+      "ndkVersion": "25.2.9519653",
+      "installCmake": true,
+      "cmakeVersion": "3.18.1"
     }
   },
   "customizations": {
@@ -35,12 +43,9 @@
   },
   "remoteEnv": {
     "LC_ALL": "en_US.UTF-8",
-    "LANG": "en_US.UTF-8",
-    "ANDROID_SDK_ROOT": "/home/vscode/.android/sdk",
-    "PATH": "${containerEnv:PATH}:/home/vscode/.android/sdk/cmdline-tools/latest/bin"
+    "LANG": "en_US.UTF-8"
   },
   "workspaceFolder": "/opt/simple_app_blocker",
   "workspaceMount": "source=${localWorkspaceFolder},target=/opt/simple_app_blocker,type=bind,consistency=delegated",
-  "onCreateCommand": "bash .devcontainer/install_android_sdk.sh",
   "postCreateCommand": "bundle config --local path vendor/bundle && bundle install"
 }
