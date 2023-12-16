@@ -24,3 +24,5 @@ service-account.json
 
 keystore.properties
 *.jks
+
+fastlane/report.xml
