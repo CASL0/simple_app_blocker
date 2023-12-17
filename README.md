@@ -3,7 +3,7 @@
 [![Weekly Build](https://github.com/CASL0/simple_app_blocker/actions/workflows/weekly_build.yml/badge.svg)](https://github.com/CASL0/simple_app_blocker/actions/workflows/weekly_build.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![API](https://img.shields.io/badge/API-29%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=29)
-[![codecov](https://codecov.io/github/CASL0/simple_app_blocker/graph/badge.svg?token=0RFQSCROZT)](https://codecov.io/github/CASL0/simple_app_blocker)
+[![codecov](https://codecov.io/github/CASL0/simple_app_blocker/graph/badge.svg?token=0RFQSCROZT)](https://app.codecov.io/github/CASL0/simple_app_blocker)
 
 [VpnService](https://developer.android.com/reference/android/net/VpnService)を利用し、指定のアプリ以外の通信をブロックするシンプルなユーティリティツールです。
 
@@ -38,6 +38,10 @@ Android Studio (Electric Eel 以降) をインストールしてください。
 ### モジュール
 
 ![モジュール構成](https://user-images.githubusercontent.com/28913760/227686241-7f6462cb-08fe-4759-8bf1-efaa0b5957a3.svg)
+
+## PlayConsole へのアップロード
+
+fastlane を使用しアップロードしています。VSCode で本リポジトリを開き、コマンドパレット（Ctrl+Shift+P）から[Open Folder in Container]を選択し、DevContainer で開きます。
 
 ## ドキュメント
 
