@@ -19,10 +19,13 @@ package jp.co.casl0.android.simpleappblocker.feature.packet_filtering
 import android.app.NotificationManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.net.ConnectivityManager
 import android.net.VpnService
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
+import androidx.core.app.ServiceCompat
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
 import jp.co.casl0.android.simpleappblocker.core.data.repository.BlockedPacketsRepository
@@ -145,7 +148,16 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
                 getString(R.string.notification_channel_name)
             )
         }
-        startForeground(NOTIFICATION_ID, getNotificationBuilder(message).build())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            ServiceCompat.startForeground(
+                this,
+                NOTIFICATION_ID,
+                getNotificationBuilder(message).build(),
+                FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+            )
+        } else {
+            startForeground(NOTIFICATION_ID, getNotificationBuilder(message).build())
+        }
     }
 
     // AppBlockerConnection.OnBlockPacketListener
