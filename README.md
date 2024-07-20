@@ -24,10 +24,10 @@
 Android Studio (Electric Eel 以降) をインストールしてください。
 
 - Kotlin 1.8.10
-- Android Gradle Plugin 7.4.2
-- Gradle 8.3
+- Android Gradle Plugin 8.5.1
+- Gradle 8.9
 - JDK 17+
-- NDK 25.2.9519653
+- NDK 27.0.12077973
 
 以下のコマンドを実行し、JNI から使用しているネイティブライブラリ（Pcap++）をセットアップしてください。
 
