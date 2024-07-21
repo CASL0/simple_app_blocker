@@ -24,7 +24,7 @@
 Android Studio (Electric Eel 以降) をインストールしてください。
 
 - Kotlin 1.8.10
-- Android Gradle Plugin 8.5.1
+- Android Gradle Plugin 8.3.2
 - Gradle 8.9
 - JDK 17+
 - NDK 27.0.12077973
@@ -41,7 +41,21 @@ Android Studio (Electric Eel 以降) をインストールしてください。
 
 ## PlayConsole へのアップロード
 
-fastlane を使用しアップロードしています。VSCode で本リポジトリを開き、コマンドパレット（Ctrl+Shift+P）から[Open Folder in Container]を選択し、DevContainer で開きます。
+fastlane を使用しアップロードしています。
+
+### 準備
+
+PlayConsole へアップロード用の Service Account を作成し、リポジトリルートに Json を配置してください。
+
+### アップロード
+
+次のコマンドでアップロードしてください。
+
+```shell
+bundle config --local path vendor/bundle
+bundle install
+bundle exec fastlane android deploy
+```
 
 ## ドキュメント
 
