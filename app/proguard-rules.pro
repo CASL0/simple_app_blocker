@@ -27,3 +27,6 @@
     public static *** w(...);
     public static *** e(...);
 }
+
+-dontwarn kotlinx.serialization.KSerializer
+-dontwarn kotlinx.serialization.Serializable
