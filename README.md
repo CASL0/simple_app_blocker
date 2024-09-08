@@ -23,7 +23,7 @@
 
 Android Studio (Electric Eel 以降) をインストールしてください。
 
-- Kotlin 1.8.10
+- Kotlin 2.0.20
 - Android Gradle Plugin 8.3.2
 - Gradle 8.9
 - JDK 17+
@@ -63,7 +63,8 @@ bundle exec fastlane android deploy
 - [変更履歴](CHANGELOG.md)
 
 ※ Android Studio の[Markdown](https://pleiades.io/help/idea/markdown.html)プラグインでプレビューするには、JRE を JCEF に切り替えてください。
-また、PlantUML ダイアグラムを有効にするために`Settings` > `Languages & Frameworks` > `Markdown`から PlantUML 拡張を有効にしてください。
+また、PlantUML ダイアグラムを有効にするために`Settings` > `Languages & Frameworks` >
+`Markdown`から PlantUML 拡張を有効にしてください。
 
 ## ライセンス
 
