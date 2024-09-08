@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'org.jmailen.kotlinter'
+    id 'org.jetbrains.kotlin.plugin.compose'
 }
 
 android {
@@ -29,9 +30,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '17'
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.compiler.extension.get()
     }
     buildFeatures {
         compose true

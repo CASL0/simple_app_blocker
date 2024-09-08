@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'org.jmailen.kotlinter'
+    id 'org.jetbrains.kotlin.plugin.compose'
 }
 
 android {
@@ -31,9 +32,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '17'
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.compiler.extension.get()
     }
     buildFeatures {
         viewBinding true

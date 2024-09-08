@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.org.jmailen.kotlinter) apply false
     alias(libs.plugins.com.vanniktech.dependency.graph.generator)
     alias(libs.plugins.org.jetbrains.kotlinx.kover) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.compose) apply false
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
