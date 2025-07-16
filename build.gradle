@@ -57,5 +57,12 @@ subprojects {
             trimTrailingWhitespace()
             endWithNewline()
         }
+        groovyGradle {
+            target '**/*.gradle'
+            greclipse()
+            leadingTabsToSpaces()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
     }
 }
