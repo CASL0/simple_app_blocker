@@ -39,7 +39,8 @@ import org.mockito.Mockito.mock
 class RuleChangeViewModelTest {
 
     private lateinit var allowlistRepository: FakeAllowlistRepository
-    private lateinit var installedApplicationRepository: SpyInstalledApplicationRepository
+    private lateinit var installedApplicationRepository:
+        SpyInstalledApplicationRepository
 
     private lateinit var fakeInstalledApps: List<AppPackage>
 
@@ -48,26 +49,23 @@ class RuleChangeViewModelTest {
         // viewModelScope向けにmainディスパッチャを変更
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
+        fakeInstalledApps =
+            listOf(
+                AppPackage(
+                    icon = mock(Drawable::class.java),
+                    appName = "App1",
+                    packageName = "app1"),
+                AppPackage(
+                    icon = mock(Drawable::class.java),
+                    appName = "App2",
+                    packageName = "app2"))
 
-        fakeInstalledApps = listOf(
-            AppPackage(
-                icon = mock(Drawable::class.java),
-                appName = "App1",
-                packageName = "app1"
-            ),
-            AppPackage(
-                icon = mock(Drawable::class.java),
-                appName = "App2",
-                packageName = "app2"
-            )
-        )
-
-        allowlistRepository = FakeAllowlistRepository(UnconfinedTestDispatcher())
+        allowlistRepository =
+            FakeAllowlistRepository(UnconfinedTestDispatcher())
         installedApplicationRepository =
             SpyInstalledApplicationRepository(
                 fakeInstalledApps = fakeInstalledApps,
-                dispatcher = UnconfinedTestDispatcher()
-            )
+                dispatcher = UnconfinedTestDispatcher())
     }
 
     @After
@@ -77,16 +75,14 @@ class RuleChangeViewModelTest {
 
     @Test
     fun onSearchValueChange_newValue_uiStateUpdated() = runTest {
-        val viewModel = RuleChangeViewModel(
-            allowlistRepository,
-            installedApplicationRepository
-        )
+        val viewModel =
+            RuleChangeViewModel(
+                allowlistRepository, installedApplicationRepository)
         var resultUiState = UiState.RuleChangeUiState()
-        val job = launch(UnconfinedTestDispatcher()) {
-            viewModel.uiState.collect {
-                resultUiState = it
+        val job =
+            launch(UnconfinedTestDispatcher()) {
+                viewModel.uiState.collect { resultUiState = it }
             }
-        }
 
         assertThat(resultUiState.searchValue, `is`(""))
         viewModel.onSearchValueChange("new value")
@@ -97,16 +93,14 @@ class RuleChangeViewModelTest {
 
     @Test
     fun onClickSearch_showedSearchBox() = runTest {
-        val viewModel = RuleChangeViewModel(
-            allowlistRepository,
-            installedApplicationRepository
-        )
+        val viewModel =
+            RuleChangeViewModel(
+                allowlistRepository, installedApplicationRepository)
         var resultUiState = UiState.RuleChangeUiState()
-        val job = launch(UnconfinedTestDispatcher()) {
-            viewModel.uiState.collect {
-                resultUiState = it
+        val job =
+            launch(UnconfinedTestDispatcher()) {
+                viewModel.uiState.collect { resultUiState = it }
             }
-        }
 
         assertThat(resultUiState.showedSearchBox, `is`(false))
         viewModel.onClickSearch()
@@ -117,10 +111,9 @@ class RuleChangeViewModelTest {
 
     @Test
     fun refreshInstalledApplications_exclusiveCallingRepository() = runTest {
-        val viewModel = RuleChangeViewModel(
-            allowlistRepository,
-            installedApplicationRepository
-        )
+        val viewModel =
+            RuleChangeViewModel(
+                allowlistRepository, installedApplicationRepository)
         // コンストラクション時のrefreshコルーチンを再開
         advanceTimeBy(101)
         assertThat(installedApplicationRepository.refreshCallCount, `is`(1))
@@ -134,18 +127,18 @@ class RuleChangeViewModelTest {
 
     @Test
     fun changeFilterRule_installedApplicationsUpdated() = runTest {
-        val viewModel = RuleChangeViewModel(
-            allowlistRepository,
-            installedApplicationRepository
-        )
+        val viewModel =
+            RuleChangeViewModel(
+                allowlistRepository, installedApplicationRepository)
 
         var resultApps = listOf<AppPackage>()
-        val job = launch(UnconfinedTestDispatcher()) {
-            viewModel.installedApplications.collect {
-                // 許可済みのアプリをフィルター
-                resultApps = it
+        val job =
+            launch(UnconfinedTestDispatcher()) {
+                viewModel.installedApplications.collect {
+                    // 許可済みのアプリをフィルター
+                    resultApps = it
+                }
             }
-        }
 
         val app1 = fakeInstalledApps[0]
         assertThat(resultApps.count { it.isAllowed }, `is`(0))
@@ -153,7 +146,9 @@ class RuleChangeViewModelTest {
         // App1を許可に変更
         viewModel.changeFilterRule(allow = true, appPackage = app1)
         assertThat(resultApps.count { it.isAllowed }, `is`(1))
-        assertThat(resultApps.first { it.isAllowed }.packageName, `is`(app1.packageName))
+        assertThat(
+            resultApps.first { it.isAllowed }.packageName,
+            `is`(app1.packageName))
 
         // App1を拒否に変更
         viewModel.changeFilterRule(allow = false, appPackage = app1)

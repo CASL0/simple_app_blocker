@@ -75,64 +75,69 @@ class MainActivity :
 
     private val updateFlowResultLauncher =
         registerForActivityResult(
-            ActivityResultContracts.StartIntentSenderForResult()
-        ) { result ->
-            when (result.resultCode) {
-                RESULT_OK -> Logger.d("update ok")
-                RESULT_CANCELED -> Logger.d("update canceled")
-                ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> Logger.d("update failed")
+            ActivityResultContracts.StartIntentSenderForResult()) { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> Logger.d("update ok")
+                    RESULT_CANCELED -> Logger.d("update canceled")
+                    ActivityResult.RESULT_IN_APP_UPDATE_FAILED ->
+                        Logger.d("update failed")
+                }
             }
-        }
 
     private val prepareVpnServiceLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                requestNotificationPermission()
-                Intent(this, AppBlockerService::class.java).also {
-                    bindService(it, connection, Context.BIND_AUTO_CREATE)
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    requestNotificationPermission()
+                    Intent(this, AppBlockerService::class.java).also {
+                        bindService(it, connection, Context.BIND_AUTO_CREATE)
+                    }
+                } else {
+                    Logger.d("VpnService rejected")
+                    finish()
                 }
-            } else {
-                Logger.d("VpnService rejected")
-                finish()
             }
-        }
 
     /** 通知権限のリクエスト時のコールバック */
-    private val notificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            Logger.d("notification permission granted")
-        } else {
-            Logger.d("notification permission not granted")
-        }
-    }
+    private val notificationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+                if (isGranted) {
+                    Logger.d("notification permission granted")
+                } else {
+                    Logger.d("notification permission not granted")
+                }
+            }
 
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder = service as AppBlockerService.AppBlockerBinder
-            appBlockerService = binder.getService()
-            lifecycleScope.launch {
-                launch {
-                    _viewModel.allowlist.collect { newAllowlist ->
-                        if (_viewModel.uiState.value.filtersEnabled) {
-                            // 既に適用中のみフィルターを更新する
-                            appBlockerService?.updateFilters(newAllowlist)
+    private val connection =
+        object : ServiceConnection {
+            override fun onServiceConnected(
+                name: ComponentName?,
+                service: IBinder?
+            ) {
+                val binder = service as AppBlockerService.AppBlockerBinder
+                appBlockerService = binder.getService()
+                lifecycleScope.launch {
+                    launch {
+                        _viewModel.allowlist.collect { newAllowlist ->
+                            if (_viewModel.uiState.value.filtersEnabled) {
+                                // 既に適用中のみフィルターを更新する
+                                appBlockerService?.updateFilters(newAllowlist)
+                            }
+                        }
+                    }
+                    launch {
+                        _viewModel.uiState.collect {
+                            onFiltersEnabled(it.filtersEnabled)
                         }
                     }
                 }
-                launch {
-                    _viewModel.uiState.collect {
-                        onFiltersEnabled(it.filtersEnabled)
-                    }
-                }
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) {
+                Logger.d("service disconnected")
             }
         }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-            Logger.d("service disconnected")
-        }
-    }
 
     private fun prepareVpnService() {
         val vpnPrepareIntent = VpnService.prepare(this)
@@ -154,17 +159,14 @@ class MainActivity :
             requestPermission(
                 Manifest.permission.POST_NOTIFICATIONS,
                 null,
-                notificationPermissionLauncher
-            )
+                notificationPermissionLauncher)
         }
     }
 
     /** フィルターの有効・無効切り替え時に行う処理 */
     private suspend fun onFiltersEnabled(enable: Boolean) {
         if (enable) {
-            appBlockerService?.updateFilters(
-                _viewModel.allowlist.first()
-            )
+            appBlockerService?.updateFilters(_viewModel.allowlist.first())
         } else {
             appBlockerService?.disableFilters()
         }
@@ -179,10 +181,13 @@ class MainActivity :
             menuInflater.inflate(R.menu.options, menu)
 
             // アクションバーのスイッチのイベントハンドラを設定
-            (menu.findItem(R.id.app_bar_switch)?.actionView as SwitchCompat).apply {
-                isChecked = _viewModel.uiState.value.filtersEnabled
-                setOnCheckedChangeListener { _, isChecked -> _viewModel.enableFilters(isChecked) }
-            }
+            (menu.findItem(R.id.app_bar_switch)?.actionView as SwitchCompat)
+                .apply {
+                    isChecked = _viewModel.uiState.value.filtersEnabled
+                    setOnCheckedChangeListener { _, isChecked ->
+                        _viewModel.enableFilters(isChecked)
+                    }
+                }
         } catch (e: InflateException) {
             e.localizedMessage?.let { Logger.d(it) }
         }
@@ -199,11 +204,10 @@ class MainActivity :
                         view = it.root,
                         message = R.string.update_downloaded_message,
                         duration = Snackbar.LENGTH_INDEFINITE,
-                        actionLabel = R.string.restart_for_update
-                    ) {
-                        // アプリを再起動し更新を適用する
-                        appUpdateManager.completeUpdate()
-                    }
+                        actionLabel = R.string.restart_for_update) {
+                            // アプリを再起動し更新を適用する
+                            appUpdateManager.completeUpdate()
+                        }
                 }
             }
         }
@@ -211,7 +215,8 @@ class MainActivity :
 
     // AllowlistFragment.onRuleChangeListener
     override fun onClickChangeButton() {
-        RuleChangeDialog.newInstance().show(supportFragmentManager, "NewRuleDialog")
+        RuleChangeDialog.newInstance()
+            .show(supportFragmentManager, "NewRuleDialog")
     }
 
     // ライフサイクルメソッド
@@ -220,41 +225,49 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        binding = DataBindingUtil.setContentView<ActivityMainBinding?>(this, R.layout.activity_main)
-            .also {
-                it.lifecycleOwner = this
-                it.viewmodel = _viewModel
+        binding =
+            DataBindingUtil.setContentView<ActivityMainBinding?>(
+                    this, R.layout.activity_main)
+                .also {
+                    it.lifecycleOwner = this
+                    it.viewmodel = _viewModel
 
-                setSupportActionBar(it.topAppBar)
+                    setSupportActionBar(it.topAppBar)
 
-                val navView: BottomNavigationView = it.navView
-                val navController = findNavController(R.id.nav_host_fragment_activity_main)
-                navView.setupWithNavController(navController)
+                    val navView: BottomNavigationView = it.navView
+                    val navController =
+                        findNavController(R.id.nav_host_fragment_activity_main)
+                    navView.setupWithNavController(navController)
 
-
-                ViewCompat.setOnApplyWindowInsetsListener(it.topAppBar) { _, windowInsets ->
-                    val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-                    it.topAppBar.updatePadding(
-                        top = insets.top,
-                        left = insets.left,
-                        right = insets.right
-                    )
-                    windowInsets
+                    ViewCompat.setOnApplyWindowInsetsListener(it.topAppBar) {
+                        _,
+                        windowInsets ->
+                        val insets =
+                            windowInsets.getInsets(
+                                WindowInsetsCompat.Type.statusBars())
+                        it.topAppBar.updatePadding(
+                            top = insets.top,
+                            left = insets.left,
+                            right = insets.right)
+                        windowInsets
+                    }
                 }
-            }
-
 
         appUpdateManager = AppUpdateManagerFactory.create(this)
-        val appUpdateController = AppUpdateController(appUpdateManager).apply {
-            setOnAppUpdateStateChangeListener(this@MainActivity)
-        }
+        val appUpdateController =
+            AppUpdateController(appUpdateManager).apply {
+                setOnAppUpdateStateChangeListener(this@MainActivity)
+            }
         lifecycle.addObserver(appUpdateController)
         lifecycleScope.launch {
             appUpdateController.checkForUpdateAvailability().collect {
                 Logger.d(it)
                 if (it is Result.Success) {
-                    if (it.value.updateAvailability == UpdateAvailability.UPDATE_AVAILABLE && it.value.flexibleAllowed) {
-                        appUpdateController.startFlexibleUpdate(updateFlowResultLauncher)
+                    if (it.value.updateAvailability ==
+                        UpdateAvailability.UPDATE_AVAILABLE &&
+                        it.value.flexibleAllowed) {
+                        appUpdateController.startFlexibleUpdate(
+                            updateFlowResultLauncher)
                     }
                 } else if (it is Result.Error) {
                     Logger.d("checkForUpdateAvailability failed")

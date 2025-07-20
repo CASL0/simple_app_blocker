@@ -36,7 +36,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -44,40 +43,41 @@ class BlockedPacketsLocalDataSourceTest {
     private lateinit var localDataSource: BlockedPacketsLocalDataSource
     private lateinit var database: SimpleAppBlockerDatabase
 
-    @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+    @get:Rule var instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun initDb() {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            SimpleAppBlockerDatabase::class.java
-        ).allowMainThreadQueries().build()
+        database =
+            Room.inMemoryDatabaseBuilder(
+                    ApplicationProvider.getApplicationContext(),
+                    SimpleAppBlockerDatabase::class.java)
+                .allowMainThreadQueries()
+                .build()
 
         localDataSource = BlockedPacketsLocalDataSource(database)
     }
 
-    @After
-    fun closeDb() = database.close()
+    @After fun closeDb() = database.close()
 
     @Test
     fun insertBlockedPacket() = runTest {
-        val blockedPacket = DomainBlockedPacket(
-            "package1",
-            "app1",
-            "10.10.10.10",
-            11111,
-            "20.20.20.20",
-            22222,
-            "protocol",
-            Instant.parse("2000-01-01T00:00:00Z")
-        )
+        val blockedPacket =
+            DomainBlockedPacket(
+                "package1",
+                "app1",
+                "10.10.10.10",
+                11111,
+                "20.20.20.20",
+                22222,
+                "protocol",
+                Instant.parse("2000-01-01T00:00:00Z"))
         var result = listOf<DomainBlockedPacket>()
-        val job = launch(UnconfinedTestDispatcher(testScheduler)) {
-            localDataSource.getBlockedPacketsStream().collect {
-                result = it
+        val job =
+            launch(UnconfinedTestDispatcher(testScheduler)) {
+                localDataSource.getBlockedPacketsStream().collect {
+                    result = it
+                }
             }
-        }
 
         localDataSource.insertBlockedPacket(blockedPacket)
         assertThat(result, `is`(listOf(blockedPacket)))

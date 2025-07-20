@@ -62,24 +62,19 @@ internal fun RuleChangeTopBar(
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .background(MaterialTheme.colors.primary)
-    ) {
+    Box(modifier = modifier.background(MaterialTheme.colors.primary)) {
         if (showedSearchBox) {
             SearchTopAppBar(
                 searchValue = searchValue,
                 onSearchValueChange = onSearchValueChange,
                 onClose = onClose,
-                modifier = Modifier.statusBarsPadding()
-            )
+                modifier = Modifier.statusBarsPadding())
         } else {
             DefaultTopAppBar(
                 title = title,
                 onClickSearch = onClickSearch,
                 onClose = onClose,
-                modifier = Modifier.statusBarsPadding()
-            )
+                modifier = Modifier.statusBarsPadding())
         }
     }
 }
@@ -96,10 +91,7 @@ private fun DefaultTopAppBar(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.primary,
         title = {
-            Text(
-                text = stringResource(id = title),
-                color = contentColor
-            )
+            Text(text = stringResource(id = title), color = contentColor)
         },
         elevation = 0.dp,
         navigationIcon = {
@@ -107,22 +99,17 @@ private fun DefaultTopAppBar(
                 Icon(
                     Icons.Filled.Close,
                     contentDescription = "Close",
-                    tint = contentColor
-                )
+                    tint = contentColor)
             }
         },
         actions = {
-            IconButton(
-                onClick = onClickSearch
-            ) {
+            IconButton(onClick = onClickSearch) {
                 Icon(
                     imageVector = Icons.Filled.Search,
                     contentDescription = "Search",
-                    tint = contentColor
-                )
+                    tint = contentColor)
             }
-        }
-    )
+        })
 }
 
 @Composable
@@ -133,9 +120,7 @@ private fun SearchTopAppBar(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp),
+        modifier = modifier.fillMaxWidth().height(56.dp),
         color = Color.Transparent,
     ) {
         val backgroundColor = MaterialTheme.colors.primary
@@ -143,51 +128,41 @@ private fun SearchTopAppBar(
 
         // 検索ボックスにフォーカスを当てるコルーチンを起動
         val focusRequester = remember { FocusRequester() }
-        LaunchedEffect(Unit) {
-            focusRequester.requestFocus()
-        }
+        LaunchedEffect(Unit) { focusRequester.requestFocus() }
 
         Row {
             IconButton(
                 onClick = onClose,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .background(backgroundColor)
-            ) {
-                Icon(
-                    Icons.Filled.Close,
-                    contentDescription = "Close",
-                    tint = contentColor,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-            }
+                modifier =
+                    Modifier.fillMaxHeight().background(backgroundColor)) {
+                    Icon(
+                        Icons.Filled.Close,
+                        contentDescription = "Close",
+                        tint = contentColor,
+                        modifier = Modifier.padding(start = 8.dp))
+                }
             TextField(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(backgroundColor)
-                    .focusRequester(focusRequester),
+                modifier =
+                    Modifier.fillMaxSize()
+                        .background(backgroundColor)
+                        .focusRequester(focusRequester),
                 shape = MaterialTheme.shapes.large,
                 value = searchValue,
                 onValueChange = onSearchValueChange,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Search
-                ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 placeholder = {
-                    Text(
-                        stringResource(R.string.search_placeholder)
-                    )
+                    Text(stringResource(R.string.search_placeholder))
                 },
                 singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    textColor = contentColor,
-                    placeholderColor = contentColor,
-                    cursorColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    backgroundColor = backgroundColor
-                )
-            )
+                colors =
+                    TextFieldDefaults.textFieldColors(
+                        textColor = contentColor,
+                        placeholderColor = contentColor,
+                        cursorColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        backgroundColor = backgroundColor))
         }
     }
 }

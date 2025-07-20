@@ -29,7 +29,8 @@ internal const val NOTIFICATION_ID = 100
 
 /** 通知のインスタンスビルダー */
 internal fun Context.getNotificationBuilder(messageBody: CharSequence) =
-    NotificationCompat.Builder(this, this.getString(R.string.notification_channel_id))
+    NotificationCompat.Builder(
+            this, this.getString(R.string.notification_channel_id))
         .setSmallIcon(R.drawable.ic_launcher_foreground)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setContentText(messageBody)
@@ -40,12 +41,9 @@ internal fun Context.getNotificationBuilder(messageBody: CharSequence) =
                 Intent().apply {
                     setClassName(
                         "jp.co.casl0.android.simpleappblocker",
-                        "jp.co.casl0.android.simpleappblocker.activity.MainActivity"
-                    )
+                        "jp.co.casl0.android.simpleappblocker.activity.MainActivity")
                 },
-                getPendingIntentFlag()
-            )
-        )
+                getPendingIntentFlag()))
 
 /** 通知に指定するPendingIntentのフラグを取得する関数 */
 private fun getPendingIntentFlag(): Int {
@@ -62,11 +60,11 @@ internal fun NotificationManager.createNotificationChannel(
     channelName: CharSequence
 ) {
     if (Build.VERSION.SDK_INT >= 26) {
-        val notificationChannel = NotificationChannel(
-            channelId.toString(),
-            channelName,
-            NotificationManager.IMPORTANCE_LOW
-        )
+        val notificationChannel =
+            NotificationChannel(
+                channelId.toString(),
+                channelName,
+                NotificationManager.IMPORTANCE_LOW)
         createNotificationChannel(notificationChannel)
     }
 }

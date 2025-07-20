@@ -29,8 +29,10 @@ data class DomainBlockedPacket(
     val blockedAt: Instant
 ) {
     /** 送信元のIP・ポートの情報を取得する関数 */
-    val srcAddressAndPort: CharSequence get() = "$srcAddress ($srcPort)"
+    val srcAddressAndPort: CharSequence
+        get() = "$srcAddress ($srcPort)"
 
     /** 宛先のIP・ポートの情報を取得する関数 */
-    val dstAddressAndPort: CharSequence get() = "$dstAddress ($dstPort)"
+    val dstAddressAndPort: CharSequence
+        get() = "$dstAddress ($dstPort)"
 }

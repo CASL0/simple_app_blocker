@@ -24,30 +24,14 @@ import kotlinx.datetime.Instant
 
 @Entity(tableName = "blocked_packets")
 data class BlockedPacket(
-    @PrimaryKey
-    @ColumnInfo(name = "package_name")
-    val packageName: String,
-
-    @ColumnInfo(name = "app_name", defaultValue = "")
-    val appName: String,
-
-    @ColumnInfo(name = "src_address")
-    val srcAddress: String,
-
-    @ColumnInfo(name = "src_port")
-    val srcPort: Int,
-
-    @ColumnInfo(name = "dst_address")
-    val dstAddress: String,
-
-    @ColumnInfo(name = "dst_port")
-    val dstPort: Int,
-
-    @ColumnInfo(name = "protocol")
-    val protocol: String,
-
-    @ColumnInfo(name = "blocked_at")
-    val blockedAt: Instant
+    @PrimaryKey @ColumnInfo(name = "package_name") val packageName: String,
+    @ColumnInfo(name = "app_name", defaultValue = "") val appName: String,
+    @ColumnInfo(name = "src_address") val srcAddress: String,
+    @ColumnInfo(name = "src_port") val srcPort: Int,
+    @ColumnInfo(name = "dst_address") val dstAddress: String,
+    @ColumnInfo(name = "dst_port") val dstPort: Int,
+    @ColumnInfo(name = "protocol") val protocol: String,
+    @ColumnInfo(name = "blocked_at") val blockedAt: Instant
 )
 
 fun BlockedPacket.asDomainModel(): DomainBlockedPacket {
@@ -59,6 +43,5 @@ fun BlockedPacket.asDomainModel(): DomainBlockedPacket {
         dstAddress = this.dstAddress,
         dstPort = this.dstPort,
         protocol = this.protocol,
-        blockedAt = this.blockedAt
-    )
+        blockedAt = this.blockedAt)
 }

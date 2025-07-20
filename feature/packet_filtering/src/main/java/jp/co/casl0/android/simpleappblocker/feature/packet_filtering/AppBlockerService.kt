@@ -28,6 +28,8 @@ import android.os.IBinder
 import androidx.core.app.ServiceCompat
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 import jp.co.casl0.android.simpleappblocker.core.data.repository.BlockedPacketsRepository
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model.ParsedPacket
@@ -41,17 +43,15 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import java.util.concurrent.atomic.AtomicReference
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListener {
+class AppBlockerService :
+    VpnService(), AppBlockerConnection.OnBlockPacketListener {
     inner class AppBlockerBinder : Binder() {
         fun getService(): AppBlockerService = this@AppBlockerService
     }
 
-    @Inject
-    lateinit var repository: BlockedPacketsRepository
+    @Inject lateinit var repository: BlockedPacketsRepository
 
     private val binder = AppBlockerBinder()
     private val connectingThread = AtomicReference<Thread>()
@@ -93,19 +93,20 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
             try {
                 // 遮断対象外のアプリは除外しシステムネットワークを使用するようにする
                 Logger.d(allowedAppPackage)
-                localTunnelBuilder?.addDisallowedApplication(allowedAppPackage.toString())
+                localTunnelBuilder?.addDisallowedApplication(
+                    allowedAppPackage.toString())
             } catch (e: PackageManager.NameNotFoundException) {
                 Logger.d("Package not available")
             }
         }
         val tunnelInterface = localTunnelBuilder?.establish()
         if (tunnelInterface != null) {
-            val thread = Thread(
-                AppBlockerConnection(tunnelInterface).apply {
-                    setOnBlockPacketListener(this@AppBlockerService)
-                },
-                "AppBlockerThread"
-            )
+            val thread =
+                Thread(
+                    AppBlockerConnection(tunnelInterface).apply {
+                        setOnBlockPacketListener(this@AppBlockerService)
+                    },
+                    "AppBlockerThread")
             setConnectingThread(thread)
             thread.start()
         }
@@ -145,18 +146,17 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
         (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).run {
             createNotificationChannel(
                 getString(R.string.notification_channel_id),
-                getString(R.string.notification_channel_name)
-            )
+                getString(R.string.notification_channel_name))
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             ServiceCompat.startForeground(
                 this,
                 NOTIFICATION_ID,
                 getNotificationBuilder(message).build(),
-                FOREGROUND_SERVICE_TYPE_SPECIAL_USE
-            )
+                FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         } else {
-            startForeground(NOTIFICATION_ID, getNotificationBuilder(message).build())
+            startForeground(
+                NOTIFICATION_ID, getNotificationBuilder(message).build())
         }
     }
 
@@ -164,7 +164,8 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
     @OptIn(DelicateCoroutinesApi::class)
     override fun onBlockPacket(blockedPacket: ParsedPacket) {
         val connectivityManager =
-            applicationContext.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+            applicationContext.getSystemService(CONNECTIVITY_SERVICE)
+                as ConnectivityManager
         val packageManager = applicationContext.packageManager
         val uid = connectivityManager.retrieveUid(blockedPacket)
         packageManager.getNameForUid(uid)?.let { packageName ->
@@ -172,15 +173,14 @@ class AppBlockerService : VpnService(), AppBlockerConnection.OnBlockPacketListen
                 repository.insertBlockedPacket(
                     DomainBlockedPacket(
                         packageName = packageName,
-                        appName = packageManager.getApplicationLabel(packageName),
+                        appName =
+                            packageManager.getApplicationLabel(packageName),
                         srcAddress = blockedPacket.networkLayer.srcAddress,
                         srcPort = blockedPacket.transportLayer.srcPort,
                         dstAddress = blockedPacket.networkLayer.dstAddress,
                         dstPort = blockedPacket.transportLayer.dstPort,
                         protocol = blockedPacket.transportLayer.protocol,
-                        blockedAt = Clock.System.now()
-                    )
-                )
+                        blockedAt = Clock.System.now()))
             }
         }
     }

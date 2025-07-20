@@ -51,69 +51,57 @@ internal fun BlockLogItem(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier
-            .height(IntrinsicSize.Max)
-            .fillMaxWidth(),
-        backgroundColor = getCardColor(protocol = blockedApp.protocol)
-    ) {
-        val contentColor = Color.White
-        Column(
-            modifier = Modifier
-                .padding(8.dp)
-                .width(IntrinsicSize.Max),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = blockedApp.appName.toString(),
-                    color = contentColor,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterVertically)
-                )
-            }
-            Row(modifier = Modifier.fillMaxWidth()) {
-                // プロトコル
-                Text(
-                    text = blockedApp.protocol.toString(),
-                    textAlign = TextAlign.Left,
-                    modifier = Modifier.weight(1.0f),
-                    color = contentColor,
-                    fontWeight = FontWeight.Bold
-                )
-                // ブロック時刻
-                Text(
-                    text = blockedApp.blockedAt.toString(),
-                    color = contentColor,
-                    textAlign = TextAlign.Right,
-                    modifier = Modifier.weight(1.0f)
-                )
-            }
-            Row { // 送信元IPアドレス
-                Text(
-                    text = stringResource(R.string.block_log_src),
-                    color = contentColor
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = blockedApp.src.toString(),
-                    color = contentColor,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Row { // 宛先IPアドレス
-                Text(
-                    text = stringResource(R.string.block_log_dst),
-                    color = contentColor
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = blockedApp.dst.toString(),
-                    color = contentColor,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+        modifier = modifier.height(IntrinsicSize.Max).fillMaxWidth(),
+        backgroundColor = getCardColor(protocol = blockedApp.protocol)) {
+            val contentColor = Color.White
+            Column(
+                modifier = Modifier.padding(8.dp).width(IntrinsicSize.Max),
+                verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = blockedApp.appName.toString(),
+                            color = contentColor,
+                            fontWeight = FontWeight.Bold,
+                            modifier =
+                                Modifier.align(Alignment.CenterVertically))
+                    }
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        // プロトコル
+                        Text(
+                            text = blockedApp.protocol.toString(),
+                            textAlign = TextAlign.Left,
+                            modifier = Modifier.weight(1.0f),
+                            color = contentColor,
+                            fontWeight = FontWeight.Bold)
+                        // ブロック時刻
+                        Text(
+                            text = blockedApp.blockedAt.toString(),
+                            color = contentColor,
+                            textAlign = TextAlign.Right,
+                            modifier = Modifier.weight(1.0f))
+                    }
+                    Row { // 送信元IPアドレス
+                        Text(
+                            text = stringResource(R.string.block_log_src),
+                            color = contentColor)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = blockedApp.src.toString(),
+                            color = contentColor,
+                            fontWeight = FontWeight.Bold)
+                    }
+                    Row { // 宛先IPアドレス
+                        Text(
+                            text = stringResource(R.string.block_log_dst),
+                            color = contentColor)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = blockedApp.dst.toString(),
+                            color = contentColor,
+                            fontWeight = FontWeight.Bold)
+                    }
+                }
         }
-    }
 }
 
 @Composable
@@ -126,19 +114,21 @@ private fun getCardColor(protocol: CharSequence): Color {
 }
 
 @Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewBlockLogItem() {
     ApplicationTheme {
         BlockLogItem(
-            blockedApp = UiState.BlockedApp(
-                appName = "Chrome",
-                packageName = "com.android.vending",
-                src = "10.1.10.1 (40000)",
-                dst = "100.100.100.100 (443)",
-                protocol = "TCP",
-                blockedAt = "2000-01-01 00:00:00"
-            )
-        )
+            blockedApp =
+                UiState.BlockedApp(
+                    appName = "Chrome",
+                    packageName = "com.android.vending",
+                    src = "10.1.10.1 (40000)",
+                    dst = "100.100.100.100 (443)",
+                    protocol = "TCP",
+                    blockedAt = "2000-01-01 00:00:00"))
     }
 }

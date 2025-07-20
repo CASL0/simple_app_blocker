@@ -21,10 +21,10 @@ import android.os.Process
 import android.system.OsConstants
 import androidx.annotation.RequiresApi
 import com.orhanobut.logger.Logger
-import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model.ParsedPacket
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.UnknownHostException
+import jp.co.casl0.android.simpleappblocker.core.pcapplusplus.model.ParsedPacket
 
 /**
  * パケット情報からuidを取得する関数
@@ -34,28 +34,25 @@ import java.net.UnknownHostException
  */
 @RequiresApi(api = 29)
 internal fun ConnectivityManager.retrieveUid(blockedPacket: ParsedPacket): Int {
-    val protocol = when (blockedPacket.transportLayer.protocol) {
-        "TCP" -> OsConstants.IPPROTO_TCP
-        "UDP" -> OsConstants.IPPROTO_UDP
-        else -> -1
-    }
+    val protocol =
+        when (blockedPacket.transportLayer.protocol) {
+            "TCP" -> OsConstants.IPPROTO_TCP
+            "UDP" -> OsConstants.IPPROTO_UDP
+            else -> -1
+        }
     val localSocketAddress =
         translateInetSocketAddress(
             blockedPacket.networkLayer.srcAddress,
-            blockedPacket.transportLayer.srcPort
-        )
+            blockedPacket.transportLayer.srcPort)
     val remoteSocketAddress =
         translateInetSocketAddress(
             blockedPacket.networkLayer.dstAddress,
-            blockedPacket.transportLayer.dstPort
-        )
+            blockedPacket.transportLayer.dstPort)
     if (localSocketAddress != null && remoteSocketAddress != null) {
         try {
-            val uid = getConnectionOwnerUid(
-                protocol,
-                localSocketAddress,
-                remoteSocketAddress
-            )
+            val uid =
+                getConnectionOwnerUid(
+                    protocol, localSocketAddress, remoteSocketAddress)
             if (uid != Process.INVALID_UID) {
                 return uid
             }
@@ -75,7 +72,10 @@ internal fun ConnectivityManager.retrieveUid(blockedPacket: ParsedPacket): Int {
  * @param port ポート
  * @return 変換後のInetSocketAddressのインスタンス、変換できなかった場合はnull
  */
-private fun translateInetSocketAddress(address: String, port: Int): InetSocketAddress? =
+private fun translateInetSocketAddress(
+    address: String,
+    port: Int
+): InetSocketAddress? =
     try {
         InetSocketAddress(InetAddress.getByName(address), port)
     } catch (e: UnknownHostException) {

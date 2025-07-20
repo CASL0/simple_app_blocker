@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.core.data.repository
 
+import javax.inject.Inject
 import jp.co.casl0.android.simpleappblocker.core.data.datasource.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,20 +25,20 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class DefaultAllowlistRepository @Inject constructor(
+class DefaultAllowlistRepository
+@Inject
+constructor(
     private val allowlistDataSource: AllowlistDataSource,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : AllowlistRepository {
 
     /** 許可アプリ一覧のFlowを取得する関数 */
     override fun getAllowlistStream(): Flow<List<CharSequence>> {
-        return allowlistDataSource.getAllowlistStream().map { allowedPackages ->
-            allowedPackages.map {
-                it.packageName
-            }
-        }.flowOn(defaultDispatcher)
+        return allowlistDataSource
+            .getAllowlistStream()
+            .map { allowedPackages -> allowedPackages.map { it.packageName } }
+            .flowOn(defaultDispatcher)
     }
 
     /**
@@ -46,18 +47,18 @@ class DefaultAllowlistRepository @Inject constructor(
      * @param packageName パッケージ名
      * @param appName アプリ名
      */
-    override suspend fun insertAllowedPackage(packageName: String, appName: String) =
+    override suspend fun insertAllowedPackage(
+        packageName: String,
+        appName: String
+    ) =
         withContext(defaultDispatcher) {
             allowlistDataSource.insertPackage(
-                DomainAllowedPackage(
-                    packageName,
-                    appName
-                )
-            )
+                DomainAllowedPackage(packageName, appName))
         }
 
     /** Roomから許可アプリのレコードを削除する関数 */
-    override suspend fun disallowPackage(packageName: String) = withContext(defaultDispatcher) {
-        allowlistDataSource.removePackage(packageName)
-    }
+    override suspend fun disallowPackage(packageName: String) =
+        withContext(defaultDispatcher) {
+            allowlistDataSource.removePackage(packageName)
+        }
 }

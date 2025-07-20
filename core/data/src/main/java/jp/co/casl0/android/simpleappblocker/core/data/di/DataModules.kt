@@ -22,6 +22,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import jp.co.casl0.android.simpleappblocker.core.common.di.IoDispatcher
 import jp.co.casl0.android.simpleappblocker.core.data.datasource.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.core.data.datasource.BlockedPacketsDataSource
@@ -37,7 +38,6 @@ import jp.co.casl0.android.simpleappblocker.core.data.repository.DefaultInstalle
 import jp.co.casl0.android.simpleappblocker.core.data.repository.InstalledApplicationRepository
 import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
 import kotlinx.coroutines.CoroutineDispatcher
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -48,7 +48,8 @@ object RepositoryModule {
         allowlistDataSource: AllowlistDataSource,
         @IoDispatcher defaultDispatcher: CoroutineDispatcher
     ): AllowlistRepository {
-        return DefaultAllowlistRepository(allowlistDataSource, defaultDispatcher)
+        return DefaultAllowlistRepository(
+            allowlistDataSource, defaultDispatcher)
     }
 
     @Singleton
@@ -58,9 +59,7 @@ object RepositoryModule {
         @IoDispatcher defaultDispatcher: CoroutineDispatcher
     ): InstalledApplicationRepository {
         return DefaultInstalledApplicationRepository(
-            installedApplicationDataSource,
-            defaultDispatcher
-        )
+            installedApplicationDataSource, defaultDispatcher)
     }
 
     @Singleton
@@ -69,7 +68,8 @@ object RepositoryModule {
         blockedPacketsDataSource: BlockedPacketsDataSource,
         @IoDispatcher defaultDispatcher: CoroutineDispatcher
     ): BlockedPacketsRepository {
-        return DefaultBlockedPacketsRepository(blockedPacketsDataSource, defaultDispatcher)
+        return DefaultBlockedPacketsRepository(
+            blockedPacketsDataSource, defaultDispatcher)
     }
 }
 
@@ -78,19 +78,25 @@ object RepositoryModule {
 object DataSourceModule {
     @Singleton
     @Provides
-    fun provideAllowlistLocalDataSource(database: SimpleAppBlockerDatabase): AllowlistDataSource {
+    fun provideAllowlistLocalDataSource(
+        database: SimpleAppBlockerDatabase
+    ): AllowlistDataSource {
         return AllowlistLocalDataSource(database)
     }
 
     @Singleton
     @Provides
-    fun provideInstalledApplicationLocalDataSource(@ApplicationContext context: Context): InstalledApplicationDataSource {
+    fun provideInstalledApplicationLocalDataSource(
+        @ApplicationContext context: Context
+    ): InstalledApplicationDataSource {
         return InstalledApplicationLocalDataSource(context)
     }
 
     @Singleton
     @Provides
-    fun provideBlockedPacketsLocalDataSource(database: SimpleAppBlockerDatabase): BlockedPacketsDataSource {
+    fun provideBlockedPacketsLocalDataSource(
+        database: SimpleAppBlockerDatabase
+    ): BlockedPacketsDataSource {
         return BlockedPacketsLocalDataSource(database)
     }
 }

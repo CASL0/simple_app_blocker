@@ -57,13 +57,11 @@ fun AboutScreen(
         LinkedItem(
             Icons.Filled.List,
             headerText = R.string.licenses_header,
-            onClick = onClickOssLicenses
-        )
+            onClick = onClickOssLicenses)
         LinkedItem(
             leadingIcon = Icons.Filled.Code,
             headerText = R.string.source_code,
-            onClick = onClickSource
-        )
+            onClick = onClickSource)
     }
 }
 
@@ -77,32 +75,33 @@ private fun LinkedItem(
     TextButton(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large
-    ) {
-        Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = leadingIcon,
-                contentDescription = "icon",
-                modifier = Modifier.padding(end = 16.dp)
-            )
-            Text(
-                text = stringResource(id = headerText),
-                color = MaterialTheme.colors.onSurface,
-                modifier = Modifier.weight(1f)
-            )
+        shape = MaterialTheme.shapes.large) {
+            Row(
+                modifier = Modifier.padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = leadingIcon,
+                        contentDescription = "icon",
+                        modifier = Modifier.padding(end = 16.dp))
+                    Text(
+                        text = stringResource(id = headerText),
+                        color = MaterialTheme.colors.onSurface,
+                        modifier = Modifier.weight(1f))
+                }
         }
-    }
 }
 
 @Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun PreviewLinkedItem() {
     ApplicationTheme {
         LinkedItem(
             leadingIcon = Icons.Filled.List,
             headerText = R.string.licenses_header,
-            onClick = { /* no op */ }
-        )
+            onClick = { /* no op */ })
     }
 }

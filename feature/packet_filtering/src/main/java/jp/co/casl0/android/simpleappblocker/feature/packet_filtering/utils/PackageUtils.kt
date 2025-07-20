@@ -26,19 +26,18 @@ import com.orhanobut.logger.Logger
  * @param packageName パッケージ名
  * @return 見つかったアプリ名、見つからなかった場合はパッケージ名を返します
  */
-internal fun PackageManager.getApplicationLabel(packageName: CharSequence): CharSequence {
+internal fun PackageManager.getApplicationLabel(
+    packageName: CharSequence
+): CharSequence {
     return try {
-        val appInfo = if (Build.VERSION.SDK_INT >= 33) {
-            getApplicationInfo(
-                packageName.toString(),
-                PackageManager.ApplicationInfoFlags.of(0)
-            )
-        } else {
-            getApplicationInfo(
-                packageName.toString(),
-                0
-            )
-        }
+        val appInfo =
+            if (Build.VERSION.SDK_INT >= 33) {
+                getApplicationInfo(
+                    packageName.toString(),
+                    PackageManager.ApplicationInfoFlags.of(0))
+            } else {
+                getApplicationInfo(packageName.toString(), 0)
+            }
         appInfo.loadLabel(this)
     } catch (e: PackageManager.NameNotFoundException) {
         e.localizedMessage?.let { Logger.d(it) }

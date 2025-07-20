@@ -21,21 +21,15 @@ import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 
-/**
- * スナックバーを表示する
- */
+/** スナックバーを表示する */
 internal fun popupSnackbar(
     @NonNull view: View,
     @StringRes message: Int,
     duration: Int = Snackbar.LENGTH_SHORT,
     @StringRes actionLabel: Int,
-    actionListener: View.OnClickListener = View.OnClickListener { }
+    actionListener: View.OnClickListener = View.OnClickListener {}
 ) {
-    Snackbar.make(
-        view,
-        message,
-        duration
-    ).apply {
-        setAction(actionLabel, actionListener)
-    }.show()
+    Snackbar.make(view, message, duration)
+        .apply { setAction(actionLabel, actionListener) }
+        .show()
 }

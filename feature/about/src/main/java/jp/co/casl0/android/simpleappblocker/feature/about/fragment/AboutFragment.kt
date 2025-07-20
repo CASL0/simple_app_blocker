@@ -50,7 +50,8 @@ class AboutFragment : Fragment() {
     ): View? {
         _binding = FragmentAboutBinding.inflate(inflater, container, false)
         _binding.othersComposeView.apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
                     AboutScreen(
@@ -58,27 +59,29 @@ class AboutFragment : Fragment() {
                         onClickOssLicenses = {
                             startActivity(
                                 Intent(
-                                    context,
-                                    OssLicensesMenuActivity::class.java
-                                ).apply {
-                                    flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
-                                }
-                            )
+                                        context,
+                                        OssLicensesMenuActivity::class.java)
+                                    .apply {
+                                        flags =
+                                            FLAG_ACTIVITY_NEW_TASK or
+                                                FLAG_ACTIVITY_CLEAR_TOP
+                                    })
                         },
                         onClickSource = {
                             try {
-                                Intent().apply {
-                                    action = Intent.ACTION_VIEW
-                                    data = Uri.parse(SOURCE_CODE_URL)
-                                    flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TOP
-                                }.run {
-                                    context.startActivity(this)
-                                }
+                                Intent()
+                                    .apply {
+                                        action = Intent.ACTION_VIEW
+                                        data = Uri.parse(SOURCE_CODE_URL)
+                                        flags =
+                                            FLAG_ACTIVITY_NEW_TASK or
+                                                FLAG_ACTIVITY_CLEAR_TOP
+                                    }
+                                    .run { context.startActivity(this) }
                             } catch (e: ActivityNotFoundException) {
                                 e.localizedMessage?.let { Logger.d(it) }
                             }
-                        }
-                    )
+                        })
                 }
             }
         }

@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import jp.co.casl0.android.simpleappblocker.core.data.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.core.data.repository.InstalledApplicationRepository
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
@@ -28,7 +29,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 sealed interface UiState {
     val searchValue: String
@@ -46,15 +46,17 @@ sealed interface UiState {
 }
 
 @HiltViewModel
-class RuleChangeViewModel @Inject constructor(
+class RuleChangeViewModel
+@Inject
+constructor(
     private val allowlistRepository: AllowlistRepository,
     private val installedApplicationRepository: InstalledApplicationRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
     /** UI状態 */
     private val _uiState = MutableStateFlow(UiState.RuleChangeUiState())
-    val uiState: StateFlow<UiState.RuleChangeUiState> get() = _uiState
+    val uiState: StateFlow<UiState.RuleChangeUiState>
+        get() = _uiState
 
     /** 許可済みパッケージリスト */
     private val allowlist = allowlistRepository.getAllowlistStream()
@@ -63,12 +65,11 @@ class RuleChangeViewModel @Inject constructor(
     val installedApplications =
         combine(
             installedApplicationRepository.getInstalledApplicationsStream(),
-            allowlist
-        ) { allInstalledApps, allowlist ->
-            allInstalledApps.map {
-                it.copy(isAllowed = allowlist.contains(it.packageName))
+            allowlist) { allInstalledApps, allowlist ->
+                allInstalledApps.map {
+                    it.copy(isAllowed = allowlist.contains(it.packageName))
+                }
             }
-        }
 
     init {
         refreshInstalledApplications()
@@ -97,16 +98,11 @@ class RuleChangeViewModel @Inject constructor(
     }
 
     /** 許可・拒否を切り替える関数 */
-    fun changeFilterRule(
-        allow: Boolean,
-        appPackage: AppPackage
-    ) {
+    fun changeFilterRule(allow: Boolean, appPackage: AppPackage) {
         viewModelScope.launch {
             if (allow) {
                 allowlistRepository.insertAllowedPackage(
-                    appPackage.packageName,
-                    appPackage.appName
-                )
+                    appPackage.packageName, appPackage.appName)
             } else {
                 allowlistRepository.disallowPackage(appPackage.packageName)
             }

@@ -47,6 +47,7 @@ data class UpdateInfo(
 
 sealed interface Result<out T> {
     data class Success<out T>(val value: T) : Result<T>
+
     data class Error(val exception: Exception) : Result<Nothing>
 }
 
@@ -62,15 +63,19 @@ open class AppUpdateController(private val appUpdateManager: AppUpdateManager) :
         fun onAppUpdateStateChange(state: Int)
     }
 
-    private var _appUpdateStateChangeListener: OnAppUpdateStateChangeListener? = null
+    private var _appUpdateStateChangeListener: OnAppUpdateStateChangeListener? =
+        null
 
-    fun setOnAppUpdateStateChangeListener(listener: OnAppUpdateStateChangeListener) {
+    fun setOnAppUpdateStateChangeListener(
+        listener: OnAppUpdateStateChangeListener
+    ) {
         _appUpdateStateChangeListener = listener
     }
 
     /** インストールステータスのリスナー */
     private var _listener = InstallStateUpdatedListener { installState ->
-        _appUpdateStateChangeListener?.onAppUpdateStateChange(installState.installStatus())
+        _appUpdateStateChangeListener?.onAppUpdateStateChange(
+            installState.installStatus())
     }
 
     /** 最新の更新情報 */
@@ -81,79 +86,98 @@ open class AppUpdateController(private val appUpdateManager: AppUpdateManager) :
     }
 
     /** アップデートの有無の確認 */
-    open fun checkForUpdateAvailability(): Flow<Result<UpdateInfo>> = callbackFlow {
-        appUpdateManager.appUpdateInfo.apply {
-            addOnSuccessListener {
-                _updateInfo = it
-                val result = Result.Success(
-                    UpdateInfo(
-                        updateAvailability = it.updateAvailability(),
-                        immediateAllowed = it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE),
-                        flexibleAllowed = it.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE),
-                        availableVersionCode = it.availableVersionCode(),
-                        installStatus = it.installStatus,
-                        packageName = it.packageName(),
-                        clientVersionStalenessDays = it.clientVersionStalenessDays,
-                        updatePriority = it.updatePriority
-                    )
-                )
-                trySend(result)
+    open fun checkForUpdateAvailability(): Flow<Result<UpdateInfo>> =
+        callbackFlow {
+            appUpdateManager.appUpdateInfo.apply {
+                addOnSuccessListener {
+                    _updateInfo = it
+                    val result =
+                        Result.Success(
+                            UpdateInfo(
+                                updateAvailability = it.updateAvailability(),
+                                immediateAllowed =
+                                    it.isUpdateTypeAllowed(
+                                        AppUpdateType.IMMEDIATE),
+                                flexibleAllowed =
+                                    it.isUpdateTypeAllowed(
+                                        AppUpdateType.FLEXIBLE),
+                                availableVersionCode =
+                                    it.availableVersionCode(),
+                                installStatus = it.installStatus,
+                                packageName = it.packageName(),
+                                clientVersionStalenessDays =
+                                    it.clientVersionStalenessDays,
+                                updatePriority = it.updatePriority))
+                    trySend(result)
+                }
+                addOnFailureListener {
+                    _updateInfo = null
+                    val result = Result.Error(it)
+                    trySend(result)
+                }
             }
-            addOnFailureListener {
-                _updateInfo = null
-                val result = Result.Error(it)
-                trySend(result)
-            }
+            awaitClose { cancel() }
         }
-        awaitClose { cancel() }
-    }
 
     /** Flexibleアップデートを実行します */
-    open fun startFlexibleUpdate(activityResultCallback: ActivityResultLauncher<IntentSenderRequest>) {
+    open fun startFlexibleUpdate(
+        activityResultCallback: ActivityResultLauncher<IntentSenderRequest>
+    ) {
         _updateInfo?.let {
             val starter =
-                IntentSenderForResultStarter { intent, _, fillInIntent, flagsMask, flagsValues, _, _ ->
-                    val request = IntentSenderRequest.Builder(intent)
-                        .setFillInIntent(fillInIntent)
-                        .setFlags(flagsValues, flagsMask)
-                        .build()
+                IntentSenderForResultStarter {
+                    intent,
+                    _,
+                    fillInIntent,
+                    flagsMask,
+                    flagsValues,
+                    _,
+                    _ ->
+                    val request =
+                        IntentSenderRequest.Builder(intent)
+                            .setFillInIntent(fillInIntent)
+                            .setFlags(flagsValues, flagsMask)
+                            .build()
 
                     activityResultCallback.launch(request)
                 }
             appUpdateManager.startUpdateFlowForResult(
-                it,
-                AppUpdateType.FLEXIBLE,
-                starter,
-                REQUEST_CODE_START_UPDATE
-            )
+                it, AppUpdateType.FLEXIBLE, starter, REQUEST_CODE_START_UPDATE)
         }
     }
 
     /** Immediateアップデートを実行します */
-    open fun startImmediateUpdate(activityResultCallback: ActivityResultLauncher<IntentSenderRequest>) {
+    open fun startImmediateUpdate(
+        activityResultCallback: ActivityResultLauncher<IntentSenderRequest>
+    ) {
         _updateInfo?.let {
             val starter =
-                IntentSenderForResultStarter { intent, _, fillInIntent, flagsMask, flagsValues, _, _ ->
-                    val request = IntentSenderRequest.Builder(intent)
-                        .setFillInIntent(fillInIntent)
-                        .setFlags(flagsValues, flagsMask)
-                        .build()
+                IntentSenderForResultStarter {
+                    intent,
+                    _,
+                    fillInIntent,
+                    flagsMask,
+                    flagsValues,
+                    _,
+                    _ ->
+                    val request =
+                        IntentSenderRequest.Builder(intent)
+                            .setFillInIntent(fillInIntent)
+                            .setFlags(flagsValues, flagsMask)
+                            .build()
 
                     activityResultCallback.launch(request)
                 }
             appUpdateManager.startUpdateFlowForResult(
-                it,
-                AppUpdateType.IMMEDIATE,
-                starter,
-                REQUEST_CODE_START_UPDATE
-            )
+                it, AppUpdateType.IMMEDIATE, starter, REQUEST_CODE_START_UPDATE)
         }
     }
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            _appUpdateStateChangeListener?.onAppUpdateStateChange(appUpdateInfo.installStatus)
+            _appUpdateStateChangeListener?.onAppUpdateStateChange(
+                appUpdateInfo.installStatus)
         }
     }
 

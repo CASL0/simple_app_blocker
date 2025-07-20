@@ -16,6 +16,9 @@
 
 package jp.co.casl0.android.simpleappblocker.core.data.datasource.local
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 import jp.co.casl0.android.simpleappblocker.core.data.datasource.AllowlistDataSource
 import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
 import jp.co.casl0.android.simpleappblocker.core.database.model.AllowedPackage
@@ -23,31 +26,30 @@ import jp.co.casl0.android.simpleappblocker.core.database.model.asDomainModel
 import jp.co.casl0.android.simpleappblocker.core.model.DomainAllowedPackage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
-class AllowlistLocalDataSource @Inject constructor(private val database: SimpleAppBlockerDatabase) :
+class AllowlistLocalDataSource
+@Inject
+constructor(private val database: SimpleAppBlockerDatabase) :
     AllowlistDataSource {
     override fun getAllowlistStream(): Flow<List<DomainAllowedPackage>> =
         database.allowlistDao().getAllowlist().map {
-            it.map { elem ->
-                elem.asDomainModel()
-            }
+            it.map { elem -> elem.asDomainModel() }
         }
 
     override suspend fun insertPackage(allowedPackage: DomainAllowedPackage) {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        database.allowlistDao().insertAllowedPackages(
-            AllowedPackage(
-                packageName = allowedPackage.packageName.toString(),
-                appName = allowedPackage.appName.toString(),
-                addedTime = LocalDateTime.now().format(formatter)
-            )
-        )
+        database
+            .allowlistDao()
+            .insertAllowedPackages(
+                AllowedPackage(
+                    packageName = allowedPackage.packageName.toString(),
+                    appName = allowedPackage.appName.toString(),
+                    addedTime = LocalDateTime.now().format(formatter)))
     }
 
     override suspend fun removePackage(packageName: CharSequence) {
-        database.allowlistDao().deleteByPackageName(packageName = packageName.toString())
+        database
+            .allowlistDao()
+            .deleteByPackageName(packageName = packageName.toString())
     }
 }

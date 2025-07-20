@@ -54,7 +54,8 @@ class AllowlistFragment : Fragment() {
         super.onAttach(context)
         listener = context as? OnRuleChangeListener
         if (listener == null) {
-            throw ClassCastException("$context must implement OnRuleChangeListener")
+            throw ClassCastException(
+                "$context must implement OnRuleChangeListener")
         }
     }
 
@@ -63,9 +64,11 @@ class AllowlistFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAllowlistBinding.inflate(layoutInflater, container, false)
+        binding =
+            FragmentAllowlistBinding.inflate(layoutInflater, container, false)
         binding.allowlistComposeView.apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
                     AllowlistFragmentScreen(viewModel) {
@@ -83,12 +86,10 @@ fun AllowlistFragmentScreen(
     allowlistViewModel: AllowlistViewModel,
     onAddButtonClicked: () -> Unit
 ) {
-    val allowedPackages: List<AppPackage> by allowlistViewModel.allowlist.collectAsState(
-        listOf()
-    )
+    val allowedPackages: List<AppPackage> by
+        allowlistViewModel.allowlist.collectAsState(listOf())
     AllowlistScreen(
         AllowedPackagesList(allowedPackages),
         onAddButtonClicked,
-        allowlistViewModel::disallowPackage
-    )
+        allowlistViewModel::disallowPackage)
 }

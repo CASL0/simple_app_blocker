@@ -21,13 +21,13 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
+import java.io.IOException
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -35,24 +35,24 @@ class MigrationTest {
     private val TEST_DB = "migration-test"
 
     /** 初期データ投入用のSQL */
-    private val SEED_SQL = """
-        INSERT INTO 
-            blocked_packets (package_name, src_address, src_port, dst_address, dst_port, protocol, blocked_at) 
+    private val SEED_SQL =
+        """
+        INSERT INTO
+            blocked_packets (package_name, src_address, src_port, dst_address, dst_port, protocol, blocked_at)
         VALUES
             ('package1', '10.10.10.10', 100, '20.20.20.20', 200, 'protocol1', '2000-01-01 00:00:00')
         ;
-    """.trimIndent()
+    """
+            .trimIndent()
 
-    private val ALL_MIGRATIONS = arrayOf(
-        MIGRATION_2_3
-    )
+    private val ALL_MIGRATIONS = arrayOf(MIGRATION_2_3)
 
     /** スキーマJSONファイルからDBを作成します */
     @get:Rule
-    val helper = MigrationTestHelper(
-        InstrumentationRegistry.getInstrumentation(),
-        SimpleAppBlockerDatabase::class.java
-    )
+    val helper =
+        MigrationTestHelper(
+            InstrumentationRegistry.getInstrumentation(),
+            SimpleAppBlockerDatabase::class.java)
 
     @Before
     fun setup() {
@@ -66,16 +66,17 @@ class MigrationTest {
     @Throws(IOException::class)
     fun migrate1To2() {
         val db = helper.runMigrationsAndValidate(TEST_DB, 2, true)
-        val ret = db.query(
-            """
-            SELECT 
+        val ret =
+            db.query(
+                """
+            SELECT
                 app_name
             FROM
                 blocked_packets
             WHERE
                 package_name = 'package1'
-        """.trimIndent()
-        )
+        """
+                    .trimIndent())
 
         ret.moveToFirst()
 
@@ -89,11 +90,11 @@ class MigrationTest {
     @Throws(IOException::class)
     fun migrateAll() {
         Room.databaseBuilder(
-            InstrumentationRegistry.getInstrumentation().targetContext,
-            SimpleAppBlockerDatabase::class.java,
-            TEST_DB
-        ).addMigrations(*ALL_MIGRATIONS).build().apply {
-            openHelper.writableDatabase.close()
-        }
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                SimpleAppBlockerDatabase::class.java,
+                TEST_DB)
+            .addMigrations(*ALL_MIGRATIONS)
+            .build()
+            .apply { openHelper.writableDatabase.close() }
     }
 }

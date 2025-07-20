@@ -23,18 +23,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 /** ブロックログのリポジトリのフェイク */
 class FakeBlockedPacketsRepository : BlockedPacketsRepository {
-    private val _blockedPackets = MutableStateFlow(listOf<DomainBlockedPacket>())
+    private val _blockedPackets =
+        MutableStateFlow(listOf<DomainBlockedPacket>())
 
     override fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>> {
         return _blockedPackets
     }
 
-    override suspend fun insertBlockedPacket(domainBlockedPacket: DomainBlockedPacket) {
+    override suspend fun insertBlockedPacket(
+        domainBlockedPacket: DomainBlockedPacket
+    ) {
         val currentBlockedPackets = _blockedPackets.value.toMutableList()
         val index =
-            currentBlockedPackets.binarySearchBy(domainBlockedPacket.packageName.toString()) {
-                it.packageName.toString()
-            }
+            currentBlockedPackets.binarySearchBy(
+                domainBlockedPacket.packageName.toString()) {
+                    it.packageName.toString()
+                }
 
         if (index == -1) {
             currentBlockedPackets.add(domainBlockedPacket)

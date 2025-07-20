@@ -30,10 +30,14 @@ class DefaultBlockedPacketsRepository(
 ) : BlockedPacketsRepository {
 
     override fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>> {
-        return blockedPacketsDataSource.getBlockedPacketsStream().flowOn(defaultDispatcher)
+        return blockedPacketsDataSource
+            .getBlockedPacketsStream()
+            .flowOn(defaultDispatcher)
     }
 
-    override suspend fun insertBlockedPacket(domainBlockedPacket: DomainBlockedPacket) =
+    override suspend fun insertBlockedPacket(
+        domainBlockedPacket: DomainBlockedPacket
+    ) =
         withContext(defaultDispatcher) {
             blockedPacketsDataSource.insertBlockedPacket(domainBlockedPacket)
         }

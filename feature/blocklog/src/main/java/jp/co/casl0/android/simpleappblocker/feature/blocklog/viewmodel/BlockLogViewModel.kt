@@ -19,6 +19,8 @@ package jp.co.casl0.android.simpleappblocker.feature.blocklog.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 import jp.co.casl0.android.simpleappblocker.core.data.repository.BlockedPacketsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,8 +29,6 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
-import java.time.format.DateTimeFormatter
-import javax.inject.Inject
 
 sealed interface UiState {
     data class BlockedApp(
@@ -50,14 +50,15 @@ sealed interface UiState {
 
 /** ブロックログ画面のビジネスロジックを扱うViewModel */
 @HiltViewModel
-class BlockLogViewModel @Inject constructor(
-    private val blockedPacketsRepository: BlockedPacketsRepository
-) :
+class BlockLogViewModel
+@Inject
+constructor(private val blockedPacketsRepository: BlockedPacketsRepository) :
     ViewModel() {
 
     /** UI状態 */
     private val _uiState = MutableStateFlow(UiState.BlockLogUiState())
-    val uiState: StateFlow<UiState.BlockLogUiState> get() = _uiState
+    val uiState: StateFlow<UiState.BlockLogUiState>
+        get() = _uiState
 
     /** DateTimeフォーマッタ */
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -65,19 +66,25 @@ class BlockLogViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             // ブロックログ追加の度にUI状態を更新する
-            blockedPacketsRepository.getBlockedPacketsStream().collect { domainBlockedPackets ->
+            blockedPacketsRepository.getBlockedPacketsStream().collect {
+                domainBlockedPackets ->
                 val blockedPackets =
-                    domainBlockedPackets.map { domainBlockedPacket ->
-                        UiState.BlockedApp(
-                            appName = domainBlockedPacket.appName,
-                            packageName = domainBlockedPacket.packageName,
-                            src = domainBlockedPacket.srcAddressAndPort,
-                            dst = domainBlockedPacket.dstAddressAndPort,
-                            protocol = domainBlockedPacket.protocol,
-                            blockedAt = domainBlockedPacket.blockedAt.toLocalDateTime(TimeZone.currentSystemDefault())
-                                .toJavaLocalDateTime().format(formatter)
-                        )
-                    }.toList()
+                    domainBlockedPackets
+                        .map { domainBlockedPacket ->
+                            UiState.BlockedApp(
+                                appName = domainBlockedPacket.appName,
+                                packageName = domainBlockedPacket.packageName,
+                                src = domainBlockedPacket.srcAddressAndPort,
+                                dst = domainBlockedPacket.dstAddressAndPort,
+                                protocol = domainBlockedPacket.protocol,
+                                blockedAt =
+                                    domainBlockedPacket.blockedAt
+                                        .toLocalDateTime(
+                                            TimeZone.currentSystemDefault())
+                                        .toJavaLocalDateTime()
+                                        .format(formatter))
+                        }
+                        .toList()
                 _uiState.update { it.copy(blockedApps = blockedPackets) }
             }
         }

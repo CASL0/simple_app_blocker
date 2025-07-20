@@ -25,28 +25,34 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
-class InstalledApplicationLocalDataSource(@ApplicationContext private val context: Context) :
-    InstalledApplicationDataSource {
+class InstalledApplicationLocalDataSource(
+    @ApplicationContext private val context: Context
+) : InstalledApplicationDataSource {
 
-    private val _installedApplications: MutableStateFlow<List<jp.co.casl0.android.simpleappblocker.core.model.AppPackage>> =
+    private val _installedApplications:
+        MutableStateFlow<
+            List<jp.co.casl0.android.simpleappblocker.core.model.AppPackage>> =
         MutableStateFlow(listOf())
 
     override suspend fun refreshInstalledApplications() {
         val pm = context.packageManager
-        val installedApplications = if (Build.VERSION.SDK_INT >= 33) {
-            pm.getInstalledApplications(PackageManager.ApplicationInfoFlags.of(0))
-        } else {
-            pm.getInstalledApplications(0)
-        }.map {
-            jp.co.casl0.android.simpleappblocker.core.model.AppPackage(
-                it.loadIcon(pm),
-                it.loadLabel(pm).toString(),
-                it.packageName
-            )
-        }
+        val installedApplications =
+            if (Build.VERSION.SDK_INT >= 33) {
+                    pm.getInstalledApplications(
+                        PackageManager.ApplicationInfoFlags.of(0))
+                } else {
+                    pm.getInstalledApplications(0)
+                }
+                .map {
+                    jp.co.casl0.android.simpleappblocker.core.model.AppPackage(
+                        it.loadIcon(pm),
+                        it.loadLabel(pm).toString(),
+                        it.packageName)
+                }
         _installedApplications.update { installedApplications }
     }
 
-    override fun getInstalledApplicationsStream(): Flow<List<jp.co.casl0.android.simpleappblocker.core.model.AppPackage>> =
+    override fun getInstalledApplicationsStream():
+        Flow<List<jp.co.casl0.android.simpleappblocker.core.model.AppPackage>> =
         _installedApplications
 }

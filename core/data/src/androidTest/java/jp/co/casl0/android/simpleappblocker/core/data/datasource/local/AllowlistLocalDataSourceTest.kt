@@ -42,31 +42,30 @@ class AllowlistLocalDataSourceTest {
     private lateinit var localDataSource: AllowlistLocalDataSource
     private lateinit var database: SimpleAppBlockerDatabase
 
-    @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+    @get:Rule var instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun initDb() {
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            SimpleAppBlockerDatabase::class.java
-        ).allowMainThreadQueries().build()
+        database =
+            Room.inMemoryDatabaseBuilder(
+                    ApplicationProvider.getApplicationContext(),
+                    SimpleAppBlockerDatabase::class.java)
+                .allowMainThreadQueries()
+                .build()
 
         localDataSource = AllowlistLocalDataSource(database)
     }
 
-    @After
-    fun closeDb() = database.close()
+    @After fun closeDb() = database.close()
 
     @Test
     fun insertPackage_removePackage() = runTest {
         val package1 = DomainAllowedPackage("package1", "app1")
         var result = emptyList<DomainAllowedPackage>()
-        val job = launch(UnconfinedTestDispatcher(testScheduler)) {
-            localDataSource.getAllowlistStream().collect {
-                result = it
+        val job =
+            launch(UnconfinedTestDispatcher(testScheduler)) {
+                localDataSource.getAllowlistStream().collect { result = it }
             }
-        }
         localDataSource.insertPackage(package1)
         assertThat(result, `is`(listOf(package1)))
 

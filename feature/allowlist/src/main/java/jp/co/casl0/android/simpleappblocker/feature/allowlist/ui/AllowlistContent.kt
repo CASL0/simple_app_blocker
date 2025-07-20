@@ -33,8 +33,7 @@ import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import jp.co.casl0.android.simpleappblocker.feature.allowlist.R
 
-@Immutable
-data class AllowedPackagesList(val items: List<AppPackage>)
+@Immutable data class AllowedPackagesList(val items: List<AppPackage>)
 
 @Composable
 fun AllowlistContent(
@@ -46,24 +45,23 @@ fun AllowlistContent(
         Column(
             modifier = modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(stringResource(R.string.empty_allowlist))
-        }
+            verticalArrangement = Arrangement.Center) {
+                Text(stringResource(R.string.empty_allowlist))
+            }
     } else {
         val scrollState = rememberLazyListState()
         LazyColumn(
             state = scrollState,
             contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier
-        ) {
-            items(
-                items = allowedPackages.items,
-                key = { allowedPackage -> allowedPackage.packageName }
-            ) { allowedPackage ->
-                AllowlistItem(allowedPackage, onItemRemove, modifier = Modifier)
+            modifier = modifier) {
+                items(
+                    items = allowedPackages.items,
+                    key = { allowedPackage -> allowedPackage.packageName }) {
+                        allowedPackage ->
+                        AllowlistItem(
+                            allowedPackage, onItemRemove, modifier = Modifier)
+                    }
             }
-        }
     }
 }

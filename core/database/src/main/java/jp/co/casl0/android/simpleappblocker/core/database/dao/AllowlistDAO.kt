@@ -29,8 +29,7 @@ interface AllowlistDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllowedPackages(vararg packages: AllowedPackage)
 
-    @Delete
-    suspend fun deleteAllowedPackages(vararg packages: AllowedPackage)
+    @Delete suspend fun deleteAllowedPackages(vararg packages: AllowedPackage)
 
     @Query("SELECT package_name FROM allowlist")
     fun getAllowedPackages(): Flow<List<String>>

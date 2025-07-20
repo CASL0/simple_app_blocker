@@ -54,69 +54,52 @@ fun AllowlistItem(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier
-            .height(IntrinsicSize.Max)
-            .fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image( // アイコン画像
-                painter = DrawablePainter(appPackage.icon),
-                contentDescription = "icon",
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(50.dp)
-            )
-            Column(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .weight(1f)
-            ) {
-                Text(
-                    // アプリ名
-                    text = appPackage.appName,
-                    color = MaterialTheme.colors.onSurface,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    // パッケージ名
-                    text = appPackage.packageName,
-                    color = MaterialTheme.colors.onSurface
-                )
-            }
-            IconButton(
-                onClick = { onItemRemove(appPackage) },
-                modifier = Modifier
-                    .padding(12.dp)
-                    .size(24.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
-                    tint = MaterialTheme.colors.onSurface
-                )
-            }
+        modifier = modifier.height(IntrinsicSize.Max).fillMaxWidth()) {
+            Row(
+                modifier =
+                    Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically) {
+                    Image( // アイコン画像
+                        painter = DrawablePainter(appPackage.icon),
+                        contentDescription = "icon",
+                        modifier = Modifier.clip(CircleShape).size(50.dp))
+                    Column(
+                        modifier = Modifier.padding(start = 8.dp).weight(1f)) {
+                            Text(
+                                // アプリ名
+                                text = appPackage.appName,
+                                color = MaterialTheme.colors.onSurface,
+                                fontWeight = FontWeight.Bold)
+                            Text(
+                                // パッケージ名
+                                text = appPackage.packageName,
+                                color = MaterialTheme.colors.onSurface)
+                        }
+                    IconButton(
+                        onClick = { onItemRemove(appPackage) },
+                        modifier = Modifier.padding(12.dp).size(24.dp)) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = MaterialTheme.colors.onSurface)
+                        }
+                }
         }
-    }
 }
 
 @Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewAllowlistItem() {
     ApplicationTheme {
         val packageName = LocalContext.current.packageName
-        val icon = LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground)
+        val icon =
+            LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground)
         AllowlistItem(
-            AppPackage(
-                icon!!,
-                "SimpleAppBlocker",
-                packageName
-            ),
-            { /* no op */ }
-        )
+            AppPackage(icon!!, "SimpleAppBlocker", packageName),
+            { /* no op */ })
     }
 }

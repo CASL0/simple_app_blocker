@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.core.data.datasource.local
 
+import javax.inject.Inject
 import jp.co.casl0.android.simpleappblocker.core.data.datasource.BlockedPacketsDataSource
 import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
 import jp.co.casl0.android.simpleappblocker.core.database.model.BlockedPacket
@@ -23,29 +24,30 @@ import jp.co.casl0.android.simpleappblocker.core.database.model.asDomainModel
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class BlockedPacketsLocalDataSource @Inject constructor(private val database: SimpleAppBlockerDatabase) :
+class BlockedPacketsLocalDataSource
+@Inject
+constructor(private val database: SimpleAppBlockerDatabase) :
     BlockedPacketsDataSource {
     override fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>> =
         database.blockedPacketsDao().getBlockedPackets().map {
-            it.map { elem ->
-                elem.asDomainModel()
-            }
+            it.map { elem -> elem.asDomainModel() }
         }
 
-    override suspend fun insertBlockedPacket(blockedPacket: DomainBlockedPacket) {
-        database.blockedPacketsDao().insertBlockedPacket(
-            BlockedPacket(
-                packageName = blockedPacket.packageName.toString(),
-                appName = blockedPacket.appName.toString(),
-                srcAddress = blockedPacket.srcAddress.toString(),
-                srcPort = blockedPacket.srcPort,
-                dstAddress = blockedPacket.dstAddress.toString(),
-                dstPort = blockedPacket.dstPort,
-                protocol = blockedPacket.protocol.toString(),
-                blockedAt = blockedPacket.blockedAt
-            )
-        )
+    override suspend fun insertBlockedPacket(
+        blockedPacket: DomainBlockedPacket
+    ) {
+        database
+            .blockedPacketsDao()
+            .insertBlockedPacket(
+                BlockedPacket(
+                    packageName = blockedPacket.packageName.toString(),
+                    appName = blockedPacket.appName.toString(),
+                    srcAddress = blockedPacket.srcAddress.toString(),
+                    srcPort = blockedPacket.srcPort,
+                    dstAddress = blockedPacket.dstAddress.toString(),
+                    dstPort = blockedPacket.dstPort,
+                    protocol = blockedPacket.protocol.toString(),
+                    blockedAt = blockedPacket.blockedAt))
     }
 }

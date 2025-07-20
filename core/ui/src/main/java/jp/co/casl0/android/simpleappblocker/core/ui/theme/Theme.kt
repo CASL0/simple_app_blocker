@@ -23,39 +23,39 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    secondary = LightGreen500,
-    background = Grey800,
-    onBackground = Color.White,
-    onSurface = Color.White,
-    onSecondary = Color.Black
-)
+private val DarkColorPalette =
+    darkColors(
+        primary = Purple200,
+        secondary = LightGreen500,
+        background = Grey800,
+        onBackground = Color.White,
+        onSurface = Color.White,
+        onSecondary = Color.Black)
 
-private val LightColorPalette = lightColors(
-    secondary = LightGreen500,
-    background = Color.White,
-    onBackground = Grey700,
-    surface = Grey100,
-    onSurface = BlueGray800,
-    onSecondary = Color.White
-)
+private val LightColorPalette =
+    lightColors(
+        secondary = LightGreen500,
+        background = Color.White,
+        onBackground = Grey700,
+        surface = Grey100,
+        onSurface = BlueGray800,
+        onSecondary = Color.White)
 
 @Composable
 fun ApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+    val colors =
+        if (darkTheme) {
+            DarkColorPalette
+        } else {
+            LightColorPalette
+        }
 
     MaterialTheme(
         colors = colors,
         typography = Typography,
         shapes = Shapes,
-        content = content
-    )
+        content = content)
 }

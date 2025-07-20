@@ -34,46 +34,47 @@ class DefaultAllowlistRepositoryTest {
 
     @Before
     fun setup() {
-        val package1 = DomainAllowedPackage(packageName = "package1", appName = "app1")
-        val package2 = DomainAllowedPackage(packageName = "package2", appName = "app2")
-        val package3 = DomainAllowedPackage(packageName = "package3", appName = "app3")
+        val package1 =
+            DomainAllowedPackage(packageName = "package1", appName = "app1")
+        val package2 =
+            DomainAllowedPackage(packageName = "package2", appName = "app2")
+        val package3 =
+            DomainAllowedPackage(packageName = "package3", appName = "app3")
         allowedPackages = listOf(package1, package2, package3)
 
-        allowedPackagesDataSource = FakeAllowlistDataSource(allowedPackages = allowedPackages)
+        allowedPackagesDataSource =
+            FakeAllowlistDataSource(allowedPackages = allowedPackages)
     }
 
     @Test
     fun insertAllowedPackage_addNewPackage() = runTest {
-        val newPackage = DomainAllowedPackage(packageName = "newPackage", appName = "newApp")
+        val newPackage =
+            DomainAllowedPackage(packageName = "newPackage", appName = "newApp")
         val allowlistRepository =
             DefaultAllowlistRepository(
                 allowedPackagesDataSource,
-                UnconfinedTestDispatcher(testScheduler)
-            )
+                UnconfinedTestDispatcher(testScheduler))
 
         allowlistRepository.insertAllowedPackage(
-            newPackage.packageName.toString(),
-            newPackage.appName.toString()
-        )
+            newPackage.packageName.toString(), newPackage.appName.toString())
         assertThat(
             allowlistRepository.getAllowlistStream().first(),
-            `is`((allowedPackages + newPackage).map { it.packageName })
-        )
+            `is`((allowedPackages + newPackage).map { it.packageName }))
     }
 
     @Test
     fun disallowPackage_removePackage3() = runTest {
-        val packageToRemove = DomainAllowedPackage(packageName = "package3", appName = "app3")
+        val packageToRemove =
+            DomainAllowedPackage(packageName = "package3", appName = "app3")
         val allowlistRepository =
             DefaultAllowlistRepository(
                 allowedPackagesDataSource,
-                UnconfinedTestDispatcher(testScheduler)
-            )
+                UnconfinedTestDispatcher(testScheduler))
 
-        allowlistRepository.disallowPackage(packageToRemove.packageName.toString())
+        allowlistRepository.disallowPackage(
+            packageToRemove.packageName.toString())
         assertThat(
             allowlistRepository.getAllowlistStream().first(),
-            `is`((allowedPackages - packageToRemove).map { it.packageName })
-        )
+            `is`((allowedPackages - packageToRemove).map { it.packageName }))
     }
 }
