@@ -64,5 +64,9 @@ subprojects {
             trimTrailingWhitespace()
             endWithNewline()
         }
+        format 'styling', {
+            target '**/*.md'
+            prettier()
+        }
     }
 }
