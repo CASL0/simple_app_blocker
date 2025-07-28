@@ -21,13 +21,13 @@
 #include "Packet.h"
 
 namespace Jni::PcapPlusPlus::Protocol {
-    /**
-     * プロトコルの文字列を取得する関数
-     * @param packet
-     * @return プロトコル(取得できなかった場合はUNKNOWN)
-     */
-    std::string getProtocolTypeAsString(const pcpp::Packet &packet);
+/**
+ * プロトコルの文字列を取得する関数
+ * @param packet
+ * @return プロトコル(取得できなかった場合はUNKNOWN)
+ */
+std::string getProtocolTypeAsString(const pcpp::Packet& packet);
 
-}
+}  // namespace Jni::PcapPlusPlus::Protocol
 
-#endif //SIMPLEAPPBLOCKER_PROTOCOL_H
+#endif  // SIMPLEAPPBLOCKER_PROTOCOL_H

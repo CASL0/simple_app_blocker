@@ -21,18 +21,18 @@
 #include "Packet.h"
 
 namespace Jni::PcapPlusPlus::Network {
-    typedef struct NetworkLayer {
-        std::string srcAddress;
-        std::string dstAddress;
-    } NetworkLayer;
+typedef struct NetworkLayer {
+  std::string srcAddress;
+  std::string dstAddress;
+} NetworkLayer;
 
-    /**
-     * ネットワーク層の情報を取得する関数
-     * @param packet パケット
-     * @return ネットワーク層の情報
-     */
-    NetworkLayer getNetworkLayer(const pcpp::Packet &packet);
+/**
+ * ネットワーク層の情報を取得する関数
+ * @param packet パケット
+ * @return ネットワーク層の情報
+ */
+NetworkLayer getNetworkLayer(const pcpp::Packet& packet);
 
-}
+}  // namespace Jni::PcapPlusPlus::Network
 
-#endif //SIMPLEAPPBLOCKER_NETWORK_H
+#endif  // SIMPLEAPPBLOCKER_NETWORK_H

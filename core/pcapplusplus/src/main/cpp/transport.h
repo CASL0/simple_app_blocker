@@ -21,18 +21,18 @@
 #include "Packet.h"
 
 namespace Jni::PcapPlusPlus::Transport {
-    typedef struct TransportLayer {
-        int srcPort;
-        int dstPort;
-        std::string protocol;
-    } TransportLayer;
+typedef struct TransportLayer {
+  int srcPort;
+  int dstPort;
+  std::string protocol;
+} TransportLayer;
 
-    /**
-     * トランスポート層の情報を取得する関数
-     * @param packet パケット
-     * @return トランスポート層の情報
-     */
-    TransportLayer getTransportLayer(const pcpp::Packet &packet);
-}
+/**
+ * トランスポート層の情報を取得する関数
+ * @param packet パケット
+ * @return トランスポート層の情報
+ */
+TransportLayer getTransportLayer(const pcpp::Packet& packet);
+}  // namespace Jni::PcapPlusPlus::Transport
 
-#endif //SIMPLEAPPBLOCKER_TRANSPORT_H
+#endif  // SIMPLEAPPBLOCKER_TRANSPORT_H
