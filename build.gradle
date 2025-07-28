@@ -68,5 +68,9 @@ subprojects {
             target '**/*.md'
             prettier()
         }
+        cpp {
+            target 'src/**/*.cpp', 'src/**/*.h'
+            clangFormat('18.1.3').style('Chromium')
+        }
     }
 }
