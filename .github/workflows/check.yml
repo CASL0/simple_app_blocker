@@ -1,0 +1,34 @@
+name: Check
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: spotlessCheck
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    env:
+      CLANG_FORMAT_VERSION: "18"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format-${CLANG_FORMAT_VERSION}
+          sudo mv /usr/bin/clang-format-${CLANG_FORMAT_VERSION} /usr/bin/clang-format
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "adopt"
+          java-version: "17"
+
+      - name: SpotlessCheck
+        run: |
+          chmod +x gradlew
+          ./gradlew spotlessCheck
