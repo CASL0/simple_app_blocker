@@ -22,6 +22,8 @@
 - Gradle: [groovy-eclipse](https://github.com/groovy/groovy-eclipse)
 - Markdown: [prettier](https://prettier.io/)
 
+Jetbrains の[Spotlessプラグイン](https://plugins.jetbrains.com/plugin/18321-spotless-gradle)を使ってフォーマッタを実行する
+
 ## PlayConsole へのアップロード
 
 fastlane を使用しアップロードする
