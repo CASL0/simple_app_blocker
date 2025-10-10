@@ -32,8 +32,7 @@ import androidx.compose.ui.unit.dp
 import jp.co.casl0.android.simpleappblocker.feature.blocklog.R
 import jp.co.casl0.android.simpleappblocker.feature.blocklog.viewmodel.UiState
 
-@Immutable
-data class BlockedPacketsList(val items: List<UiState.BlockedApp>)
+@Immutable data class BlockedPacketsList(val items: List<UiState.BlockedApp>)
 
 @Composable
 internal fun BlockLogContent(
@@ -44,23 +43,17 @@ internal fun BlockLogContent(
         Column(
             modifier = modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(stringResource(R.string.empty_block_log))
-        }
+            verticalArrangement = Arrangement.Center) {
+                Text(stringResource(R.string.empty_block_log))
+            }
     } else {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(vertical = 8.dp),
-            modifier = modifier
-        ) {
-            items(items = blockedPackets.items) { packet ->
-                Column {
-                    BlockLogItem(
-                        blockedApp = packet
-                    )
+            modifier = modifier) {
+                items(items = blockedPackets.items) { packet ->
+                    Column { BlockLogItem(blockedApp = packet) }
                 }
             }
-        }
     }
 }

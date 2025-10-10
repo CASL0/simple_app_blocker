@@ -37,24 +37,22 @@ internal fun RuleChangeScreen(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    Scaffold(topBar = {
-        RuleChangeTopBar(
-            title = R.string.rule_change_title,
-            showedSearchBox = showedSearchBox,
-            searchValue = searchValue,
-            onClickSearch = onClickSearch,
-            onSearchValueChange = onSearchValueChange,
-            onClose = onClose
-        )
-    }, modifier = modifier) {
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
-            onRefresh = onRefresh,
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-        ) {
-            content()
+    Scaffold(
+        topBar = {
+            RuleChangeTopBar(
+                title = R.string.rule_change_title,
+                showedSearchBox = showedSearchBox,
+                searchValue = searchValue,
+                onClickSearch = onClickSearch,
+                onSearchValueChange = onSearchValueChange,
+                onClose = onClose)
+        },
+        modifier = modifier) {
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+                onRefresh = onRefresh,
+                modifier = Modifier.padding(it).fillMaxSize()) {
+                    content()
+                }
         }
-    }
 }

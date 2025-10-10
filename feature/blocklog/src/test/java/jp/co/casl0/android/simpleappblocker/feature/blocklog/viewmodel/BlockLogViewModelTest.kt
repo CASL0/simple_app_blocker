@@ -16,6 +16,7 @@
 
 package jp.co.casl0.android.simpleappblocker.feature.blocklog.viewmodel
 
+import java.time.format.DateTimeFormatter
 import jp.co.casl0.android.simpleappblocker.core.model.DomainBlockedPacket
 import jp.co.casl0.android.simpleappblocker.feature.FakeBlockedPacketsRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +35,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BlockLogViewModelTest {
@@ -56,31 +56,30 @@ class BlockLogViewModelTest {
 
     @Test
     fun updateUiState_whenInsertBlockedPackets() = runTest {
-        val viewModel =
-            BlockLogViewModel(blockedPacketsRepository)
+        val viewModel = BlockLogViewModel(blockedPacketsRepository)
 
         var resultUiState = UiState.BlockLogUiState()
-        val job = launch(UnconfinedTestDispatcher()) {
-            viewModel.uiState.collect {
-                resultUiState = it
+        val job =
+            launch(UnconfinedTestDispatcher()) {
+                viewModel.uiState.collect { resultUiState = it }
             }
-        }
 
-        val data = DomainBlockedPacket(
-            packageName = "package1",
-            appName = "app1",
-            srcAddress = "10.10.10.10",
-            srcPort = 100,
-            dstAddress = "20.20.20.20",
-            dstPort = 200,
-            protocol = "protocol1",
-            blockedAt = Instant.parse("2000-01-01T00:00:00Z")
-        )
+        val data =
+            DomainBlockedPacket(
+                packageName = "package1",
+                appName = "app1",
+                srcAddress = "10.10.10.10",
+                srcPort = 100,
+                dstAddress = "20.20.20.20",
+                dstPort = 200,
+                protocol = "protocol1",
+                blockedAt = Instant.parse("2000-01-01T00:00:00Z"))
 
         blockedPacketsRepository.insertBlockedPacket(data)
 
         assertThat(
-            resultUiState.blockedApps, `is`(
+            resultUiState.blockedApps,
+            `is`(
                 listOf(
                     UiState.BlockedApp(
                         appName = data.appName,
@@ -88,12 +87,12 @@ class BlockLogViewModelTest {
                         src = data.srcAddressAndPort,
                         dst = data.dstAddressAndPort,
                         protocol = data.protocol,
-                        blockedAt = data.blockedAt.toLocalDateTime(TimeZone.currentSystemDefault())
-                            .toJavaLocalDateTime().format(formatter)
-                    )
-                )
-            )
-        )
+                        blockedAt =
+                            data.blockedAt
+                                .toLocalDateTime(
+                                    TimeZone.currentSystemDefault())
+                                .toJavaLocalDateTime()
+                                .format(formatter)))))
 
         job.cancel()
     }

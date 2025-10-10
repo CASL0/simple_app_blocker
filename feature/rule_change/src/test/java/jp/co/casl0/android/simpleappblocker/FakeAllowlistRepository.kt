@@ -23,12 +23,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 
 /** 許可アプリ一覧のデータ層のFake */
-class FakeAllowlistRepository(private val dispatcher: CoroutineDispatcher) : AllowlistRepository {
+class FakeAllowlistRepository(private val dispatcher: CoroutineDispatcher) :
+    AllowlistRepository {
     private val _allowlist = MutableStateFlow(listOf<CharSequence>())
 
     override fun getAllowlistStream(): Flow<List<CharSequence>> = _allowlist
 
-    override suspend fun insertAllowedPackage(packageName: String, appName: String) =
+    override suspend fun insertAllowedPackage(
+        packageName: String,
+        appName: String
+    ) =
         withContext(dispatcher) {
             val current = _allowlist.value.toMutableList()
             if (!current.contains(packageName)) {
@@ -37,11 +41,12 @@ class FakeAllowlistRepository(private val dispatcher: CoroutineDispatcher) : All
             }
         }
 
-    override suspend fun disallowPackage(packageName: String) = withContext(dispatcher) {
-        val current = _allowlist.value.toMutableList()
-        if (current.contains(packageName)) {
-            current.remove(packageName)
-            _allowlist.value = current
+    override suspend fun disallowPackage(packageName: String) =
+        withContext(dispatcher) {
+            val current = _allowlist.value.toMutableList()
+            if (current.contains(packageName)) {
+                current.remove(packageName)
+                _allowlist.value = current
+            }
         }
-    }
 }

@@ -21,18 +21,23 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
-class FakeBlockedPacketsLocalDataSource(blockedPackets: List<DomainBlockedPacket>) :
-    BlockedPacketsDataSource {
+class FakeBlockedPacketsLocalDataSource(
+    blockedPackets: List<DomainBlockedPacket>
+) : BlockedPacketsDataSource {
     private val _blockedPacketsStream = MutableStateFlow(blockedPackets)
 
     override fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>> {
         return _blockedPacketsStream
     }
 
-    override suspend fun insertBlockedPacket(blockedPacket: DomainBlockedPacket) {
+    override suspend fun insertBlockedPacket(
+        blockedPacket: DomainBlockedPacket
+    ) {
         val currentList = _blockedPacketsStream.value.toMutableList()
         val index =
-            currentList.binarySearchBy(blockedPacket.packageName.toString()) { it.packageName.toString() }
+            currentList.binarySearchBy(blockedPacket.packageName.toString()) {
+                it.packageName.toString()
+            }
         if (index != -1) {
             currentList[index] = blockedPacket
         } else {

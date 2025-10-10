@@ -23,21 +23,22 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import jp.co.casl0.android.simpleappblocker.core.database.MIGRATION_2_3
 import jp.co.casl0.android.simpleappblocker.core.database.SimpleAppBlockerDatabase
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
     @Singleton
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): SimpleAppBlockerDatabase {
+    fun provideDatabase(
+        @ApplicationContext context: Context
+    ): SimpleAppBlockerDatabase {
         return Room.databaseBuilder(
-            context.applicationContext,
-            SimpleAppBlockerDatabase::class.java,
-            "simple_app_blocker.db"
-        )
+                context.applicationContext,
+                SimpleAppBlockerDatabase::class.java,
+                "simple_app_blocker.db")
             .addMigrations(MIGRATION_2_3)
             .build()
     }

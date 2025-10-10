@@ -22,5 +22,6 @@ import kotlinx.coroutines.flow.Flow
 /** ブロックログのデータ層 */
 interface BlockedPacketsDataSource {
     fun getBlockedPacketsStream(): Flow<List<DomainBlockedPacket>>
+
     suspend fun insertBlockedPacket(blockedPacket: DomainBlockedPacket)
 }

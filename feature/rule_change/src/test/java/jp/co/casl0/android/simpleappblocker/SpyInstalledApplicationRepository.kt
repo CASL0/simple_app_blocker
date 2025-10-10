@@ -28,14 +28,13 @@ import kotlinx.coroutines.withContext
 class SpyInstalledApplicationRepository(
     fakeInstalledApps: List<AppPackage> = listOf(),
     private val dispatcher: CoroutineDispatcher
-) :
-    InstalledApplicationRepository {
+) : InstalledApplicationRepository {
     private val _installedApps = MutableStateFlow(fakeInstalledApps)
 
     /** refreshメソッド呼び出し回数を記録 */
     private var _refreshCallCount = 0
-    val refreshCallCount get() = _refreshCallCount
-
+    val refreshCallCount
+        get() = _refreshCallCount
 
     override fun getInstalledApplicationsStream(): Flow<List<AppPackage>> =
         _installedApps

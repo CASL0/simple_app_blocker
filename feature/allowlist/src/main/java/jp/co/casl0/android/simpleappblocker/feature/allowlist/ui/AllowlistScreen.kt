@@ -34,11 +34,15 @@ fun AllowlistScreen(
     onItemRemove: (appPackage: AppPackage) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(floatingActionButton = {
-        FloatingActionButton(onClick = onAddButtonClicked) {
-            Icon(Icons.Filled.Add, contentDescription = "add")
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = onAddButtonClicked) {
+                Icon(Icons.Filled.Add, contentDescription = "add")
+            }
+        },
+        backgroundColor = MaterialTheme.colors.background,
+        modifier = modifier) {
+            AllowlistContent(
+                allowedPackages, onItemRemove, Modifier.padding(it))
         }
-    }, backgroundColor = MaterialTheme.colors.background, modifier = modifier) {
-        AllowlistContent(allowedPackages, onItemRemove, Modifier.padding(it))
-    }
 }

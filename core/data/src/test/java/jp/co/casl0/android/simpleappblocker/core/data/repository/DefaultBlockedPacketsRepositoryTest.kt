@@ -31,7 +31,8 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class DefaultBlockedPacketsRepositoryTest {
     private lateinit var blockedPackets: List<DomainBlockedPacket>
-    private lateinit var blockedPacketsDataSource: FakeBlockedPacketsLocalDataSource
+    private lateinit var blockedPacketsDataSource:
+        FakeBlockedPacketsLocalDataSource
 
     @Before
     fun setup() {
@@ -44,8 +45,7 @@ class DefaultBlockedPacketsRepositoryTest {
                 dstAddress = "100.100.100.1",
                 dstPort = 11111,
                 protocol = "http",
-                blockedAt = Instant.parse("2000-01-01T00:00:00Z")
-            )
+                blockedAt = Instant.parse("2000-01-01T00:00:00Z"))
         val blockedPacket2 =
             DomainBlockedPacket(
                 packageName = "package2",
@@ -55,8 +55,7 @@ class DefaultBlockedPacketsRepositoryTest {
                 dstAddress = "100.100.100.2",
                 dstPort = 22222,
                 protocol = "http",
-                blockedAt = Instant.parse("2000-02-02T00:00:00Z")
-            )
+                blockedAt = Instant.parse("2000-02-02T00:00:00Z"))
         val blockedPacket3 =
             DomainBlockedPacket(
                 packageName = "package3",
@@ -66,34 +65,32 @@ class DefaultBlockedPacketsRepositoryTest {
                 dstAddress = "100.100.100.3",
                 dstPort = 33333,
                 protocol = "http",
-                blockedAt = Instant.parse("2000-03-03T00:00:00Z")
-            )
+                blockedAt = Instant.parse("2000-03-03T00:00:00Z"))
         blockedPackets = listOf(blockedPacket1, blockedPacket2, blockedPacket3)
-        blockedPacketsDataSource = FakeBlockedPacketsLocalDataSource(blockedPackets)
+        blockedPacketsDataSource =
+            FakeBlockedPacketsLocalDataSource(blockedPackets)
     }
 
     @Test
     fun insertBlockedPacket_addNewBlockedPackage() = runTest {
-        val newBlockedPackage = DomainBlockedPacket(
-            packageName = "newPackage",
-            appName = "newApp",
-            srcAddress = "10.10.10.4",
-            srcPort = 4444,
-            dstAddress = "100.100.100.4",
-            dstPort = 44444,
-            protocol = "http",
-            blockedAt = Instant.parse("2000-04-04T00:00:00Z")
-        )
+        val newBlockedPackage =
+            DomainBlockedPacket(
+                packageName = "newPackage",
+                appName = "newApp",
+                srcAddress = "10.10.10.4",
+                srcPort = 4444,
+                dstAddress = "100.100.100.4",
+                dstPort = 44444,
+                protocol = "http",
+                blockedAt = Instant.parse("2000-04-04T00:00:00Z"))
         val blockedPacketsRepository =
             DefaultBlockedPacketsRepository(
                 blockedPacketsDataSource,
-                UnconfinedTestDispatcher(testScheduler)
-            )
+                UnconfinedTestDispatcher(testScheduler))
 
         blockedPacketsRepository.insertBlockedPacket(newBlockedPackage)
         assertThat(
             blockedPacketsRepository.getBlockedPacketsStream().first(),
-            `is`(blockedPackets + newBlockedPackage)
-        )
+            `is`(blockedPackets + newBlockedPackage))
     }
 }

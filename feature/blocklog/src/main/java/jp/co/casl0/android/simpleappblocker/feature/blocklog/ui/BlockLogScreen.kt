@@ -26,14 +26,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun BlockLogScreen(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+internal fun BlockLogScreen(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
     Scaffold(
-        modifier = modifier
-            .background(MaterialTheme.colors.background)
-            .padding(horizontal = 8.dp)
-    ) {
-        Column(modifier.padding(it)) {
-            content()
+        modifier =
+            modifier
+                .background(MaterialTheme.colors.background)
+                .padding(horizontal = 8.dp)) {
+            Column(modifier.padding(it)) { content() }
         }
-    }
 }

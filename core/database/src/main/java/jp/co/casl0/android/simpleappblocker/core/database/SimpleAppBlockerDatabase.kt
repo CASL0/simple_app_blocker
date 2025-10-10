@@ -30,10 +30,10 @@ import jp.co.casl0.android.simpleappblocker.core.database.utils.InstantConverter
     entities = [AllowedPackage::class, BlockedPacket::class],
     version = 3,
     exportSchema = true,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2),
-    ]
-)
+    autoMigrations =
+        [
+            AutoMigration(from = 1, to = 2),
+        ])
 @TypeConverters(InstantConverter::class)
 abstract class SimpleAppBlockerDatabase : RoomDatabase() {
     /** 許可アプリリスト操作用のDAOを取得する関数 */

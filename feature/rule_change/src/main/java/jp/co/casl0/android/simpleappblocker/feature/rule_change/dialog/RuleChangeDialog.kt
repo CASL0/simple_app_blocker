@@ -59,25 +59,25 @@ open class RuleChangeDialog : BottomSheetDialogFragment() {
     ): View? {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                requireDialog().findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+                requireDialog()
+                    .findViewById<FrameLayout>(
+                        com.google.android.material.R.id.design_bottom_sheet)
                     ?.let {
                         val bsb = BottomSheetBehavior.from(it)
                         bsb.isDraggable = false
                         if (bsb.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                            bsb.state =
-                                getDefaultState()
+                            bsb.state = getDefaultState()
                         }
                     }
             }
         }
 
         return ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
-                    NewRuleDialogScreen(viewModel = viewModel) {
-                        dismiss()
-                    }
+                    NewRuleDialogScreen(viewModel = viewModel) { dismiss() }
                 }
             }
         }
@@ -85,14 +85,16 @@ open class RuleChangeDialog : BottomSheetDialogFragment() {
 
     /** Edge to Edge対応のためカスタムしたBottomSheetDialog */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return object : BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme) {
+        return object :
+            BottomSheetDialog(
+                requireContext(), R.style.BottomSheetDialogTheme) {
             override fun onAttachedToWindow() {
                 super.onAttachedToWindow()
 
-                findViewById<View>(com.google.android.material.R.id.container)?.fitsSystemWindows =
-                    false
-                findViewById<View>(com.google.android.material.R.id.coordinator)?.fitsSystemWindows =
-                    false
+                findViewById<View>(com.google.android.material.R.id.container)
+                    ?.fitsSystemWindows = false
+                findViewById<View>(com.google.android.material.R.id.coordinator)
+                    ?.fitsSystemWindows = false
             }
         }
     }
@@ -101,9 +103,13 @@ open class RuleChangeDialog : BottomSheetDialogFragment() {
 }
 
 @Composable
-private fun NewRuleDialogScreen(viewModel: RuleChangeViewModel, onClose: () -> Unit) {
+private fun NewRuleDialogScreen(
+    viewModel: RuleChangeViewModel,
+    onClose: () -> Unit
+) {
     val uiState = viewModel.uiState.collectAsState()
-    val installedApplications = viewModel.installedApplications.collectAsState(listOf()).value
+    val installedApplications =
+        viewModel.installedApplications.collectAsState(listOf()).value
     RuleChangeScreen(
         isRefreshing = uiState.value.isRefreshing,
         showedSearchBox = uiState.value.showedSearchBox,
@@ -111,15 +117,14 @@ private fun NewRuleDialogScreen(viewModel: RuleChangeViewModel, onClose: () -> U
         onClickSearch = viewModel::onClickSearch,
         onSearchValueChange = viewModel::onSearchValueChange,
         onRefresh = viewModel::refreshInstalledApplications,
-        onClose = onClose
-    ) {
-        val searchValue = uiState.value.searchValue
-        val filteredApplications = installedApplications.filter {
-            it.appName.contains(searchValue, ignoreCase = true)
+        onClose = onClose) {
+            val searchValue = uiState.value.searchValue
+            val filteredApplications =
+                installedApplications.filter {
+                    it.appName.contains(searchValue, ignoreCase = true)
+                }
+            RuleChangeContent(
+                InstalledPackagesList(filteredApplications),
+                viewModel::changeFilterRule)
         }
-        RuleChangeContent(
-            InstalledPackagesList(filteredApplications),
-            viewModel::changeFilterRule
-        )
-    }
 }

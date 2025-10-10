@@ -14,45 +14,46 @@
  * limitations under the License.
  */
 
+#include "transport.h"
 #include "TcpLayer.h"
 #include "UdpLayer.h"
-#include "transport.h"
 
 using namespace Jni::PcapPlusPlus::Transport;
 
-static int getSrcPort(const pcpp::Packet &packet) {
-    if (auto tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>(); tcpLayer != nullptr) {
-        return tcpLayer->getSrcPort();
-    }
-    if (auto udpLayer = packet.getLayerOfType<pcpp::UdpLayer>(); udpLayer != nullptr) {
-        return udpLayer->getSrcPort();
-    }
-    return 0;
+static int getSrcPort(const pcpp::Packet& packet) {
+  if (auto tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>();
+      tcpLayer != nullptr) {
+    return tcpLayer->getSrcPort();
+  }
+  if (auto udpLayer = packet.getLayerOfType<pcpp::UdpLayer>();
+      udpLayer != nullptr) {
+    return udpLayer->getSrcPort();
+  }
+  return 0;
 }
 
-static int getDstPort(const pcpp::Packet &packet) {
-    if (auto tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>(); tcpLayer != nullptr) {
-        return tcpLayer->getDstPort();
-    }
-    if (auto udpLayer = packet.getLayerOfType<pcpp::UdpLayer>(); udpLayer != nullptr) {
-        return udpLayer->getDstPort();
-    }
-    return 0;
+static int getDstPort(const pcpp::Packet& packet) {
+  if (auto tcpLayer = packet.getLayerOfType<pcpp::TcpLayer>();
+      tcpLayer != nullptr) {
+    return tcpLayer->getDstPort();
+  }
+  if (auto udpLayer = packet.getLayerOfType<pcpp::UdpLayer>();
+      udpLayer != nullptr) {
+    return udpLayer->getDstPort();
+  }
+  return 0;
 }
 
-static std::string getProtocol(const pcpp::Packet &packet) {
-    if (packet.getLayerOfType<pcpp::TcpLayer>() != nullptr) {
-        return "TCP";
-    } else if (packet.getLayerOfType<pcpp::UdpLayer>() != nullptr) {
-        return "UDP";
-    }
-    return "UNKNOWN";
+static std::string getProtocol(const pcpp::Packet& packet) {
+  if (packet.getLayerOfType<pcpp::TcpLayer>() != nullptr) {
+    return "TCP";
+  } else if (packet.getLayerOfType<pcpp::UdpLayer>() != nullptr) {
+    return "UDP";
+  }
+  return "UNKNOWN";
 }
 
-TransportLayer Jni::PcapPlusPlus::Transport::getTransportLayer(const pcpp::Packet &packet) {
-    return {
-            getSrcPort(packet),
-            getDstPort(packet),
-            getProtocol(packet)
-    };
+TransportLayer Jni::PcapPlusPlus::Transport::getTransportLayer(
+    const pcpp::Packet& packet) {
+  return {getSrcPort(packet), getDstPort(packet), getProtocol(packet)};
 }

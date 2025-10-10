@@ -21,10 +21,7 @@ data class ParsedPacket(
     val transportLayer: TransportLayer,
 )
 
-data class NetworkLayer(
-    val srcAddress: String,
-    val dstAddress: String
-)
+data class NetworkLayer(val srcAddress: String, val dstAddress: String)
 
 data class TransportLayer(
     val srcPort: Int,

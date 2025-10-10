@@ -21,8 +21,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
-class FakeAllowlistDataSource(allowedPackages: List<DomainAllowedPackage> = listOf()) :
-    AllowlistDataSource {
+class FakeAllowlistDataSource(
+    allowedPackages: List<DomainAllowedPackage> = listOf()
+) : AllowlistDataSource {
     private val _allowedPackagesStream = MutableStateFlow(allowedPackages)
 
     override fun getAllowlistStream(): Flow<List<DomainAllowedPackage>> {
@@ -32,7 +33,9 @@ class FakeAllowlistDataSource(allowedPackages: List<DomainAllowedPackage> = list
     override suspend fun insertPackage(allowedPackage: DomainAllowedPackage) {
         val currentList = _allowedPackagesStream.value.toMutableList()
         val index =
-            currentList.binarySearchBy(allowedPackage.packageName.toString()) { it.packageName.toString() }
+            currentList.binarySearchBy(allowedPackage.packageName.toString()) {
+                it.packageName.toString()
+            }
         if (index != -1) {
             currentList[index] = allowedPackage
         } else {
@@ -44,7 +47,9 @@ class FakeAllowlistDataSource(allowedPackages: List<DomainAllowedPackage> = list
     override suspend fun removePackage(packageName: CharSequence) {
         val currentList = _allowedPackagesStream.value.toMutableList()
         val index =
-            currentList.binarySearchBy(packageName.toString()) { it.packageName.toString() }
+            currentList.binarySearchBy(packageName.toString()) {
+                it.packageName.toString()
+            }
         if (index != -1) {
             currentList.removeAt(index)
         }

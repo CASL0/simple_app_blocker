@@ -14,33 +14,35 @@
  * limitations under the License.
  */
 
-#include <optional>
 #include "protocol.h"
+#include <optional>
 
 /**
  * プロトコル種別を文字列に変換します
  * @param protocolType
  * @return プロトコル文字列（不明なプロトコルの場合は無効値）
  */
-static std::optional<std::string> convertToString(const pcpp::ProtocolType protocolType) {
-    switch (protocolType) {
-        case pcpp::TCP:
-            return "TCP";
-        case pcpp::UDP:
-            return "UDP";
-        default:
-            return std::nullopt;
-    }
+static std::optional<std::string> convertToString(
+    const pcpp::ProtocolType protocolType) {
+  switch (protocolType) {
+    case pcpp::TCP:
+      return "TCP";
+    case pcpp::UDP:
+      return "UDP";
+    default:
+      return std::nullopt;
+  }
 }
 
-std::string Jni::PcapPlusPlus::Protocol::getProtocolTypeAsString(const pcpp::Packet &packet) {
-    for (pcpp::Layer *curLayer = packet.getFirstLayer();
-         curLayer != nullptr; curLayer = curLayer->getNextLayer()) {
-        if (std::optional<std::string> parsedProtocol = convertToString(
-                    curLayer->getProtocol());
-                parsedProtocol) {
-            return parsedProtocol.value();
-        }
+std::string Jni::PcapPlusPlus::Protocol::getProtocolTypeAsString(
+    const pcpp::Packet& packet) {
+  for (pcpp::Layer* curLayer = packet.getFirstLayer(); curLayer != nullptr;
+       curLayer = curLayer->getNextLayer()) {
+    if (std::optional<std::string> parsedProtocol =
+            convertToString(curLayer->getProtocol());
+        parsedProtocol) {
+      return parsedProtocol.value();
     }
-    return "UNKNOWN";
+  }
+  return "UNKNOWN";
 }

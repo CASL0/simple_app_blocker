@@ -42,36 +42,36 @@ import jp.co.casl0.android.simpleappblocker.feature.about.R
 import jp.co.casl0.android.simpleappblocker.feature.about.utils.APP_NAME
 
 @Composable
-internal fun AboutPanel(appVersion: CharSequence, modifier: Modifier = Modifier) {
+internal fun AboutPanel(
+    appVersion: CharSequence,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val icon = LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground)
-        Image(
-            painter = DrawablePainter(icon!!),
-            contentDescription = "app icon",
-            modifier = Modifier.size(100.dp)
-        )
-        Text(
-            text = APP_NAME,
-            fontSize = MaterialTheme.typography.h5.fontSize,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.onBackground
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(id = R.string.description),
-            color = MaterialTheme.colors.onBackground,
-            fontSize = MaterialTheme.typography.body2.fontSize,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        AppVersion(
-            headerText = stringResource(id = R.string.version_header),
-            contentText = appVersion
-        )
-    }
+        horizontalAlignment = Alignment.CenterHorizontally) {
+            val icon =
+                LocalContext.current.getDrawable(
+                    R.drawable.ic_launcher_foreground)
+            Image(
+                painter = DrawablePainter(icon!!),
+                contentDescription = "app icon",
+                modifier = Modifier.size(100.dp))
+            Text(
+                text = APP_NAME,
+                fontSize = MaterialTheme.typography.h5.fontSize,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.onBackground)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(id = R.string.description),
+                color = MaterialTheme.colors.onBackground,
+                fontSize = MaterialTheme.typography.body2.fontSize,
+                textAlign = TextAlign.Center)
+            Spacer(modifier = Modifier.height(16.dp))
+            AppVersion(
+                headerText = stringResource(id = R.string.version_header),
+                contentText = appVersion)
+        }
 }
 
 @Composable
@@ -83,26 +83,24 @@ private fun AppVersion(
     Card(modifier = modifier, shape = MaterialTheme.shapes.small) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = headerText.toString(),
-                modifier = Modifier.weight(1f),
-                style = MaterialTheme.typography.body2
-            )
-            Text(
-                text = contentText.toString(),
-                style = MaterialTheme.typography.body2
-            )
-        }
+            modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = headerText.toString(),
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.body2)
+                Text(
+                    text = contentText.toString(),
+                    style = MaterialTheme.typography.body2)
+            }
     }
 }
 
 @Preview(name = "light Mode")
-@Preview(name = "Dark Mode", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun PreviewAboutApp() {
-    ApplicationTheme {
-        AboutPanel("0.0.0")
-    }
+    ApplicationTheme { AboutPanel("0.0.0") }
 }

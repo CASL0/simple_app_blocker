@@ -28,8 +28,8 @@ class AppBlockerApplication : Application() {
         super.onCreate()
         Logger.addLogAdapter(
             AndroidLogAdapter(
-                PrettyFormatStrategy.newBuilder().tag(getString(R.string.app_name)).build()
-            )
-        )
+                PrettyFormatStrategy.newBuilder()
+                    .tag(getString(R.string.app_name))
+                    .build()))
     }
 }

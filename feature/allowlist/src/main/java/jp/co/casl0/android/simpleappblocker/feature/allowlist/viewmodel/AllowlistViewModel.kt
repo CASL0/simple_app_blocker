@@ -24,37 +24,39 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 import jp.co.casl0.android.simpleappblocker.core.data.repository.AllowlistRepository
 import jp.co.casl0.android.simpleappblocker.core.model.AppPackage
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
-class AllowlistViewModel @Inject constructor(
+class AllowlistViewModel
+@Inject
+constructor(
     private val allowlistRepository: AllowlistRepository,
     @ApplicationContext context: Context
-) :
-    AndroidViewModel(context.applicationContext as Application) {
+) : AndroidViewModel(context.applicationContext as Application) {
     /** 許可リスト */
-    val allowlist = allowlistRepository.getAllowlistStream().map { allowedPackages ->
-        val pm = getApplication<Application>().packageManager
-        allowedPackages.map {
-            val appInfo = if (Build.VERSION.SDK_INT >= 33) {
-                pm.getPackageInfo(
-                    it.toString(),
-                    PackageManager.PackageInfoFlags.of(0)
-                ).applicationInfo
-            } else {
-                pm.getPackageInfo(it.toString(), 0).applicationInfo
+    val allowlist =
+        allowlistRepository.getAllowlistStream().map { allowedPackages ->
+            val pm = getApplication<Application>().packageManager
+            allowedPackages.map {
+                val appInfo =
+                    if (Build.VERSION.SDK_INT >= 33) {
+                        pm.getPackageInfo(
+                                it.toString(),
+                                PackageManager.PackageInfoFlags.of(0))
+                            .applicationInfo
+                    } else {
+                        pm.getPackageInfo(it.toString(), 0).applicationInfo
+                    }
+                AppPackage(
+                    appInfo.loadIcon(pm),
+                    appInfo.loadLabel(pm).toString(),
+                    appInfo.packageName)
             }
-            AppPackage(
-                appInfo.loadIcon(pm),
-                appInfo.loadLabel(pm).toString(),
-                appInfo.packageName
-            )
         }
-    }
 
     /** 指定のパッケージをブロックに変更する */
     fun disallowPackage(appPackage: AppPackage) {

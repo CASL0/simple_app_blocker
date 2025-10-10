@@ -22,23 +22,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.orhanobut.logger.Logger
 
-/**
- * ランタイムパーミッションをリクエストします
- */
+/** ランタイムパーミッションをリクエストします */
 internal fun AppCompatActivity.requestPermission(
     permission: CharSequence,
     showRequestPermissionRationale: (() -> Unit)? = null,
     permissionLauncher: ActivityResultLauncher<String>
 ) {
     when {
-        ContextCompat.checkSelfPermission(
-            this,
-            permission.toString()
-        ) == PackageManager.PERMISSION_GRANTED -> {
+        ContextCompat.checkSelfPermission(this, permission.toString()) ==
+            PackageManager.PERMISSION_GRANTED -> {
             Logger.d("permission granted: $permission")
         }
         shouldShowRequestPermissionRationale(permission.toString()) -> {
-            showRequestPermissionRationale?.let { showRequestPermissionRationale() }
+            showRequestPermissionRationale?.let {
+                showRequestPermissionRationale()
+            }
         }
         else -> {
             permissionLauncher.launch(permission.toString())

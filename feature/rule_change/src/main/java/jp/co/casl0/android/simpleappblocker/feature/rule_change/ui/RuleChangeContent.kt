@@ -42,13 +42,13 @@ internal fun RuleChangeContent(
         state = scrollState,
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(vertical = 8.dp, horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(
-            items = installedPackages.items,
-            key = { installedPackage -> installedPackage.packageName }
-        ) { installedPackage ->
-            RuleChangeItem(installedPackage, changeFilterRule, modifier = Modifier)
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(
+                items = installedPackages.items,
+                key = { installedPackage -> installedPackage.packageName }) {
+                    installedPackage ->
+                    RuleChangeItem(
+                        installedPackage, changeFilterRule, modifier = Modifier)
+                }
         }
-    }
 }

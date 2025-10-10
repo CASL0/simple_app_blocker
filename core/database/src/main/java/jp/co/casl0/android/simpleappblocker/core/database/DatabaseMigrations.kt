@@ -18,21 +18,18 @@ package jp.co.casl0.android.simpleappblocker.core.database
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toKotlinLocalDateTime
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
-/**
- * ブロックログテーブルのブロック時刻のカラム定義変更のマイグレ
- * ISO文字列で保持していたので、エポック秒へ変換
- *
- * */
-val MIGRATION_2_3 = object : Migration(2, 3) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL(
-            """
+/** ブロックログテーブルのブロック時刻のカラム定義変更のマイグレ ISO文字列で保持していたので、エポック秒へ変換 */
+val MIGRATION_2_3 =
+    object : Migration(2, 3) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL(
+                """
                 CREATE TABLE new_blocked_packets (
                     package_name TEXT PRIMARY KEY NOT NULL,
                     app_name TEXT NOT NULL DEFAULT '',
@@ -44,48 +41,59 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
                     blocked_at INTEGER NOT NULL
                 )
                 ;
-            """.trimIndent()
-        )
+            """
+                    .trimIndent())
 
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
-        database.query(
-            "SELECT * FROM blocked_packets;"
-        ).also { cursor ->
-            while (cursor.moveToNext()) {
-                val columnIndex = hashMapOf(
-                    "package_name" to cursor.getColumnIndex("package_name"),
-                    "app_name" to cursor.getColumnIndex("app_name"),
-                    "src_address" to cursor.getColumnIndex("src_address"),
-                    "src_port" to cursor.getColumnIndex("src_port"),
-                    "dst_address" to cursor.getColumnIndex("dst_address"),
-                    "dst_port" to cursor.getColumnIndex("dst_port"),
-                    "protocol" to cursor.getColumnIndex("protocol"),
-                    "blocked_at" to cursor.getColumnIndex("blocked_at")
-                )
-                val packageName =
-                    columnIndex["package_name"]?.let { cursor.getString(it) } ?: continue
-                val appName =
-                    columnIndex["app_name"]?.let { cursor.getString(it) } ?: continue
-                val srcAddress =
-                    columnIndex["src_address"]?.let { cursor.getString(it) } ?: continue
-                val srcPort =
-                    columnIndex["src_port"]?.let { cursor.getInt(it) } ?: continue
-                val dstAddress =
-                    columnIndex["dst_address"]?.let { cursor.getString(it) } ?: continue
-                val dstPort =
-                    columnIndex["dst_port"]?.let { cursor.getInt(it) } ?: continue
-                val protocol =
-                    columnIndex["protocol"]?.let { cursor.getString(it) } ?: continue
-                val blockedAt =
-                    columnIndex["blocked_at"]?.let { cursor.getString(it) } ?: continue
+            database.query("SELECT * FROM blocked_packets;").also { cursor ->
+                while (cursor.moveToNext()) {
+                    val columnIndex =
+                        hashMapOf(
+                            "package_name" to
+                                cursor.getColumnIndex("package_name"),
+                            "app_name" to cursor.getColumnIndex("app_name"),
+                            "src_address" to
+                                cursor.getColumnIndex("src_address"),
+                            "src_port" to cursor.getColumnIndex("src_port"),
+                            "dst_address" to
+                                cursor.getColumnIndex("dst_address"),
+                            "dst_port" to cursor.getColumnIndex("dst_port"),
+                            "protocol" to cursor.getColumnIndex("protocol"),
+                            "blocked_at" to cursor.getColumnIndex("blocked_at"))
+                    val packageName =
+                        columnIndex["package_name"]?.let {
+                            cursor.getString(it)
+                        } ?: continue
+                    val appName =
+                        columnIndex["app_name"]?.let { cursor.getString(it) }
+                            ?: continue
+                    val srcAddress =
+                        columnIndex["src_address"]?.let { cursor.getString(it) }
+                            ?: continue
+                    val srcPort =
+                        columnIndex["src_port"]?.let { cursor.getInt(it) }
+                            ?: continue
+                    val dstAddress =
+                        columnIndex["dst_address"]?.let { cursor.getString(it) }
+                            ?: continue
+                    val dstPort =
+                        columnIndex["dst_port"]?.let { cursor.getInt(it) }
+                            ?: continue
+                    val protocol =
+                        columnIndex["protocol"]?.let { cursor.getString(it) }
+                            ?: continue
+                    val blockedAt =
+                        columnIndex["blocked_at"]?.let { cursor.getString(it) }
+                            ?: continue
 
-                val dateTimeInstant =
-                    LocalDateTime.parse(blockedAt, formatter).toKotlinLocalDateTime()
-                        .toInstant(TimeZone.currentSystemDefault())
-                database.execSQL(
-                    """
-                INSERT INTO new_blocked_packets 
+                    val dateTimeInstant =
+                        LocalDateTime.parse(blockedAt, formatter)
+                            .toKotlinLocalDateTime()
+                            .toInstant(TimeZone.currentSystemDefault())
+                    database.execSQL(
+                        """
+                INSERT INTO new_blocked_packets
                     (
                         package_name,
                         app_name,
@@ -108,12 +116,13 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
                         ${dateTimeInstant.toEpochMilliseconds()}
                     )
                 ;
-                """.trimIndent()
-                )
+                """
+                            .trimIndent())
+                }
             }
-        }
 
-        database.execSQL("DROP TABLE blocked_packets;")
-        database.execSQL("ALTER TABLE new_blocked_packets RENAME TO blocked_packets;")
+            database.execSQL("DROP TABLE blocked_packets;")
+            database.execSQL(
+                "ALTER TABLE new_blocked_packets RENAME TO blocked_packets;")
+        }
     }
-}

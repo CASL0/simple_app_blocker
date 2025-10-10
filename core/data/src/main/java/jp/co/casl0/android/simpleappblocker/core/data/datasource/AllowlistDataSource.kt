@@ -22,6 +22,8 @@ import kotlinx.coroutines.flow.Flow
 /** 許可リストのデータ層 */
 interface AllowlistDataSource {
     fun getAllowlistStream(): Flow<List<DomainAllowedPackage>>
+
     suspend fun insertPackage(allowedPackage: DomainAllowedPackage)
+
     suspend fun removePackage(packageName: CharSequence)
 }

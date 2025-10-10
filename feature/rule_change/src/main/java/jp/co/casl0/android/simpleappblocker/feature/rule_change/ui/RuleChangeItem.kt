@@ -51,45 +51,35 @@ internal fun RuleChangeItem(
 ) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier
-            .height(IntrinsicSize.Max)
-            .fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image( // アイコン画像
-                painter = DrawablePainter(appPackage.icon),
-                contentDescription = "icon",
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(50.dp)
-            )
-            Column(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .weight(1f)
-            ) {
-                Text(
-                    // アプリ名
-                    text = appPackage.appName,
-                    color = MaterialTheme.colors.onSurface,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    // パッケージ名
-                    text = appPackage.packageName,
-                    color = MaterialTheme.colors.onSurface
-                )
-            }
+        modifier = modifier.height(IntrinsicSize.Max).fillMaxWidth()) {
+            Row(
+                modifier =
+                    Modifier.padding(start = 8.dp, top = 8.dp, bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically) {
+                    Image( // アイコン画像
+                        painter = DrawablePainter(appPackage.icon),
+                        contentDescription = "icon",
+                        modifier = Modifier.clip(CircleShape).size(50.dp))
+                    Column(
+                        modifier = Modifier.padding(start = 8.dp).weight(1f)) {
+                            Text(
+                                // アプリ名
+                                text = appPackage.appName,
+                                color = MaterialTheme.colors.onSurface,
+                                fontWeight = FontWeight.Bold)
+                            Text(
+                                // パッケージ名
+                                text = appPackage.packageName,
+                                color = MaterialTheme.colors.onSurface)
+                        }
 
-            FavoriteButton(
-                isFavorite = appPackage.isAllowed,
-                onClick = { changeFilterRule(!appPackage.isAllowed, appPackage) }
-            )
+                    FavoriteButton(
+                        isFavorite = appPackage.isAllowed,
+                        onClick = {
+                            changeFilterRule(!appPackage.isAllowed, appPackage)
+                        })
+                }
         }
-    }
 }
 
 @Composable
@@ -101,16 +91,16 @@ private fun FavoriteButton(
     IconToggleButton(
         checked = isFavorite,
         onCheckedChange = { onClick() },
-        modifier = modifier
-    ) {
-        if (isFavorite) {
-            Icon(
-                imageVector = Icons.Filled.Favorite,
-                contentDescription = "favorite",
-                tint = Color.Red
-            )
-        } else {
-            Icon(imageVector = Icons.Filled.FavoriteBorder, contentDescription = "Favorite")
+        modifier = modifier) {
+            if (isFavorite) {
+                Icon(
+                    imageVector = Icons.Filled.Favorite,
+                    contentDescription = "favorite",
+                    tint = Color.Red)
+            } else {
+                Icon(
+                    imageVector = Icons.Filled.FavoriteBorder,
+                    contentDescription = "Favorite")
+            }
         }
-    }
 }

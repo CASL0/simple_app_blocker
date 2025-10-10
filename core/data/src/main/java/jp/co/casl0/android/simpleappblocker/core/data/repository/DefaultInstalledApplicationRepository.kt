@@ -32,12 +32,14 @@ class DefaultInstalledApplicationRepository(
 
     /** インストール済みアプリ一覧のFlowを取得する関数 */
     override fun getInstalledApplicationsStream(): Flow<List<AppPackage>> {
-        return installedApplicationDataSource.getInstalledApplicationsStream()
+        return installedApplicationDataSource
+            .getInstalledApplicationsStream()
             .flowOn(defaultDispatcher)
     }
 
     /** インストール済みアプリ一覧を更新します */
-    override suspend fun refresh() = withContext(defaultDispatcher) {
-        installedApplicationDataSource.refreshInstalledApplications()
-    }
+    override suspend fun refresh() =
+        withContext(defaultDispatcher) {
+            installedApplicationDataSource.refreshInstalledApplications()
+        }
 }

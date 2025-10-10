@@ -37,7 +37,8 @@ import jp.co.casl0.android.simpleappblocker.feature.blocklog.viewmodel.BlockLogV
 class BlockLogFragment : Fragment() {
 
     private var _binding: FragmentBlocklogBinding? = null
-    private val binding get() = _binding!!
+    private val binding
+        get() = _binding!!
 
     private val _viewModel: BlockLogViewModel by viewModels()
 
@@ -50,7 +51,8 @@ class BlockLogFragment : Fragment() {
         val root: View = binding.root
 
         binding.blocklogComposeView.apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 ApplicationTheme {
                     BlockLogFragmentScreen(viewModel = _viewModel)
@@ -70,6 +72,7 @@ class BlockLogFragment : Fragment() {
 private fun BlockLogFragmentScreen(viewModel: BlockLogViewModel) {
     val uiState = viewModel.uiState.collectAsState()
     BlockLogScreen {
-        BlockLogContent(blockedPackets = BlockedPacketsList(uiState.value.blockedApps))
+        BlockLogContent(
+            blockedPackets = BlockedPacketsList(uiState.value.blockedApps))
     }
 }
