@@ -17,50 +17,17 @@
 - アプリ指定で通信許可
 - IPv4/IPv6 対応
 
-## 開発
+## 開発する
 
-### 開発環境
-
-Android Studio (Electric Eel 以降) をインストールしてください。
-
-- Kotlin 2.0.20
-- Android Gradle Plugin 8.3.2
-- Gradle 8.9
-- JDK 17+
-- NDK 27.0.12077973
-
-以下のコマンドを実行し、JNI から使用しているネイティブライブラリ（Pcap++）をセットアップしてください。
-
-```bash
-./gradlew setup
-```
+[DEVELOPMENT.md](/docs/DEVELOPMENT.md)を参照してください。
 
 ### モジュール
 
 ![モジュール構成](https://user-images.githubusercontent.com/28913760/227686241-7f6462cb-08fe-4759-8bf1-efaa0b5957a3.svg)
 
-## PlayConsole へのアップロード
-
-fastlane を使用しアップロードしています。
-
-### 準備
-
-PlayConsole へアップロード用の Service Account を作成し、リポジトリルートに Json を配置してください。
-
-### アップロード
-
-次のコマンドでアップロードしてください。
-
-```shell
-bundle config --local path vendor/bundle
-bundle install
-bundle exec fastlane android deploy
-```
-
 ## ドキュメント
 
 - [docs](/docs)
-- [変更履歴](CHANGELOG.md)
 
 ※ Android Studio の[Markdown](https://pleiades.io/help/idea/markdown.html)プラグインでプレビューするには、JRE を JCEF に切り替えてください。
 また、PlantUML ダイアグラムを有効にするために`Settings` > `Languages & Frameworks` >
