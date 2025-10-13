@@ -39,7 +39,7 @@ kover = "0.9.2"
 splashscreen = "1.0.1"
 mockito = "5.3.1"
 kotlinx-datetime = "0.4.1"
-spotless = "7.1.0"
+spotless = "7.2.1"
 
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
