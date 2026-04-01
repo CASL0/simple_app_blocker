@@ -49,4 +49,5 @@ dependencies {
     implementation libs.androidx.compose.material
     implementation libs.androidx.compose.ui.tooling
     implementation libs.com.google.accompanist.drawablepainter
+    implementation libs.androidx.compose.material.icons.core
 }

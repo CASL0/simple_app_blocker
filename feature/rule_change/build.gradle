@@ -52,6 +52,7 @@ dependencies {
     implementation libs.com.google.dagger.hilt.android
     kapt libs.com.google.dagger.hilt.compiler
     implementation libs.com.orhanobut.logger
+    implementation libs.androidx.compose.material.icons.core
 
     testImplementation libs.junit
     testImplementation libs.org.hamcrest.all

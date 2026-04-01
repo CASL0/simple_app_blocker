@@ -1,12 +1,13 @@
 [versions]
+materialIconsCore = "1.7.8"
 versionCode = "19"
 versionName = "1.2.7"
 targetSdk = "34"
-compileSdk = "34"
-buildTools = "35.0.0"
-agp = "8.13.0"
-kotlin = "2.2.20"
-kotlin-plugin-compose = "2.2.20"
+compileSdk = "36"
+buildTools = "36.0.0"
+agp = "8.6.0"
+kotlin = "2.0.20"
+kotlin-plugin-compose = "2.0.20"
 de-undercouch-download = "5.6.0"
 core-ktx = "1.13.1"
 appcompat = "1.7.1"
@@ -15,10 +16,10 @@ androidx-lifecycle = "2.9.4"
 androidx-navigation = "2.9.5"
 compose-material = "1.9.3"
 compose-ui-tooling = "1.6.8"
-room = "2.6.1"
+room = "2.6.0"
 material = "1.12.0"
 app-update = "2.1.0"
-hilt = "2.50"
+hilt = "2.51"
 accompanist-drawablepainter = "0.32.0"
 accompanist-swiperefresh = "0.27.0"
 play-services-oss-licenses = "17.1.0"
@@ -42,6 +43,7 @@ kotlinx-datetime = "0.4.1"
 spotless = "7.2.1"
 
 [libraries]
+androidx-compose-material-icons-core = { module = "androidx.compose.material:material-icons-core", version.ref = "materialIconsCore" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }

@@ -41,7 +41,7 @@ constructor(
     val allowlist =
         allowlistRepository.getAllowlistStream().map { allowedPackages ->
             val pm = getApplication<Application>().packageManager
-            allowedPackages.map {
+            allowedPackages.mapNotNull {
                 val appInfo =
                     if (Build.VERSION.SDK_INT >= 33) {
                         pm.getPackageInfo(
@@ -51,10 +51,14 @@ constructor(
                     } else {
                         pm.getPackageInfo(it.toString(), 0).applicationInfo
                     }
-                AppPackage(
-                    appInfo.loadIcon(pm),
-                    appInfo.loadLabel(pm).toString(),
-                    appInfo.packageName)
+                return@mapNotNull if (appInfo == null) {
+                    null
+                } else {
+                    AppPackage(
+                        appInfo.loadIcon(pm),
+                        appInfo.loadLabel(pm).toString(),
+                        appInfo.packageName)
+                }
             }
         }
 
