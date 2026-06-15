@@ -6,4 +6,4 @@ source "https://rubygems.org"
 
 gem "fastlane", "~> 2.217"
 
-gem "solargraph", "~> 0.56.0"
+gem "solargraph", "~> 0.60.0"
